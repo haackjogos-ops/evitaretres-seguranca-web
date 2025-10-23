@@ -4,14 +4,21 @@ import { Button } from "@/components/ui/button";
 import Header from "@/components/Header";
 import ServiceCard from "@/components/ServiceCard";
 import heroImage from "@/assets/hero-safety.jpg";
+import evitareLogo from "@/assets/evitare-logo.png";
 
 const Home = () => {
   const services = [
     {
-      title: "Acompanhamento",
-      description: "Suporte técnico e jurídico completo com visitas periódicas.",
-      icon: ClipboardCheck,
+      title: "Sobre",
+      description: "Conheça nossa missão, visão e valores.",
+      icon: Shield,
       action: { label: "Saiba mais", path: "/sobre" },
+    },
+    {
+      title: "Vantagens",
+      description: "Benefícios da assessoria anual e suporte completo.",
+      icon: ClipboardCheck,
+      action: { label: "Ver vantagens", path: "/vantagens" },
     },
     {
       title: "Treinamentos",
@@ -32,7 +39,7 @@ const Home = () => {
       action: { label: "Conheça", path: "/monitoramento" },
     },
     {
-      title: "Medicina do Trabalho",
+      title: "Medicina",
       description: "Exames e documentos ocupacionais completos.",
       icon: Shield,
       action: { label: "Veja serviços", path: "/medicina" },
@@ -59,9 +66,12 @@ const Home = () => {
         </div>
         
         <div className="relative z-10 container mx-auto px-4 text-center text-primary-foreground">
-          <h1 className="text-4xl md:text-6xl font-bold mb-6">EVITARE</h1>
-          <p className="text-xl md:text-2xl mb-8 max-w-3xl mx-auto">
-            Tudo sobre segurança e medicina do trabalho na palma da sua mão
+          <img src={evitareLogo} alt="EVITARE" className="h-24 md:h-32 mx-auto mb-6" />
+          <p className="text-xl md:text-3xl mb-4 font-semibold">
+            Você já imaginou ter todas as novidades da empresa
+          </p>
+          <p className="text-2xl md:text-4xl mb-8 font-bold">
+            na palma da sua mão?
           </p>
           <Link to="/contato">
             <Button size="lg" variant="secondary" className="text-lg px-8 py-6">

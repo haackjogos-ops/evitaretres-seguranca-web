@@ -11,12 +11,12 @@ const Medicine = () => {
   ];
 
   const exams = [
-    "ASO - Atestado de Saúde Ocupacional",
-    "Audiometria",
-    "Espirometria",
-    "Eletroencefalograma",
-    "Psicológico NR33",
-    "Psicológico NR35",
+    "ASO - Atestado de Saúde Ocupacional (Admissional, Periódico, Retorno ao trabalho, Mudança de função, Demissional)",
+    "Audiometria - Exame para audição",
+    "Espirometria - Exame para pulmão",
+    "Eletroencefalograma - Exame para registrar atividade elétrica do cérebro",
+    "Eletrocardiograma - Exame para o coração",
+    "Psico social - Exames psicológicos NR35 e NR33",
   ];
 
   return (

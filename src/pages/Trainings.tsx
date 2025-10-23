@@ -10,25 +10,25 @@ const Trainings = () => {
       icon: Shield,
       title: "NR 06",
       subtitle: "EPI e segurança individual",
-      description: "Treinamento sobre uso correto de Equipamentos de Proteção Individual.",
+      description: "Admissional, Periódicos, Retorno ao trabalho, Ordens de serviço. Registro de entrega de EPI, regras de segurança, utilização e higiene do EPI e EPC.",
     },
     {
       icon: Wrench,
       title: "NR 12",
       subtitle: "Máquinas e equipamentos",
-      description: "Segurança no trabalho com máquinas e equipamentos industriais.",
+      description: "Segurança no trabalho com máquinas e equipamentos. Ferramentas elétricas em geral.",
     },
     {
       icon: Users,
       title: "NR 17",
       subtitle: "Ergonomia",
-      description: "Adaptação das condições de trabalho às características do trabalhador.",
+      description: "Ergonomia: transporte manual de cargas e postura adequada no trabalho.",
     },
     {
       icon: Flame,
       title: "NR 23",
       subtitle: "Brigada e combate a incêndio",
-      description: "Formação de brigada de incêndio e técnicas de combate.",
+      description: "Formação de brigada de incêndio e técnicas de combate a incêndios.",
     },
     {
       icon: Heart,
@@ -38,9 +38,15 @@ const Trainings = () => {
     },
     {
       icon: AlertTriangle,
-      title: "Evacuação e Emergências",
-      subtitle: "Procedimentos de segurança",
-      description: "Orientações para evacuação e situações de emergência.",
+      title: "Evacuação",
+      subtitle: "Saída de emergência",
+      description: "Evacuação de área em emergências e procedimentos de segurança.",
+    },
+    {
+      icon: Wrench,
+      title: "Montagem de Andaimes",
+      subtitle: "Segurança em altura",
+      description: "Montagens e desmontagens seguras de andaimes.",
     },
   ];
 

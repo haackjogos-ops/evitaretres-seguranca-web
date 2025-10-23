@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import Header from "@/components/Header";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { Zap, Truck, Building2, CircleDot, Mountain, Users } from "lucide-react";
+import { Zap, Truck, Building2, CircleDot, Mountain, Users, Wrench } from "lucide-react";
 
 const Courses = () => {
   const courses = [
@@ -10,19 +10,19 @@ const Courses = () => {
       icon: Zap,
       title: "NR 10",
       subtitle: "Eletricidade e SEP",
-      description: "Segurança em instalações e serviços em eletricidade.",
+      description: "Serviços em eletricidade e SEP (Sistema Elétrico de Potência).",
     },
     {
       icon: Truck,
       title: "NR 11",
-      subtitle: "Empilhadeira e movimentação de cargas",
-      description: "Operação segura de empilhadeiras e transporte de materiais.",
+      subtitle: "Transporte e movimentação de cargas",
+      description: "Empilhadeira, Guindalto, Monovia, Pórtico e outros equipamentos de movimentação.",
     },
     {
       icon: Building2,
       title: "NR 18",
       subtitle: "Construção civil",
-      description: "Condições e meio ambiente de trabalho na indústria da construção.",
+      description: "Segurança na indústria da construção civil.",
     },
     {
       icon: CircleDot,
@@ -34,13 +34,25 @@ const Courses = () => {
       icon: Mountain,
       title: "NR 35",
       subtitle: "Trabalho em altura",
-      description: "Segurança e saúde no trabalho em altura.",
+      description: "Trabalhos em altura com segurança.",
     },
     {
       icon: Users,
-      title: "SIPAT e CIPA",
-      subtitle: "Prevenção de acidentes",
-      description: "Semana Interna de Prevenção de Acidentes e Comissão Interna.",
+      title: "NR 05 - CIPA",
+      subtitle: "Comissão Interna de Prevenção de Acidentes",
+      description: "CIPA (designado/comissão interna de prevenção de acidentes).",
+    },
+    {
+      icon: Users,
+      title: "SIPAT",
+      subtitle: "Semana Interna de Prevenção de Acidentes",
+      description: "Semana interna a prevenção de acidentes.",
+    },
+    {
+      icon: Wrench,
+      title: "NR 12",
+      subtitle: "Máquinas e Equipamentos",
+      description: "Segurança na operação, referências técnicas e exposição de máquinas e equipamentos.",
     },
   ];
 
