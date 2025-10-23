@@ -2,7 +2,6 @@ import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import evitareLogo from "@/assets/evitare-logo.png";
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -25,8 +24,8 @@ const Header = () => {
     <header className="sticky top-0 z-50 w-full bg-background border-b border-border">
       <div className="container mx-auto px-4">
         <div className="flex h-16 items-center justify-between">
-          <Link to="/" className="flex items-center">
-            <img src={evitareLogo} alt="EVITARE" className="h-12 md:h-14" />
+          <Link to="/" className="flex items-center space-x-2">
+            <div className="font-bold text-2xl text-primary">EVITARE</div>
           </Link>
 
           {/* Desktop Navigation */}

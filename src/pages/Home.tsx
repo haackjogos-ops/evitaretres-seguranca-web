@@ -4,7 +4,6 @@ import { Button } from "@/components/ui/button";
 import Header from "@/components/Header";
 import ServiceCard from "@/components/ServiceCard";
 import heroImage from "@/assets/hero-safety.jpg";
-import evitareLogo from "@/assets/evitare-logo.png";
 
 const Home = () => {
   const services = [
@@ -66,7 +65,7 @@ const Home = () => {
         </div>
         
         <div className="relative z-10 container mx-auto px-4 text-center text-primary-foreground">
-          <img src={evitareLogo} alt="EVITARE" className="h-24 md:h-32 mx-auto mb-6" />
+          <h1 className="text-5xl md:text-7xl font-bold mb-6">EVITARE</h1>
           <p className="text-xl md:text-3xl mb-4 font-semibold">
             Você já imaginou ter todas as novidades da empresa
           </p>
