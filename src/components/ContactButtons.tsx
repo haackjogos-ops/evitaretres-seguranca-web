@@ -1,36 +1,39 @@
 import { Phone, MessageCircle, Mail, Instagram, Facebook } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useSiteSettings } from "@/hooks/useSiteSettings";
 
 const ContactButtons = () => {
+  const { settings } = useSiteSettings();
+  
   const contacts = [
     {
       icon: Phone,
       label: "Telefone",
-      href: "tel:+5548999999999",
+      href: `tel:${settings.contact?.phone || "+5548999999999"}`,
       color: "bg-primary hover:bg-primary/90",
     },
     {
       icon: MessageCircle,
       label: "WhatsApp",
-      href: "https://wa.me/5548999999999",
+      href: `https://wa.me/${settings.contact?.whatsapp || "5548999999999"}`,
       color: "bg-accent hover:bg-accent/90",
     },
     {
       icon: Mail,
       label: "E-mail",
-      href: "mailto:contato@evitare.com.br",
+      href: `mailto:${settings.contact?.email || "contato@evitare.com.br"}`,
       color: "bg-secondary hover:bg-secondary/90",
     },
     {
       icon: Instagram,
       label: "Instagram",
-      href: "https://instagram.com/evitare",
+      href: `https://instagram.com/${settings.contact?.instagram || "evitare"}`,
       color: "bg-primary hover:bg-primary/90",
     },
     {
       icon: Facebook,
       label: "Facebook",
-      href: "https://facebook.com/evitare",
+      href: `https://facebook.com/${settings.contact?.facebook || "evitare"}`,
       color: "bg-accent hover:bg-accent/90",
     },
   ];

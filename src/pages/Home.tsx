@@ -3,9 +3,12 @@ import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import Header from "@/components/Header";
 import ServiceCard from "@/components/ServiceCard";
+import { useSiteSettings } from "@/hooks/useSiteSettings";
 import heroImage from "@/assets/hero-safety.jpg";
 
 const Home = () => {
+  const { settings } = useSiteSettings();
+  
   const services = [
     {
       title: "Sobre",
@@ -59,18 +62,22 @@ const Home = () => {
       <section className="relative h-[60vh] md:h-[70vh] flex items-center justify-center overflow-hidden">
         <div 
           className="absolute inset-0 bg-cover bg-center"
-          style={{ backgroundImage: `url(${heroImage})` }}
+          style={{ 
+            backgroundImage: `url(${settings.heroSection?.bannerUrl || heroImage})` 
+          }}
         >
           <div className="absolute inset-0 bg-gradient-to-r from-primary-dark/90 to-primary/70" />
         </div>
         
         <div className="relative z-10 container mx-auto px-4 text-center text-primary-foreground">
-          <h1 className="text-5xl md:text-7xl font-bold mb-6">EVITARE</h1>
+          <h1 className="text-5xl md:text-7xl font-bold mb-6">
+            {settings.heroSection?.title || "EVITARE"}
+          </h1>
           <p className="text-xl md:text-3xl mb-4 font-semibold">
-            Você já imaginou ter todas as novidades da empresa
+            {settings.heroSection?.subtitle || "Você já imaginou ter todas as novidades da empresa"}
           </p>
           <p className="text-2xl md:text-4xl mb-8 font-bold">
-            na palma da sua mão?
+            {settings.heroSection?.ctaText || "na palma da sua mão?"}
           </p>
           <Link to="/contato">
             <Button size="lg" variant="secondary" className="text-lg px-8 py-6">
@@ -96,8 +103,12 @@ const Home = () => {
       {/* Footer */}
       <footer className="bg-muted py-8 mt-16">
         <div className="container mx-auto px-4 text-center text-muted-foreground">
-          <p className="font-semibold mb-2">EVITARE – Assessoria em Segurança e Medicina do Trabalho</p>
-          <p className="text-sm">Rua Coronel Marcos Rovaris, 328 – Sala 2 – Centro – Turvo</p>
+          <p className="font-semibold mb-2">
+            {settings.branding?.siteName || "EVITARE"} – Assessoria em Segurança e Medicina do Trabalho
+          </p>
+          <p className="text-sm">
+            {settings.contact?.address || "Rua Coronel Marcos Rovaris, 328 – Sala 2 – Centro – Turvo"}
+          </p>
         </div>
       </footer>
     </div>

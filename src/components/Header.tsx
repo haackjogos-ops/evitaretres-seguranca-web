@@ -1,11 +1,15 @@
 import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { Menu, X } from "lucide-react";
+import { Menu, X, LogIn, UserCog } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useAuth } from "@/contexts/AuthContext";
+import { useSiteSettings } from "@/hooks/useSiteSettings";
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const location = useLocation();
+  const { user, isAdmin } = useAuth();
+  const { settings } = useSiteSettings();
 
   const navItems = [
     { path: "/", label: "Início" },
@@ -25,7 +29,17 @@ const Header = () => {
       <div className="container mx-auto px-4">
         <div className="flex h-16 items-center justify-between">
           <Link to="/" className="flex items-center space-x-2">
-            <div className="font-bold text-2xl text-primary">EVITARE</div>
+            {settings.branding?.logoUrl ? (
+              <img 
+                src={settings.branding.logoUrl} 
+                alt={settings.branding.siteName || "EVITARE"} 
+                className="h-12 object-contain"
+              />
+            ) : (
+              <div className="font-bold text-2xl text-primary">
+                {settings.branding?.siteName || "EVITARE"}
+              </div>
+            )}
           </Link>
 
           {/* Desktop Navigation */}
@@ -41,6 +55,29 @@ const Header = () => {
               </Link>
             ))}
           </nav>
+
+          {/* Auth Buttons Desktop */}
+          <div className="hidden md:flex items-center gap-2">
+            {user ? (
+              <>
+                {isAdmin && (
+                  <Link to="/admin">
+                    <Button variant="outline" size="sm">
+                      <UserCog className="mr-2 h-4 w-4" />
+                      Admin
+                    </Button>
+                  </Link>
+                )}
+              </>
+            ) : (
+              <Link to="/auth">
+                <Button variant="outline" size="sm">
+                  <LogIn className="mr-2 h-4 w-4" />
+                  Login
+                </Button>
+              </Link>
+            )}
+          </div>
 
           {/* Mobile Menu Button */}
           <button
@@ -69,6 +106,31 @@ const Header = () => {
                 </Button>
               </Link>
             ))}
+            
+            {/* Auth Buttons Mobile */}
+            {user ? (
+              <>
+                {isAdmin && (
+                  <Link
+                    to="/admin"
+                    className="block px-4 py-2 hover:bg-muted rounded-md"
+                    onClick={() => setIsMenuOpen(false)}
+                  >
+                    <UserCog className="inline mr-2 h-4 w-4" />
+                    Admin
+                  </Link>
+                )}
+              </>
+            ) : (
+              <Link
+                to="/auth"
+                className="block px-4 py-2 hover:bg-muted rounded-md"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                <LogIn className="inline mr-2 h-4 w-4" />
+                Login
+              </Link>
+            )}
           </nav>
         )}
       </div>
