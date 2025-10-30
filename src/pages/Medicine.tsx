@@ -1,22 +1,13 @@
 import Header from "@/components/Header";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { usePageContent } from "@/hooks/usePageContent";
+import { useMedicineServices } from "@/hooks/useMedicineServices";
+import { useSiteSettings } from "@/hooks/useSiteSettings";
 
 const Medicine = () => {
-  const documents = [
-    "PGR - Programa de Gerenciamento de Riscos",
-    "PCMSO - Programa de Controle Médico de Saúde Ocupacional",
-    "LTCAT - Laudo Técnico das Condições Ambientais do Trabalho",
-    "PPP - Perfil Profissiográfico Previdenciário",
-  ];
-
-  const exams = [
-    "ASO - Atestado de Saúde Ocupacional (Admissional, Periódico, Retorno ao trabalho, Mudança de função, Demissional)",
-    "Audiometria - Exame para audição",
-    "Espirometria - Exame para pulmão",
-    "Eletroencefalograma - Exame para registrar atividade elétrica do cérebro",
-    "Eletrocardiograma - Exame para o coração",
-    "Psico social - Exames psicológicos NR35 e NR33",
-  ];
+  const { content } = usePageContent("medicine");
+  const { documents, exams } = useMedicineServices();
+  const { settings } = useSiteSettings();
 
   return (
     <div className="min-h-screen bg-background">
@@ -25,10 +16,10 @@ const Medicine = () => {
       <section className="container mx-auto px-4 py-16">
         <div className="max-w-6xl mx-auto">
           <h1 className="text-4xl md:text-5xl font-bold text-center mb-4">
-            Medicina e Segurança do Trabalho
+            {content?.title || "Medicina e Segurança do Trabalho"}
           </h1>
           <p className="text-xl text-center text-muted-foreground mb-12">
-            Documentos e exames ocupacionais completos
+            {content?.subtitle || "Documentos e exames ocupacionais completos"}
           </p>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
@@ -44,9 +35,9 @@ const Medicine = () => {
               <CardContent>
                 <ul className="space-y-3">
                   {documents.map((doc) => (
-                    <li key={doc} className="flex items-start gap-2">
+                    <li key={doc.id} className="flex items-start gap-2">
                       <div className="h-2 w-2 rounded-full bg-primary mt-2 flex-shrink-0" />
-                      <span className="text-muted-foreground">{doc}</span>
+                      <span className="text-muted-foreground">{doc.title}</span>
                     </li>
                   ))}
                 </ul>
@@ -65,9 +56,9 @@ const Medicine = () => {
               <CardContent>
                 <ul className="space-y-3">
                   {exams.map((exam) => (
-                    <li key={exam} className="flex items-start gap-2">
+                    <li key={exam.id} className="flex items-start gap-2">
                       <div className="h-2 w-2 rounded-full bg-primary mt-2 flex-shrink-0" />
-                      <span className="text-muted-foreground">{exam}</span>
+                      <span className="text-muted-foreground">{exam.title}</span>
                     </li>
                   ))}
                 </ul>
@@ -79,8 +70,12 @@ const Medicine = () => {
 
       <footer className="bg-muted py-8 mt-16">
         <div className="container mx-auto px-4 text-center text-muted-foreground">
-          <p className="font-semibold mb-2">EVITARE – Assessoria em Segurança e Medicina do Trabalho</p>
-          <p className="text-sm">Rua Coronel Marcos Rovaris, 328 – Sala 2 – Centro – Turvo</p>
+          <p className="font-semibold mb-2">
+            {settings.branding?.siteName || "EVITARE"} – Assessoria em Segurança e Medicina do Trabalho
+          </p>
+          <p className="text-sm">
+            {settings.contact?.address || "Rua Coronel Marcos Rovaris, 328 – Sala 2 – Centro – Turvo"}
+          </p>
         </div>
       </footer>
     </div>

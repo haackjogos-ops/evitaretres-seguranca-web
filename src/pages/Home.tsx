@@ -1,58 +1,15 @@
-import { Shield, Users, BookOpen, Activity, ClipboardCheck, Phone } from "lucide-react";
+import * as Icons from "lucide-react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import Header from "@/components/Header";
 import ServiceCard from "@/components/ServiceCard";
 import { useSiteSettings } from "@/hooks/useSiteSettings";
+import { useServices } from "@/hooks/useServices";
 import heroImage from "@/assets/hero-safety.jpg";
 
 const Home = () => {
   const { settings } = useSiteSettings();
-  
-  const services = [
-    {
-      title: "Sobre",
-      description: "Conheça nossa missão, visão e valores.",
-      icon: Shield,
-      action: { label: "Saiba mais", path: "/sobre" },
-    },
-    {
-      title: "Vantagens",
-      description: "Benefícios da assessoria anual e suporte completo.",
-      icon: ClipboardCheck,
-      action: { label: "Ver vantagens", path: "/vantagens" },
-    },
-    {
-      title: "Treinamentos",
-      description: "Capacitação em normas regulamentadoras e segurança.",
-      icon: Users,
-      action: { label: "Ver treinamentos", path: "/treinamentos" },
-    },
-    {
-      title: "Cursos",
-      description: "Cursos especializados com certificação reconhecida.",
-      icon: BookOpen,
-      action: { label: "Ver cursos", path: "/cursos" },
-    },
-    {
-      title: "Monitoramento",
-      description: "Inspeções e checklists periódicos de segurança.",
-      icon: Activity,
-      action: { label: "Conheça", path: "/monitoramento" },
-    },
-    {
-      title: "Medicina",
-      description: "Exames e documentos ocupacionais completos.",
-      icon: Shield,
-      action: { label: "Veja serviços", path: "/medicina" },
-    },
-    {
-      title: "Contato",
-      description: "Entre em contato conosco para mais informações.",
-      icon: Phone,
-      action: { label: "Fale conosco", path: "/contato" },
-    },
-  ];
+  const { services } = useServices();
 
   return (
     <div className="min-h-screen bg-background">
@@ -94,9 +51,21 @@ const Home = () => {
         </h2>
         
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {services.map((service) => (
-            <ServiceCard key={service.title} {...service} />
-          ))}
+          {services.map((service) => {
+            const IconComponent = (Icons as any)[service.icon_name] || Icons.Shield;
+            return (
+              <ServiceCard 
+                key={service.id} 
+                title={service.title}
+                description={service.description}
+                icon={IconComponent}
+                action={service.action_label && service.action_path ? {
+                  label: service.action_label,
+                  path: service.action_path
+                } : undefined}
+              />
+            );
+          })}
         </div>
       </section>
 

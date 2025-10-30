@@ -1,20 +1,14 @@
 import Header from "@/components/Header";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { CheckCircle2 } from "lucide-react";
+import { usePageContent } from "@/hooks/usePageContent";
+import { useBenefits } from "@/hooks/useBenefits";
+import { useSiteSettings } from "@/hooks/useSiteSettings";
 
 const Benefits = () => {
-  const benefits = [
-    "A empresa contratada EVITARE se responsabiliza integralmente por toda a parte de implantação, monitoramento, acompanhamento e treinamentos referente a segurança e medicina do trabalho",
-    "Treinamentos e Cursos exigidos pelas normas de segurança",
-    "Visitas técnicas periodicamente na empresa e seus locais de trabalho visando colher dados e lapidando o processo produtivo com segurança",
-    "Acompanhamento e contribuição junto ao advogado em causas trabalhistas e perícias judiciais",
-    "Auxílio ao setor de RH em aberturas de CAT (Comunicado de acidente de trabalho)",
-    "Realização de investigação de acidentes",
-    "Orientações e treinamentos internos extraordinários sempre que a empresa achar necessário",
-    "Auxílio no informativo de todos os documentos relacionados à segurança e medicina do trabalho no portal e-Social",
-    "Visitas técnicas para fiscalização e cobrança do uso do EPI (equipamento de proteção individual)",
-    "Torna-se mais viável seu investimento, logo serão parcelados em 12 meses",
-  ];
+  const { content } = usePageContent("benefits");
+  const { benefits } = useBenefits();
+  const { settings } = useSiteSettings();
 
   return (
     <div className="min-h-screen bg-background">
@@ -23,10 +17,10 @@ const Benefits = () => {
       <section className="container mx-auto px-4 py-16">
         <div className="max-w-4xl mx-auto">
           <h1 className="text-4xl md:text-5xl font-bold text-center mb-4">
-            Vantagem de uma Assessoria Anual
+            {content?.title || "Vantagem de uma Assessoria Anual"}
           </h1>
           <p className="text-xl text-center text-muted-foreground mb-12">
-            Investimento inteligente com suporte completo para sua empresa
+            {content?.subtitle || "Investimento inteligente com suporte completo para sua empresa"}
           </p>
 
           <Card>
@@ -37,11 +31,11 @@ const Benefits = () => {
             </CardHeader>
             <CardContent>
               <ul className="space-y-4">
-                {benefits.map((benefit, index) => (
-                  <li key={index} className="flex items-start gap-3">
+                {benefits.map((benefit) => (
+                  <li key={benefit.id} className="flex items-start gap-3">
                     <CheckCircle2 className="h-6 w-6 text-primary flex-shrink-0 mt-0.5" />
                     <span className="text-muted-foreground leading-relaxed">
-                      {benefit}
+                      {benefit.description}
                     </span>
                   </li>
                 ))}
@@ -80,8 +74,12 @@ const Benefits = () => {
 
       <footer className="bg-muted py-8 mt-16">
         <div className="container mx-auto px-4 text-center text-muted-foreground">
-          <p className="font-semibold mb-2">EVITARE – Assessoria em Segurança e Medicina do Trabalho</p>
-          <p className="text-sm">Rua Coronel Marcos Rovaris, 328 – Sala 2 – Centro – Turvo</p>
+          <p className="font-semibold mb-2">
+            {settings.branding?.siteName || "EVITARE"} – Assessoria em Segurança e Medicina do Trabalho
+          </p>
+          <p className="text-sm">
+            {settings.contact?.address || "Rua Coronel Marcos Rovaris, 328 – Sala 2 – Centro – Turvo"}
+          </p>
         </div>
       </footer>
     </div>
