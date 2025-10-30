@@ -2,54 +2,53 @@ import { Link } from "react-router-dom";
 import Header from "@/components/Header";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { Zap, Truck, Building2, CircleDot, Mountain, Users, Wrench } from "lucide-react";
 
 const Courses = () => {
   const courses = [
     {
-      icon: Zap,
+      emoji: "⚡",
       title: "NR 10",
       subtitle: "Eletricidade e SEP",
       description: "Serviços em eletricidade e SEP (Sistema Elétrico de Potência).",
     },
     {
-      icon: Truck,
+      emoji: "🚛",
       title: "NR 11",
       subtitle: "Transporte e movimentação de cargas",
       description: "Empilhadeira, Guindalto, Monovia, Pórtico e outros equipamentos de movimentação.",
     },
     {
-      icon: Building2,
+      emoji: "👷",
       title: "NR 18",
       subtitle: "Construção civil",
       description: "Segurança na indústria da construção civil.",
     },
     {
-      icon: CircleDot,
+      emoji: "🕳️",
       title: "NR 33",
       subtitle: "Espaço confinado",
       description: "Segurança e saúde nos trabalhos em espaços confinados.",
     },
     {
-      icon: Mountain,
+      emoji: "🪜",
       title: "NR 35",
       subtitle: "Trabalho em altura",
       description: "Trabalhos em altura com segurança.",
     },
     {
-      icon: Users,
+      emoji: "👥",
       title: "NR 05 - CIPA",
       subtitle: "Comissão Interna de Prevenção de Acidentes",
       description: "CIPA (designado/comissão interna de prevenção de acidentes).",
     },
     {
-      icon: Users,
+      emoji: "📋",
       title: "SIPAT",
       subtitle: "Semana Interna de Prevenção de Acidentes",
       description: "Semana interna a prevenção de acidentes.",
     },
     {
-      icon: Wrench,
+      emoji: "⚙️",
       title: "NR 12",
       subtitle: "Máquinas e Equipamentos",
       description: "Segurança na operação, referências técnicas e exposição de máquinas e equipamentos.",
@@ -74,8 +73,8 @@ const Courses = () => {
               <Card key={course.title} className="hover:shadow-lg transition-shadow">
                 <CardHeader>
                   <div className="flex items-center gap-3 mb-2">
-                    <div className="p-2 rounded-lg bg-primary/10">
-                      <course.icon className="h-6 w-6 text-primary" />
+                    <div className="flex items-center justify-center w-12 h-12 rounded-lg bg-primary/10">
+                      <span className="text-3xl">{course.emoji}</span>
                     </div>
                   </div>
                   <CardTitle className="text-xl">{course.title}</CardTitle>

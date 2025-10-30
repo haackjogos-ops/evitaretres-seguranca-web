@@ -1,31 +1,30 @@
 import Header from "@/components/Header";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Flame, Car, Users, Shield, ClipboardCheck } from "lucide-react";
 
 const Monitoring = () => {
   const services = [
     {
-      icon: Flame,
+      emoji: "🧯",
       title: "Extintores e Hidrantes",
       description: "Inspeção, manutenção e recarga de equipamentos de combate a incêndio.",
     },
     {
-      icon: Car,
+      emoji: "🚗",
       title: "Frota e Veículos",
       description: "Checklists e monitoramento da segurança dos veículos da empresa.",
     },
     {
-      icon: Users,
+      emoji: "👥",
       title: "CIPA",
       description: "Acompanhamento e suporte à Comissão Interna de Prevenção de Acidentes.",
     },
     {
-      icon: Shield,
+      emoji: "👨‍🚒",
       title: "Brigada de Incêndio",
       description: "Formação, treinamento e acompanhamento da brigada.",
     },
     {
-      icon: ClipboardCheck,
+      emoji: "✅",
       title: "Checklists e Relatórios",
       description: "Relatórios periódicos de inspeção e conformidade com as normas.",
     },
@@ -49,8 +48,8 @@ const Monitoring = () => {
               <Card key={service.title} className="hover:shadow-lg transition-shadow">
                 <CardHeader>
                   <div className="flex items-center gap-3 mb-2">
-                    <div className="p-3 rounded-lg bg-primary/10">
-                      <service.icon className="h-8 w-8 text-primary" />
+                    <div className="flex items-center justify-center w-14 h-14 rounded-lg bg-primary/10">
+                      <span className="text-4xl">{service.emoji}</span>
                     </div>
                     <CardTitle className="text-xl">{service.title}</CardTitle>
                   </div>

@@ -1,6 +1,5 @@
 import Header from "@/components/Header";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { FileText, Stethoscope } from "lucide-react";
 
 const Medicine = () => {
   const documents = [
@@ -36,8 +35,8 @@ const Medicine = () => {
             <Card className="hover:shadow-lg transition-shadow">
               <CardHeader>
                 <div className="flex items-center gap-3 mb-2">
-                  <div className="p-3 rounded-lg bg-primary/10">
-                    <FileText className="h-8 w-8 text-primary" />
+                  <div className="flex items-center justify-center w-14 h-14 rounded-lg bg-primary/10">
+                    <span className="text-4xl">📄</span>
                   </div>
                   <CardTitle className="text-2xl">Documentos</CardTitle>
                 </div>
@@ -57,8 +56,8 @@ const Medicine = () => {
             <Card className="hover:shadow-lg transition-shadow">
               <CardHeader>
                 <div className="flex items-center gap-3 mb-2">
-                  <div className="p-3 rounded-lg bg-primary/10">
-                    <Stethoscope className="h-8 w-8 text-primary" />
+                  <div className="flex items-center justify-center w-14 h-14 rounded-lg bg-primary/10">
+                    <span className="text-4xl">🩺</span>
                   </div>
                   <CardTitle className="text-2xl">Exames</CardTitle>
                 </div>
