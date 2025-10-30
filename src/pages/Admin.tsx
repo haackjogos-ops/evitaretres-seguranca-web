@@ -11,6 +11,13 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useToast } from "@/hooks/use-toast";
 import { Upload } from "lucide-react";
 import Header from "@/components/Header";
+import { ServicesTab } from "@/components/admin/tabs/ServicesTab";
+import { AboutTab } from "@/components/admin/tabs/AboutTab";
+import { TrainingsTab } from "@/components/admin/tabs/TrainingsTab";
+import { CoursesTab } from "@/components/admin/tabs/CoursesTab";
+import { BenefitsTab } from "@/components/admin/tabs/BenefitsTab";
+import { MonitoringTab } from "@/components/admin/tabs/MonitoringTab";
+import { MedicineTab } from "@/components/admin/tabs/MedicineTab";
 
 const Admin = () => {
   const { user, isAdmin, isLoading, signOut } = useAuth();
@@ -162,11 +169,18 @@ const Admin = () => {
         </div>
 
         <Tabs defaultValue="colors" className="space-y-4">
-          <TabsList className="grid w-full grid-cols-4">
+          <TabsList className="grid w-full grid-cols-2 lg:grid-cols-6 xl:grid-cols-11 gap-1">
             <TabsTrigger value="colors">Cores</TabsTrigger>
             <TabsTrigger value="contact">Contato</TabsTrigger>
             <TabsTrigger value="branding">Marca</TabsTrigger>
-            <TabsTrigger value="hero">Banner Principal</TabsTrigger>
+            <TabsTrigger value="hero">Banner</TabsTrigger>
+            <TabsTrigger value="services">Home</TabsTrigger>
+            <TabsTrigger value="about">Sobre</TabsTrigger>
+            <TabsTrigger value="trainings">Treinamentos</TabsTrigger>
+            <TabsTrigger value="courses">Cursos</TabsTrigger>
+            <TabsTrigger value="benefits">Vantagens</TabsTrigger>
+            <TabsTrigger value="monitoring">Monitoramento</TabsTrigger>
+            <TabsTrigger value="medicine">Medicina</TabsTrigger>
           </TabsList>
 
           <TabsContent value="colors">
@@ -440,6 +454,34 @@ const Admin = () => {
                 </Button>
               </CardContent>
             </Card>
+          </TabsContent>
+
+          <TabsContent value="services">
+            <ServicesTab />
+          </TabsContent>
+
+          <TabsContent value="about">
+            <AboutTab />
+          </TabsContent>
+
+          <TabsContent value="trainings">
+            <TrainingsTab />
+          </TabsContent>
+
+          <TabsContent value="courses">
+            <CoursesTab />
+          </TabsContent>
+
+          <TabsContent value="benefits">
+            <BenefitsTab />
+          </TabsContent>
+
+          <TabsContent value="monitoring">
+            <MonitoringTab />
+          </TabsContent>
+
+          <TabsContent value="medicine">
+            <MedicineTab />
           </TabsContent>
         </Tabs>
       </div>
