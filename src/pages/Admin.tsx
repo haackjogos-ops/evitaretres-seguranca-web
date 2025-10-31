@@ -9,7 +9,7 @@ import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useToast } from "@/hooks/use-toast";
-import { Upload } from "lucide-react";
+import { Upload, Palette, Phone, Bookmark, Image, Home, Info, GraduationCap, BookOpen, Award, Activity, Stethoscope, LogOut } from "lucide-react";
 import Header from "@/components/Header";
 import { ServicesTab } from "@/components/admin/tabs/ServicesTab";
 import { AboutTab } from "@/components/admin/tabs/AboutTab";
@@ -18,6 +18,7 @@ import { CoursesTab } from "@/components/admin/tabs/CoursesTab";
 import { BenefitsTab } from "@/components/admin/tabs/BenefitsTab";
 import { MonitoringTab } from "@/components/admin/tabs/MonitoringTab";
 import { MedicineTab } from "@/components/admin/tabs/MedicineTab";
+import { Separator } from "@/components/ui/separator";
 
 const Admin = () => {
   const { user, isAdmin, isLoading, signOut } = useAuth();
@@ -157,301 +158,396 @@ const Admin = () => {
   }
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-muted/30">
       <Header />
       
-      <div className="container mx-auto px-4 py-8">
-        <div className="flex justify-between items-center mb-8">
-          <h1 className="text-4xl font-bold">Painel Administrativo</h1>
-          <Button onClick={signOut} variant="outline">
+      <div className="container mx-auto px-4 py-6 max-w-7xl">
+        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
+          <div>
+            <h1 className="text-3xl font-bold text-foreground">Painel Administrativo</h1>
+            <p className="text-sm text-muted-foreground mt-1">Gerencie o conteúdo e configurações do site</p>
+          </div>
+          <Button onClick={signOut} variant="outline" size="sm">
+            <LogOut className="h-4 w-4 mr-2" />
             Sair
           </Button>
         </div>
 
-        <Tabs defaultValue="colors" className="space-y-4">
-          <TabsList className="grid w-full grid-cols-2 lg:grid-cols-6 xl:grid-cols-11 gap-1">
-            <TabsTrigger value="colors">Cores</TabsTrigger>
-            <TabsTrigger value="contact">Contato</TabsTrigger>
-            <TabsTrigger value="branding">Marca</TabsTrigger>
-            <TabsTrigger value="hero">Banner</TabsTrigger>
-            <TabsTrigger value="services">Home</TabsTrigger>
-            <TabsTrigger value="about">Sobre</TabsTrigger>
-            <TabsTrigger value="trainings">Treinamentos</TabsTrigger>
-            <TabsTrigger value="courses">Cursos</TabsTrigger>
-            <TabsTrigger value="benefits">Vantagens</TabsTrigger>
-            <TabsTrigger value="monitoring">Monitoramento</TabsTrigger>
-            <TabsTrigger value="medicine">Medicina</TabsTrigger>
-          </TabsList>
+        <Tabs defaultValue="colors" className="space-y-6">
+          <div className="bg-background border rounded-lg p-1 shadow-sm overflow-x-auto">
+            <TabsList className="grid w-full grid-cols-4 sm:grid-cols-6 lg:grid-cols-11 gap-1 bg-transparent">
+              <TabsTrigger value="colors" className="gap-2">
+                <Palette className="h-4 w-4" />
+                <span className="hidden sm:inline">Cores</span>
+              </TabsTrigger>
+              <TabsTrigger value="contact" className="gap-2">
+                <Phone className="h-4 w-4" />
+                <span className="hidden sm:inline">Contato</span>
+              </TabsTrigger>
+              <TabsTrigger value="branding" className="gap-2">
+                <Bookmark className="h-4 w-4" />
+                <span className="hidden sm:inline">Marca</span>
+              </TabsTrigger>
+              <TabsTrigger value="hero" className="gap-2">
+                <Image className="h-4 w-4" />
+                <span className="hidden sm:inline">Banner</span>
+              </TabsTrigger>
+              <TabsTrigger value="services" className="gap-2">
+                <Home className="h-4 w-4" />
+                <span className="hidden sm:inline">Home</span>
+              </TabsTrigger>
+              <TabsTrigger value="about" className="gap-2">
+                <Info className="h-4 w-4" />
+                <span className="hidden sm:inline">Sobre</span>
+              </TabsTrigger>
+              <TabsTrigger value="trainings" className="gap-2">
+                <GraduationCap className="h-4 w-4" />
+                <span className="hidden sm:inline">Treinamentos</span>
+              </TabsTrigger>
+              <TabsTrigger value="courses" className="gap-2">
+                <BookOpen className="h-4 w-4" />
+                <span className="hidden sm:inline">Cursos</span>
+              </TabsTrigger>
+              <TabsTrigger value="benefits" className="gap-2">
+                <Award className="h-4 w-4" />
+                <span className="hidden sm:inline">Vantagens</span>
+              </TabsTrigger>
+              <TabsTrigger value="monitoring" className="gap-2">
+                <Activity className="h-4 w-4" />
+                <span className="hidden sm:inline">Monitoramento</span>
+              </TabsTrigger>
+              <TabsTrigger value="medicine" className="gap-2">
+                <Stethoscope className="h-4 w-4" />
+                <span className="hidden sm:inline">Medicina</span>
+              </TabsTrigger>
+            </TabsList>
+          </div>
 
-          <TabsContent value="colors">
-            <Card>
-              <CardHeader>
-                <CardTitle>Gerenciar Cores</CardTitle>
+          <TabsContent value="colors" className="space-y-4">
+            <Card className="shadow-sm">
+              <CardHeader className="space-y-1">
+                <CardTitle className="text-xl flex items-center gap-2">
+                  <Palette className="h-5 w-5 text-primary" />
+                  Gerenciar Cores
+                </CardTitle>
                 <CardDescription>
                   Configure as cores do site. Use formato HSL (ex: 220 90% 56%)
                 </CardDescription>
               </CardHeader>
-              <CardContent className="space-y-4">
-                <div className="space-y-2">
-                  <Label htmlFor="primary">Cor Primária</Label>
-                  <Input
-                    id="primary"
-                    value={colors.primary}
-                    onChange={(e) => setColors({ ...colors, primary: e.target.value })}
-                    placeholder="220 90% 56%"
-                  />
+              <Separator />
+              <CardContent className="pt-6">
+                <div className="grid gap-6 sm:grid-cols-2">
+                  <div className="space-y-2">
+                    <Label htmlFor="primary" className="text-sm font-medium">Cor Primária</Label>
+                    <Input
+                      id="primary"
+                      value={colors.primary}
+                      onChange={(e) => setColors({ ...colors, primary: e.target.value })}
+                      placeholder="220 90% 56%"
+                      className="h-10"
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="secondary" className="text-sm font-medium">Cor Secundária</Label>
+                    <Input
+                      id="secondary"
+                      value={colors.secondary}
+                      onChange={(e) => setColors({ ...colors, secondary: e.target.value })}
+                      placeholder="210 50% 40%"
+                      className="h-10"
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="accent" className="text-sm font-medium">Cor de Destaque</Label>
+                    <Input
+                      id="accent"
+                      value={colors.accent}
+                      onChange={(e) => setColors({ ...colors, accent: e.target.value })}
+                      placeholder="330 90% 56%"
+                      className="h-10"
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="background" className="text-sm font-medium">Cor de Fundo</Label>
+                    <Input
+                      id="background"
+                      value={colors.background}
+                      onChange={(e) => setColors({ ...colors, background: e.target.value })}
+                      placeholder="0 0% 100%"
+                      className="h-10"
+                    />
+                  </div>
+                  <div className="space-y-2 sm:col-span-2">
+                    <Label htmlFor="foreground" className="text-sm font-medium">Cor do Texto</Label>
+                    <Input
+                      id="foreground"
+                      value={colors.foreground}
+                      onChange={(e) => setColors({ ...colors, foreground: e.target.value })}
+                      placeholder="222.2 84% 4.9%"
+                      className="h-10"
+                    />
+                  </div>
                 </div>
-                <div className="space-y-2">
-                  <Label htmlFor="secondary">Cor Secundária</Label>
-                  <Input
-                    id="secondary"
-                    value={colors.secondary}
-                    onChange={(e) => setColors({ ...colors, secondary: e.target.value })}
-                    placeholder="210 50% 40%"
-                  />
+                <Separator className="my-6" />
+                <div className="flex justify-end">
+                  <Button onClick={() => updateSetting("colors", colors)} size="lg">
+                    Salvar Cores
+                  </Button>
                 </div>
-                <div className="space-y-2">
-                  <Label htmlFor="accent">Cor de Destaque</Label>
-                  <Input
-                    id="accent"
-                    value={colors.accent}
-                    onChange={(e) => setColors({ ...colors, accent: e.target.value })}
-                    placeholder="330 90% 56%"
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="background">Cor de Fundo</Label>
-                  <Input
-                    id="background"
-                    value={colors.background}
-                    onChange={(e) => setColors({ ...colors, background: e.target.value })}
-                    placeholder="0 0% 100%"
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="foreground">Cor do Texto</Label>
-                  <Input
-                    id="foreground"
-                    value={colors.foreground}
-                    onChange={(e) => setColors({ ...colors, foreground: e.target.value })}
-                    placeholder="222.2 84% 4.9%"
-                  />
-                </div>
-                <Button onClick={() => updateSetting("colors", colors)}>
-                  Salvar Cores
-                </Button>
               </CardContent>
             </Card>
           </TabsContent>
 
-          <TabsContent value="contact">
-            <Card>
-              <CardHeader>
-                <CardTitle>Informações de Contato</CardTitle>
+          <TabsContent value="contact" className="space-y-4">
+            <Card className="shadow-sm">
+              <CardHeader className="space-y-1">
+                <CardTitle className="text-xl flex items-center gap-2">
+                  <Phone className="h-5 w-5 text-primary" />
+                  Informações de Contato
+                </CardTitle>
                 <CardDescription>
                   Configure as informações de contato exibidas no site
                 </CardDescription>
               </CardHeader>
-              <CardContent className="space-y-4">
-                <div className="space-y-2">
-                  <Label htmlFor="phone">Telefone</Label>
-                  <Input
-                    id="phone"
-                    value={contact.phone}
-                    onChange={(e) => setContact({ ...contact, phone: e.target.value })}
-                    placeholder="+5548999999999"
-                  />
+              <Separator />
+              <CardContent className="pt-6">
+                <div className="grid gap-6 sm:grid-cols-2">
+                  <div className="space-y-2">
+                    <Label htmlFor="phone" className="text-sm font-medium">Telefone</Label>
+                    <Input
+                      id="phone"
+                      value={contact.phone}
+                      onChange={(e) => setContact({ ...contact, phone: e.target.value })}
+                      placeholder="+5548999999999"
+                      className="h-10"
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="email" className="text-sm font-medium">Email</Label>
+                    <Input
+                      id="email"
+                      type="email"
+                      value={contact.email}
+                      onChange={(e) => setContact({ ...contact, email: e.target.value })}
+                      placeholder="contato@evitare.com.br"
+                      className="h-10"
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="whatsapp" className="text-sm font-medium">WhatsApp</Label>
+                    <Input
+                      id="whatsapp"
+                      value={contact.whatsapp}
+                      onChange={(e) => setContact({ ...contact, whatsapp: e.target.value })}
+                      placeholder="5548999999999"
+                      className="h-10"
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="instagram" className="text-sm font-medium">Instagram</Label>
+                    <Input
+                      id="instagram"
+                      value={contact.instagram}
+                      onChange={(e) => setContact({ ...contact, instagram: e.target.value })}
+                      placeholder="evitare"
+                      className="h-10"
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="facebook" className="text-sm font-medium">Facebook</Label>
+                    <Input
+                      id="facebook"
+                      value={contact.facebook}
+                      onChange={(e) => setContact({ ...contact, facebook: e.target.value })}
+                      placeholder="evitare"
+                      className="h-10"
+                    />
+                  </div>
+                  <div className="space-y-2 sm:col-span-2">
+                    <Label htmlFor="address" className="text-sm font-medium">Endereço</Label>
+                    <Input
+                      id="address"
+                      value={contact.address}
+                      onChange={(e) => setContact({ ...contact, address: e.target.value })}
+                      placeholder="Rua Coronel Marcos Rovaris, 328..."
+                      className="h-10"
+                    />
+                  </div>
                 </div>
-                <div className="space-y-2">
-                  <Label htmlFor="email">Email</Label>
-                  <Input
-                    id="email"
-                    type="email"
-                    value={contact.email}
-                    onChange={(e) => setContact({ ...contact, email: e.target.value })}
-                    placeholder="contato@evitare.com.br"
-                  />
+                <Separator className="my-6" />
+                <div className="flex justify-end">
+                  <Button onClick={() => updateSetting("contact", contact)} size="lg">
+                    Salvar Contato
+                  </Button>
                 </div>
-                <div className="space-y-2">
-                  <Label htmlFor="whatsapp">WhatsApp</Label>
-                  <Input
-                    id="whatsapp"
-                    value={contact.whatsapp}
-                    onChange={(e) => setContact({ ...contact, whatsapp: e.target.value })}
-                    placeholder="5548999999999"
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="instagram">Instagram</Label>
-                  <Input
-                    id="instagram"
-                    value={contact.instagram}
-                    onChange={(e) => setContact({ ...contact, instagram: e.target.value })}
-                    placeholder="evitare"
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="facebook">Facebook</Label>
-                  <Input
-                    id="facebook"
-                    value={contact.facebook}
-                    onChange={(e) => setContact({ ...contact, facebook: e.target.value })}
-                    placeholder="evitare"
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="address">Endereço</Label>
-                  <Input
-                    id="address"
-                    value={contact.address}
-                    onChange={(e) => setContact({ ...contact, address: e.target.value })}
-                    placeholder="Rua Coronel Marcos Rovaris, 328..."
-                  />
-                </div>
-                <Button onClick={() => updateSetting("contact", contact)}>
-                  Salvar Contato
-                </Button>
               </CardContent>
             </Card>
           </TabsContent>
 
-          <TabsContent value="branding">
-            <Card>
-              <CardHeader>
-                <CardTitle>Marca e Identidade</CardTitle>
+          <TabsContent value="branding" className="space-y-4">
+            <Card className="shadow-sm">
+              <CardHeader className="space-y-1">
+                <CardTitle className="text-xl flex items-center gap-2">
+                  <Bookmark className="h-5 w-5 text-primary" />
+                  Marca e Identidade
+                </CardTitle>
                 <CardDescription>
                   Configure o nome e tagline do site
                 </CardDescription>
               </CardHeader>
-              <CardContent className="space-y-4">
-                <div className="space-y-2">
-                  <Label htmlFor="siteName">Nome do Site</Label>
-                  <Input
-                    id="siteName"
-                    value={branding.siteName}
-                    onChange={(e) => setBranding({ ...branding, siteName: e.target.value })}
-                    placeholder="EVITARE"
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="tagline">Slogan</Label>
-                  <Input
-                    id="tagline"
-                    value={branding.tagline}
-                    onChange={(e) => setBranding({ ...branding, tagline: e.target.value })}
-                    placeholder="Você já imaginou ter todas as novidades..."
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="logoUrl">Logo do Site</Label>
-                  {branding.logoUrl && (
-                    <div className="mb-2">
-                      <img src={branding.logoUrl} alt="Logo atual" className="h-16 object-contain" />
-                    </div>
-                  )}
-                  <div className="flex gap-2">
+              <Separator />
+              <CardContent className="pt-6">
+                <div className="space-y-6">
+                  <div className="space-y-2">
+                    <Label htmlFor="siteName" className="text-sm font-medium">Nome do Site</Label>
                     <Input
-                      id="logoUrl"
-                      value={branding.logoUrl}
-                      onChange={(e) => setBranding({ ...branding, logoUrl: e.target.value })}
-                      placeholder="https://... ou faça upload"
-                    />
-                    <Button
-                      type="button"
-                      variant="outline"
-                      disabled={uploading}
-                      onClick={() => document.getElementById('logo-file')?.click()}
-                    >
-                      <Upload className="h-4 w-4 mr-2" />
-                      {uploading ? "Enviando..." : "Upload"}
-                    </Button>
-                    <input
-                      id="logo-file"
-                      type="file"
-                      accept="image/*"
-                      className="hidden"
-                      onChange={handleLogoUpload}
+                      id="siteName"
+                      value={branding.siteName}
+                      onChange={(e) => setBranding({ ...branding, siteName: e.target.value })}
+                      placeholder="EVITARE"
+                      className="h-10"
                     />
                   </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="tagline" className="text-sm font-medium">Slogan</Label>
+                    <Input
+                      id="tagline"
+                      value={branding.tagline}
+                      onChange={(e) => setBranding({ ...branding, tagline: e.target.value })}
+                      placeholder="Você já imaginou ter todas as novidades..."
+                      className="h-10"
+                    />
+                  </div>
+                  <div className="space-y-3">
+                    <Label htmlFor="logoUrl" className="text-sm font-medium">Logo do Site</Label>
+                    {branding.logoUrl && (
+                      <div className="p-4 border rounded-lg bg-muted/30 flex items-center justify-center">
+                        <img src={branding.logoUrl} alt="Logo atual" className="h-20 object-contain" />
+                      </div>
+                    )}
+                    <div className="flex gap-2">
+                      <Input
+                        id="logoUrl"
+                        value={branding.logoUrl}
+                        onChange={(e) => setBranding({ ...branding, logoUrl: e.target.value })}
+                        placeholder="https://... ou faça upload"
+                        className="h-10"
+                      />
+                      <Button
+                        type="button"
+                        variant="outline"
+                        disabled={uploading}
+                        onClick={() => document.getElementById('logo-file')?.click()}
+                        className="shrink-0"
+                      >
+                        <Upload className="h-4 w-4 mr-2" />
+                        {uploading ? "Enviando..." : "Upload"}
+                      </Button>
+                      <input
+                        id="logo-file"
+                        type="file"
+                        accept="image/*"
+                        className="hidden"
+                        onChange={handleLogoUpload}
+                      />
+                    </div>
+                  </div>
                 </div>
-                <Button onClick={() => updateSetting("branding", branding)}>
-                  Salvar Marca
-                </Button>
+                <Separator className="my-6" />
+                <div className="flex justify-end">
+                  <Button onClick={() => updateSetting("branding", branding)} size="lg">
+                    Salvar Marca
+                  </Button>
+                </div>
               </CardContent>
             </Card>
           </TabsContent>
 
-          <TabsContent value="hero">
-            <Card>
-              <CardHeader>
-                <CardTitle>Seção Principal (Hero)</CardTitle>
+          <TabsContent value="hero" className="space-y-4">
+            <Card className="shadow-sm">
+              <CardHeader className="space-y-1">
+                <CardTitle className="text-xl flex items-center gap-2">
+                  <Image className="h-5 w-5 text-primary" />
+                  Seção Principal (Hero)
+                </CardTitle>
                 <CardDescription>
                   Configure o banner e textos principais da página inicial
                 </CardDescription>
               </CardHeader>
-              <CardContent className="space-y-4">
-                <div className="space-y-2">
-                  <Label htmlFor="heroTitle">Título</Label>
-                  <Input
-                    id="heroTitle"
-                    value={heroSection.title}
-                    onChange={(e) => setHeroSection({ ...heroSection, title: e.target.value })}
-                    placeholder="EVITARE"
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="heroSubtitle">Subtítulo</Label>
-                  <Input
-                    id="heroSubtitle"
-                    value={heroSection.subtitle}
-                    onChange={(e) => setHeroSection({ ...heroSection, subtitle: e.target.value })}
-                    placeholder="Você já imaginou ter todas as novidades da empresa"
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="heroCta">Texto CTA</Label>
-                  <Input
-                    id="heroCta"
-                    value={heroSection.ctaText}
-                    onChange={(e) => setHeroSection({ ...heroSection, ctaText: e.target.value })}
-                    placeholder="na palma da sua mão?"
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="bannerUrl">Imagem do Banner</Label>
-                  {heroSection.bannerUrl && (
-                    <div className="mb-2">
-                      <img src={heroSection.bannerUrl} alt="Banner atual" className="h-32 object-cover w-full rounded" />
-                    </div>
-                  )}
-                  <div className="flex gap-2">
+              <Separator />
+              <CardContent className="pt-6">
+                <div className="space-y-6">
+                  <div className="space-y-2">
+                    <Label htmlFor="heroTitle" className="text-sm font-medium">Título</Label>
                     <Input
-                      id="bannerUrl"
-                      value={heroSection.bannerUrl}
-                      onChange={(e) => setHeroSection({ ...heroSection, bannerUrl: e.target.value })}
-                      placeholder="https://... ou faça upload"
-                    />
-                    <Button
-                      type="button"
-                      variant="outline"
-                      disabled={uploading}
-                      onClick={() => document.getElementById('banner-file')?.click()}
-                    >
-                      <Upload className="h-4 w-4 mr-2" />
-                      {uploading ? "Enviando..." : "Upload"}
-                    </Button>
-                    <input
-                      id="banner-file"
-                      type="file"
-                      accept="image/*"
-                      className="hidden"
-                      onChange={handleBannerUpload}
+                      id="heroTitle"
+                      value={heroSection.title}
+                      onChange={(e) => setHeroSection({ ...heroSection, title: e.target.value })}
+                      placeholder="EVITARE"
+                      className="h-10"
                     />
                   </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="heroSubtitle" className="text-sm font-medium">Subtítulo</Label>
+                    <Input
+                      id="heroSubtitle"
+                      value={heroSection.subtitle}
+                      onChange={(e) => setHeroSection({ ...heroSection, subtitle: e.target.value })}
+                      placeholder="Você já imaginou ter todas as novidades da empresa"
+                      className="h-10"
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="heroCta" className="text-sm font-medium">Texto CTA</Label>
+                    <Input
+                      id="heroCta"
+                      value={heroSection.ctaText}
+                      onChange={(e) => setHeroSection({ ...heroSection, ctaText: e.target.value })}
+                      placeholder="na palma da sua mão?"
+                      className="h-10"
+                    />
+                  </div>
+                  <div className="space-y-3">
+                    <Label htmlFor="bannerUrl" className="text-sm font-medium">Imagem do Banner</Label>
+                    {heroSection.bannerUrl && (
+                      <div className="border rounded-lg overflow-hidden bg-muted/30">
+                        <img src={heroSection.bannerUrl} alt="Banner atual" className="h-40 object-cover w-full" />
+                      </div>
+                    )}
+                    <div className="flex gap-2">
+                      <Input
+                        id="bannerUrl"
+                        value={heroSection.bannerUrl}
+                        onChange={(e) => setHeroSection({ ...heroSection, bannerUrl: e.target.value })}
+                        placeholder="https://... ou faça upload"
+                        className="h-10"
+                      />
+                      <Button
+                        type="button"
+                        variant="outline"
+                        disabled={uploading}
+                        onClick={() => document.getElementById('banner-file')?.click()}
+                        className="shrink-0"
+                      >
+                        <Upload className="h-4 w-4 mr-2" />
+                        {uploading ? "Enviando..." : "Upload"}
+                      </Button>
+                      <input
+                        id="banner-file"
+                        type="file"
+                        accept="image/*"
+                        className="hidden"
+                        onChange={handleBannerUpload}
+                      />
+                    </div>
+                  </div>
                 </div>
-                <Button onClick={() => updateSetting("heroSection", heroSection)}>
-                  Salvar Banner
-                </Button>
+                <Separator className="my-6" />
+                <div className="flex justify-end">
+                  <Button onClick={() => updateSetting("heroSection", heroSection)} size="lg">
+                    Salvar Banner
+                  </Button>
+                </div>
               </CardContent>
             </Card>
           </TabsContent>
