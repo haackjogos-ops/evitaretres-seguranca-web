@@ -11,6 +11,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useToast } from "@/hooks/use-toast";
 import { Upload, Palette, Phone, Bookmark, Image, Home, Info, GraduationCap, BookOpen, Award, Activity, Stethoscope, LogOut } from "lucide-react";
 import Header from "@/components/Header";
+import { ColorPicker } from "@/components/admin/ColorPicker";
 import { ServicesTab } from "@/components/admin/tabs/ServicesTab";
 import { AboutTab } from "@/components/admin/tabs/AboutTab";
 import { TrainingsTab } from "@/components/admin/tabs/TrainingsTab";
@@ -237,56 +238,41 @@ const Admin = () => {
               <Separator />
               <CardContent className="pt-6">
                 <div className="grid gap-6 sm:grid-cols-2">
-                  <div className="space-y-2">
-                    <Label htmlFor="primary" className="text-sm font-medium">Cor Primária</Label>
-                    <Input
-                      id="primary"
-                      value={colors.primary}
-                      onChange={(e) => setColors({ ...colors, primary: e.target.value })}
-                      placeholder="220 90% 56%"
-                      className="h-10"
-                    />
-                  </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="secondary" className="text-sm font-medium">Cor Secundária</Label>
-                    <Input
-                      id="secondary"
-                      value={colors.secondary}
-                      onChange={(e) => setColors({ ...colors, secondary: e.target.value })}
-                      placeholder="210 50% 40%"
-                      className="h-10"
-                    />
-                  </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="accent" className="text-sm font-medium">Cor de Destaque</Label>
-                    <Input
-                      id="accent"
-                      value={colors.accent}
-                      onChange={(e) => setColors({ ...colors, accent: e.target.value })}
-                      placeholder="330 90% 56%"
-                      className="h-10"
-                    />
-                  </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="background" className="text-sm font-medium">Cor de Fundo</Label>
-                    <Input
-                      id="background"
-                      value={colors.background}
-                      onChange={(e) => setColors({ ...colors, background: e.target.value })}
-                      placeholder="0 0% 100%"
-                      className="h-10"
-                    />
-                  </div>
-                  <div className="space-y-2 sm:col-span-2">
-                    <Label htmlFor="foreground" className="text-sm font-medium">Cor do Texto</Label>
-                    <Input
-                      id="foreground"
-                      value={colors.foreground}
-                      onChange={(e) => setColors({ ...colors, foreground: e.target.value })}
-                      placeholder="222.2 84% 4.9%"
-                      className="h-10"
-                    />
-                  </div>
+                  <ColorPicker
+                    id="primary"
+                    label="Cor Primária"
+                    value={colors.primary}
+                    onChange={(value) => setColors({ ...colors, primary: value })}
+                    placeholder="220 90% 56%"
+                  />
+                  <ColorPicker
+                    id="secondary"
+                    label="Cor Secundária"
+                    value={colors.secondary}
+                    onChange={(value) => setColors({ ...colors, secondary: value })}
+                    placeholder="210 50% 40%"
+                  />
+                  <ColorPicker
+                    id="accent"
+                    label="Cor de Destaque"
+                    value={colors.accent}
+                    onChange={(value) => setColors({ ...colors, accent: value })}
+                    placeholder="330 90% 56%"
+                  />
+                  <ColorPicker
+                    id="background"
+                    label="Cor de Fundo"
+                    value={colors.background}
+                    onChange={(value) => setColors({ ...colors, background: value })}
+                    placeholder="0 0% 100%"
+                  />
+                  <ColorPicker
+                    id="foreground"
+                    label="Cor do Texto"
+                    value={colors.foreground}
+                    onChange={(value) => setColors({ ...colors, foreground: value })}
+                    placeholder="222.2 84% 4.9%"
+                  />
                 </div>
                 <Separator className="my-6" />
                 <div className="flex justify-end">
