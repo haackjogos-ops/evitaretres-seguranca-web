@@ -34,7 +34,10 @@ export const IconPicker = ({ value, onChange }: IconPickerProps) => {
     icon.toLowerCase().includes(search.toLowerCase())
   );
   
-  const IconComponent = (Icons as any)[value] || Icons.Star;
+  // Garante que sempre temos um ícone válido
+  const IconComponent = (Icons as any)[value] && typeof (Icons as any)[value] === 'function' 
+    ? (Icons as any)[value] 
+    : Icons.Star;
 
   return (
     <Popover>
@@ -58,6 +61,9 @@ export const IconPicker = ({ value, onChange }: IconPickerProps) => {
             <div className="grid grid-cols-6 gap-2 p-2">
               {filteredIcons.map((iconName) => {
                 const Icon = (Icons as any)[iconName];
+                // Só renderiza se o ícone existir
+                if (!Icon || typeof Icon !== 'function') return null;
+                
                 return (
                   <Button
                     key={iconName}
