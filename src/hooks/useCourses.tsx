@@ -5,6 +5,7 @@ interface Course {
   id: string;
   icon: string;
   logo_url?: string | null;
+  logo_size?: string;
   title: string;
   subtitle: string | null;
   description: string;

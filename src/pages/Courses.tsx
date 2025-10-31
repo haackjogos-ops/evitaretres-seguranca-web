@@ -36,7 +36,11 @@ const Courses = () => {
                         <img 
                           src={course.logo_url} 
                           alt={course.title}
-                          className="w-12 h-12 object-contain rounded-lg border-2 border-primary/20"
+                          className={`object-contain rounded-lg border-2 border-primary/20 ${
+                            course.logo_size === 'large' ? 'w-20 h-20' :
+                            course.logo_size === 'medium' ? 'w-16 h-16' :
+                            'w-12 h-12'
+                          }`}
                         />
                       ) : (
                         <div className="flex items-center justify-center w-12 h-12 rounded-lg bg-gradient-to-br from-primary/20 to-primary/5 border-2 border-primary/20">

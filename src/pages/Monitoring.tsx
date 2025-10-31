@@ -34,7 +34,11 @@ const Monitoring = () => {
                         <img 
                           src={service.logo_url} 
                           alt={service.title}
-                          className="w-14 h-14 object-contain rounded-lg border-2 border-primary/20"
+                          className={`object-contain rounded-lg border-2 border-primary/20 ${
+                            service.logo_size === 'large' ? 'w-20 h-20' :
+                            service.logo_size === 'medium' ? 'w-16 h-16' :
+                            'w-14 h-14'
+                          }`}
                         />
                       ) : (
                         <div className="flex items-center justify-center w-14 h-14 rounded-lg bg-gradient-to-br from-primary/20 to-primary/5 border-2 border-primary/20">

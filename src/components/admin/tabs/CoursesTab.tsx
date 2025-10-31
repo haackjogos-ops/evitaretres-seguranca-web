@@ -20,6 +20,16 @@ export const CoursesTab = () => {
 
   const fields = [
     { name: "logo_url", label: "Logo/Imagem (opcional)", type: "image" as const },
+    { 
+      name: "logo_size", 
+      label: "Tamanho da Logo", 
+      type: "select" as const,
+      options: [
+        { value: "small", label: "Pequeno" },
+        { value: "medium", label: "Médio" },
+        { value: "large", label: "Grande" }
+      ]
+    },
     { name: "icon", label: "Ícone (usado se não houver logo)", type: "icon" as const, required: true },
     { name: "title", label: "Título", type: "text" as const, required: true },
     { name: "subtitle", label: "Subtítulo", type: "text" as const },
@@ -48,6 +58,7 @@ export const CoursesTab = () => {
     const data = {
       icon: formData.icon || "Star",
       logo_url: formData.logo_url || null,
+      logo_size: formData.logo_size || "small",
       title: formData.title,
       subtitle: formData.subtitle || null,
       description: formData.description,

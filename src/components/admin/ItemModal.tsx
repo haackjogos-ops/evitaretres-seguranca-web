@@ -10,8 +10,9 @@ import { ImageUpload } from "./ImageUpload";
 interface Field {
   name: string;
   label: string;
-  type: "text" | "textarea" | "emoji" | "icon" | "image";
+  type: "text" | "textarea" | "emoji" | "icon" | "image" | "select";
   required?: boolean;
+  options?: { value: string; label: string }[];
 }
 
 interface ItemModalProps {
@@ -92,6 +93,21 @@ export const ItemModal = ({
                   onChange={(url) => onChange(field.name, url)}
                   label={field.label}
                 />
+              )}
+              
+              {field.type === "select" && field.options && (
+                <select
+                  id={field.name}
+                  value={values[field.name] || "small"}
+                  onChange={(e) => onChange(field.name, e.target.value)}
+                  className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+                >
+                  {field.options.map((option) => (
+                    <option key={option.value} value={option.value}>
+                      {option.label}
+                    </option>
+                  ))}
+                </select>
               )}
             </div>
           ))}
