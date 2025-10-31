@@ -82,6 +82,7 @@ export type Database = {
           icon: string
           id: string
           is_active: boolean | null
+          logo_url: string | null
           subtitle: string | null
           title: string
           updated_at: string | null
@@ -93,6 +94,7 @@ export type Database = {
           icon?: string
           id?: string
           is_active?: boolean | null
+          logo_url?: string | null
           subtitle?: string | null
           title: string
           updated_at?: string | null
@@ -104,6 +106,7 @@ export type Database = {
           icon?: string
           id?: string
           is_active?: boolean | null
+          logo_url?: string | null
           subtitle?: string | null
           title?: string
           updated_at?: string | null
@@ -148,6 +151,7 @@ export type Database = {
           icon: string
           id: string
           is_active: boolean | null
+          logo_url: string | null
           subtitle: string | null
           title: string
           updated_at: string | null
@@ -159,6 +163,7 @@ export type Database = {
           icon?: string
           id?: string
           is_active?: boolean | null
+          logo_url?: string | null
           subtitle?: string | null
           title: string
           updated_at?: string | null
@@ -170,6 +175,7 @@ export type Database = {
           icon?: string
           id?: string
           is_active?: boolean | null
+          logo_url?: string | null
           subtitle?: string | null
           title?: string
           updated_at?: string | null
@@ -277,6 +283,7 @@ export type Database = {
           icon: string
           id: string
           is_active: boolean | null
+          logo_url: string | null
           subtitle: string | null
           title: string
           updated_at: string | null
@@ -288,6 +295,7 @@ export type Database = {
           icon?: string
           id?: string
           is_active?: boolean | null
+          logo_url?: string | null
           subtitle?: string | null
           title: string
           updated_at?: string | null
@@ -299,6 +307,7 @@ export type Database = {
           icon?: string
           id?: string
           is_active?: boolean | null
+          logo_url?: string | null
           subtitle?: string | null
           title?: string
           updated_at?: string | null

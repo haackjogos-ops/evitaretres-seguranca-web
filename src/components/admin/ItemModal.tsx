@@ -5,11 +5,12 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { EmojiPicker } from "./EmojiPicker";
 import { IconPicker } from "./IconPicker";
+import { ImageUpload } from "./ImageUpload";
 
 interface Field {
   name: string;
   label: string;
-  type: "text" | "textarea" | "emoji" | "icon";
+  type: "text" | "textarea" | "emoji" | "icon" | "image";
   required?: boolean;
 }
 
@@ -82,6 +83,14 @@ export const ItemModal = ({
                 <IconPicker
                   value={values[field.name] || "Star"}
                   onChange={(icon) => onChange(field.name, icon)}
+                />
+              )}
+              
+              {field.type === "image" && (
+                <ImageUpload
+                  value={values[field.name]}
+                  onChange={(url) => onChange(field.name, url)}
+                  label={field.label}
                 />
               )}
             </div>

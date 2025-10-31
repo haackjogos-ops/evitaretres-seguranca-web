@@ -19,7 +19,8 @@ export const MonitoringTab = () => {
   const [saving, setSaving] = useState(false);
 
   const fields = [
-    { name: "icon", label: "Ícone", type: "icon" as const, required: true },
+    { name: "logo_url", label: "Logo/Imagem (opcional)", type: "image" as const },
+    { name: "icon", label: "Ícone (usado se não houver logo)", type: "icon" as const, required: true },
     { name: "title", label: "Título", type: "text" as const, required: true },
     { name: "subtitle", label: "Subtítulo", type: "text" as const },
     { name: "description", label: "Descrição", type: "textarea" as const, required: true },
@@ -46,6 +47,7 @@ export const MonitoringTab = () => {
     setSaving(true);
     const data = {
       icon: formData.icon || "Star",
+      logo_url: formData.logo_url || null,
       title: formData.title,
       subtitle: formData.subtitle || null,
       description: formData.description,
@@ -125,6 +127,7 @@ export const MonitoringTab = () => {
               {services.map((service, index) => (
                 <ItemCard
                   key={service.id}
+                  logoUrl={service.logo_url || undefined}
                   icon={service.icon}
                   title={service.title}
                   subtitle={service.subtitle || undefined}

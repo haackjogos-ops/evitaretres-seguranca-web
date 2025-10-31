@@ -32,9 +32,17 @@ const Trainings = () => {
                 <Card key={training.id} className="hover:shadow-lg transition-shadow">
                   <CardHeader>
                     <div className="flex items-center gap-3 mb-2">
-                      <div className="flex items-center justify-center w-12 h-12 rounded-lg bg-gradient-to-br from-primary/20 to-primary/5 border-2 border-primary/20">
-                        <IconComponent className="h-6 w-6 text-primary" />
-                      </div>
+                      {training.logo_url ? (
+                        <img 
+                          src={training.logo_url} 
+                          alt={training.title}
+                          className="w-12 h-12 object-contain rounded-lg border-2 border-primary/20"
+                        />
+                      ) : (
+                        <div className="flex items-center justify-center w-12 h-12 rounded-lg bg-gradient-to-br from-primary/20 to-primary/5 border-2 border-primary/20">
+                          <IconComponent className="h-6 w-6 text-primary" />
+                        </div>
+                      )}
                     </div>
                     <CardTitle className="text-xl">{training.title}</CardTitle>
                     <CardDescription className="font-semibold">

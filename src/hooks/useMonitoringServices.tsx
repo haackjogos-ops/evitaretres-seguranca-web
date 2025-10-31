@@ -4,6 +4,7 @@ import { supabase } from "@/integrations/supabase/client";
 interface MonitoringService {
   id: string;
   icon: string;
+  logo_url?: string | null;
   title: string;
   subtitle: string | null;
   description: string;

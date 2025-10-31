@@ -6,6 +6,7 @@ import * as Icons from "lucide-react";
 interface ItemCardProps {
   emoji?: string;
   icon?: string;
+  logoUrl?: string;
   title: string;
   subtitle?: string;
   description?: string;
@@ -22,6 +23,7 @@ interface ItemCardProps {
 export const ItemCard = ({
   emoji,
   icon,
+  logoUrl,
   title,
   subtitle,
   description,
@@ -38,12 +40,19 @@ export const ItemCard = ({
   
   return (
     <div className="flex items-start gap-3 p-4 border rounded-lg bg-card hover:shadow-md transition-shadow">
-      {emoji && <span className="text-3xl flex-shrink-0">{emoji}</span>}
-      {icon && IconComponent && (
+      {logoUrl ? (
+        <img 
+          src={logoUrl} 
+          alt={title}
+          className="flex-shrink-0 w-12 h-12 object-contain rounded-lg border-2 border-primary/20"
+        />
+      ) : emoji ? (
+        <span className="text-3xl flex-shrink-0">{emoji}</span>
+      ) : icon && IconComponent ? (
         <div className="flex-shrink-0 w-12 h-12 rounded-lg bg-gradient-to-br from-primary/20 to-primary/5 flex items-center justify-center border-2 border-primary/20">
           <IconComponent className="h-6 w-6 text-primary" />
         </div>
-      )}
+      ) : null}
       
       <div className="flex-1 min-w-0">
         <div className="flex items-center gap-2 mb-1">

@@ -19,7 +19,8 @@ export const CoursesTab = () => {
   const [saving, setSaving] = useState(false);
 
   const fields = [
-    { name: "icon", label: "Ícone", type: "icon" as const, required: true },
+    { name: "logo_url", label: "Logo/Imagem (opcional)", type: "image" as const },
+    { name: "icon", label: "Ícone (usado se não houver logo)", type: "icon" as const, required: true },
     { name: "title", label: "Título", type: "text" as const, required: true },
     { name: "subtitle", label: "Subtítulo", type: "text" as const },
     { name: "description", label: "Descrição", type: "textarea" as const, required: true },
@@ -46,6 +47,7 @@ export const CoursesTab = () => {
     setSaving(true);
     const data = {
       icon: formData.icon || "Star",
+      logo_url: formData.logo_url || null,
       title: formData.title,
       subtitle: formData.subtitle || null,
       description: formData.description,
@@ -125,6 +127,7 @@ export const CoursesTab = () => {
               {courses.map((course, index) => (
                 <ItemCard
                   key={course.id}
+                  logoUrl={course.logo_url || undefined}
                   icon={course.icon}
                   title={course.title}
                   subtitle={course.subtitle || undefined}
