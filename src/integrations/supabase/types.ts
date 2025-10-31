@@ -79,7 +79,7 @@ export type Database = {
           created_at: string | null
           description: string
           display_order: number
-          emoji: string
+          icon: string
           id: string
           is_active: boolean | null
           subtitle: string | null
@@ -90,7 +90,7 @@ export type Database = {
           created_at?: string | null
           description: string
           display_order?: number
-          emoji?: string
+          icon?: string
           id?: string
           is_active?: boolean | null
           subtitle?: string | null
@@ -101,7 +101,7 @@ export type Database = {
           created_at?: string | null
           description?: string
           display_order?: number
-          emoji?: string
+          icon?: string
           id?: string
           is_active?: boolean | null
           subtitle?: string | null
@@ -145,7 +145,7 @@ export type Database = {
           created_at: string | null
           description: string
           display_order: number
-          emoji: string
+          icon: string
           id: string
           is_active: boolean | null
           subtitle: string | null
@@ -156,7 +156,7 @@ export type Database = {
           created_at?: string | null
           description: string
           display_order?: number
-          emoji?: string
+          icon?: string
           id?: string
           is_active?: boolean | null
           subtitle?: string | null
@@ -167,7 +167,7 @@ export type Database = {
           created_at?: string | null
           description?: string
           display_order?: number
-          emoji?: string
+          icon?: string
           id?: string
           is_active?: boolean | null
           subtitle?: string | null
@@ -274,7 +274,7 @@ export type Database = {
           created_at: string | null
           description: string
           display_order: number
-          emoji: string
+          icon: string
           id: string
           is_active: boolean | null
           subtitle: string | null
@@ -285,7 +285,7 @@ export type Database = {
           created_at?: string | null
           description: string
           display_order?: number
-          emoji?: string
+          icon?: string
           id?: string
           is_active?: boolean | null
           subtitle?: string | null
@@ -296,7 +296,7 @@ export type Database = {
           created_at?: string | null
           description?: string
           display_order?: number
-          emoji?: string
+          icon?: string
           id?: string
           is_active?: boolean | null
           subtitle?: string | null

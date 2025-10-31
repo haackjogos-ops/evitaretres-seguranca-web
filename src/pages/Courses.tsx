@@ -5,6 +5,7 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { usePageContent } from "@/hooks/usePageContent";
 import { useCourses } from "@/hooks/useCourses";
 import { useSiteSettings } from "@/hooks/useSiteSettings";
+import * as Icons from "lucide-react";
 
 const Courses = () => {
   const { content } = usePageContent("courses");
@@ -25,29 +26,32 @@ const Courses = () => {
           </p>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {courses.map((course) => (
-              <Card key={course.id} className="hover:shadow-lg transition-shadow">
-                <CardHeader>
-                  <div className="flex items-center gap-3 mb-2">
-                    <div className="flex items-center justify-center w-12 h-12 rounded-lg bg-primary/10">
-                      <span className="text-3xl">{course.emoji}</span>
+            {courses.map((course) => {
+              const IconComponent = (Icons as any)[course.icon] || Icons.Star;
+              return (
+                <Card key={course.id} className="hover:shadow-lg transition-shadow">
+                  <CardHeader>
+                    <div className="flex items-center gap-3 mb-2">
+                      <div className="flex items-center justify-center w-12 h-12 rounded-lg bg-gradient-to-br from-primary/20 to-primary/5 border-2 border-primary/20">
+                        <IconComponent className="h-6 w-6 text-primary" />
+                      </div>
                     </div>
-                  </div>
-                  <CardTitle className="text-xl">{course.title}</CardTitle>
-                  <CardDescription className="font-semibold">
-                    {course.subtitle}
-                  </CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-muted-foreground">{course.description}</p>
-                </CardContent>
-                <CardFooter>
-                  <Link to="/inscricao" className="w-full">
-                    <Button className="w-full">Fazer inscrição</Button>
-                  </Link>
-                </CardFooter>
-              </Card>
-            ))}
+                    <CardTitle className="text-xl">{course.title}</CardTitle>
+                    <CardDescription className="font-semibold">
+                      {course.subtitle}
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    <p className="text-muted-foreground">{course.description}</p>
+                  </CardContent>
+                  <CardFooter>
+                    <Link to="/inscricao" className="w-full">
+                      <Button className="w-full">Fazer inscrição</Button>
+                    </Link>
+                  </CardFooter>
+                </Card>
+              );
+            })}
           </div>
         </div>
       </section>

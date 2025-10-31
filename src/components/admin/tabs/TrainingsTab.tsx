@@ -19,7 +19,7 @@ export const TrainingsTab = () => {
   const [saving, setSaving] = useState(false);
 
   const fields = [
-    { name: "emoji", label: "Emoji", type: "emoji" as const, required: true },
+    { name: "icon", label: "Ícone", type: "icon" as const, required: true },
     { name: "title", label: "Título", type: "text" as const, required: true },
     { name: "subtitle", label: "Subtítulo", type: "text" as const },
     { name: "description", label: "Descrição", type: "textarea" as const, required: true },
@@ -27,7 +27,7 @@ export const TrainingsTab = () => {
 
   const handleAdd = () => {
     setCurrentItem(null);
-    setFormData({ emoji: "📚", title: "", subtitle: "", description: "" });
+    setFormData({ icon: "Star", title: "", subtitle: "", description: "" });
     setModalOpen(true);
   };
 
@@ -45,7 +45,7 @@ export const TrainingsTab = () => {
 
     setSaving(true);
     const data = {
-      emoji: formData.emoji || "📚",
+      icon: formData.icon || "Star",
       title: formData.title,
       subtitle: formData.subtitle || null,
       description: formData.description,
@@ -125,7 +125,7 @@ export const TrainingsTab = () => {
               {trainings.map((training, index) => (
                 <ItemCard
                   key={training.id}
-                  emoji={training.emoji}
+                  icon={training.icon}
                   title={training.title}
                   subtitle={training.subtitle || undefined}
                   description={training.description}

@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Edit, Trash2, ChevronUp, ChevronDown, Eye, EyeOff } from "lucide-react";
+import * as Icons from "lucide-react";
 
 interface ItemCardProps {
   emoji?: string;
@@ -33,10 +34,16 @@ export const ItemCard = ({
   onMoveDown,
   onToggleActive,
 }: ItemCardProps) => {
+  const IconComponent = icon ? (Icons as any)[icon] : null;
+  
   return (
     <div className="flex items-start gap-3 p-4 border rounded-lg bg-card hover:shadow-md transition-shadow">
       {emoji && <span className="text-3xl flex-shrink-0">{emoji}</span>}
-      {icon && <span className="text-2xl flex-shrink-0">{icon}</span>}
+      {icon && IconComponent && (
+        <div className="flex-shrink-0 w-12 h-12 rounded-lg bg-gradient-to-br from-primary/20 to-primary/5 flex items-center justify-center border-2 border-primary/20">
+          <IconComponent className="h-6 w-6 text-primary" />
+        </div>
+      )}
       
       <div className="flex-1 min-w-0">
         <div className="flex items-center gap-2 mb-1">

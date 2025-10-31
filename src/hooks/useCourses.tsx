@@ -3,7 +3,7 @@ import { supabase } from "@/integrations/supabase/client";
 
 interface Course {
   id: string;
-  emoji: string;
+  icon: string;
   title: string;
   subtitle: string | null;
   description: string;

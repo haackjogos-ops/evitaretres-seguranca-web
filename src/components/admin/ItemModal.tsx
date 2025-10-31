@@ -4,11 +4,12 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { EmojiPicker } from "./EmojiPicker";
+import { IconPicker } from "./IconPicker";
 
 interface Field {
   name: string;
   label: string;
-  type: "text" | "textarea" | "emoji";
+  type: "text" | "textarea" | "emoji" | "icon";
   required?: boolean;
 }
 
@@ -74,6 +75,13 @@ export const ItemModal = ({
                 <EmojiPicker
                   value={values[field.name] || "😀"}
                   onChange={(emoji) => onChange(field.name, emoji)}
+                />
+              )}
+              
+              {field.type === "icon" && (
+                <IconPicker
+                  value={values[field.name] || "Star"}
+                  onChange={(icon) => onChange(field.name, icon)}
                 />
               )}
             </div>

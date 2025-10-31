@@ -3,6 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { usePageContent } from "@/hooks/usePageContent";
 import { useMonitoringServices } from "@/hooks/useMonitoringServices";
 import { useSiteSettings } from "@/hooks/useSiteSettings";
+import * as Icons from "lucide-react";
 
 const Monitoring = () => {
   const { content } = usePageContent("monitoring");
@@ -23,23 +24,26 @@ const Monitoring = () => {
           </p>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {services.map((service) => (
-              <Card key={service.id} className="hover:shadow-lg transition-shadow">
-                <CardHeader>
-                  <div className="flex items-center gap-3 mb-2">
-                    <div className="flex items-center justify-center w-14 h-14 rounded-lg bg-primary/10">
-                      <span className="text-4xl">{service.emoji}</span>
+            {services.map((service) => {
+              const IconComponent = (Icons as any)[service.icon] || Icons.Star;
+              return (
+                <Card key={service.id} className="hover:shadow-lg transition-shadow">
+                  <CardHeader>
+                    <div className="flex items-center gap-3 mb-2">
+                      <div className="flex items-center justify-center w-14 h-14 rounded-lg bg-gradient-to-br from-primary/20 to-primary/5 border-2 border-primary/20">
+                        <IconComponent className="h-7 w-7 text-primary" />
+                      </div>
+                      <CardTitle className="text-xl">{service.title}</CardTitle>
                     </div>
-                    <CardTitle className="text-xl">{service.title}</CardTitle>
-                  </div>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-muted-foreground leading-relaxed">
-                    {service.description}
-                  </p>
-                </CardContent>
-              </Card>
-            ))}
+                  </CardHeader>
+                  <CardContent>
+                    <p className="text-muted-foreground leading-relaxed">
+                      {service.description}
+                    </p>
+                  </CardContent>
+                </Card>
+              );
+            })}
           </div>
         </div>
       </section>
