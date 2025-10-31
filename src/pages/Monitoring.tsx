@@ -32,7 +32,7 @@ const Monitoring = () => {
                     <div className="flex items-center gap-3 mb-2">
                       {service.logo_url ? (
                         <img 
-                          src={service.logo_url} 
+                          src={`${service.logo_url}?v=${Date.now()}`}
                           alt={service.title}
                           className={`object-contain rounded-lg border-2 border-primary/20 ${
                             service.logo_size === 'large' ? 'w-20 h-20' :

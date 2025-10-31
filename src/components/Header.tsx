@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { Menu, X, LogIn, UserCog } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Skeleton } from "@/components/ui/skeleton";
 import { useAuth } from "@/contexts/AuthContext";
 import { useSiteSettings } from "@/hooks/useSiteSettings";
 
@@ -9,7 +10,7 @@ const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const location = useLocation();
   const { user, isAdmin } = useAuth();
-  const { settings } = useSiteSettings();
+  const { settings, isLoading } = useSiteSettings();
 
   const navItems = [
     { path: "/", label: "Início" },
@@ -29,9 +30,11 @@ const Header = () => {
       <div className="container mx-auto px-4">
         <div className="flex h-16 items-center justify-between">
           <Link to="/" className="flex items-center space-x-2">
-            {settings.branding?.logoUrl ? (
+            {isLoading ? (
+              <Skeleton className="h-12 w-32" />
+            ) : settings.branding?.logoUrl ? (
               <img 
-                src={settings.branding.logoUrl} 
+                src={`${settings.branding.logoUrl}?v=${Date.now()}`}
                 alt={settings.branding.siteName || "EVITARE"} 
                 className="h-12 object-contain"
               />

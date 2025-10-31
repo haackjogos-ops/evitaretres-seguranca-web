@@ -20,7 +20,7 @@ const Home = () => {
         <div 
           className="absolute inset-0 bg-cover bg-center"
           style={{ 
-            backgroundImage: `url(${settings.heroSection?.bannerUrl || heroImage})` 
+            backgroundImage: `url(${settings.heroSection?.bannerUrl ? `${settings.heroSection.bannerUrl}?v=${Date.now()}` : heroImage})` 
           }}
         >
           <div className="absolute inset-0 bg-gradient-to-r from-primary-dark/90 to-primary/70" />

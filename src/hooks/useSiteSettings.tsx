@@ -31,7 +31,11 @@ interface SiteSettings {
 }
 
 export const useSiteSettings = () => {
-  const [settings, setSettings] = useState<SiteSettings>({});
+  // Carregar do localStorage primeiro (cache local)
+  const [settings, setSettings] = useState<SiteSettings>(() => {
+    const cached = localStorage.getItem('site_settings');
+    return cached ? JSON.parse(cached) : {};
+  });
   const [isLoading, setIsLoading] = useState(true);
 
   const loadSettings = async () => {
@@ -44,6 +48,9 @@ export const useSiteSettings = () => {
       data.forEach((item) => {
         settingsObj[item.key] = item.value;
       });
+      
+      // Salvar no localStorage para cache
+      localStorage.setItem('site_settings', JSON.stringify(settingsObj));
       setSettings(settingsObj);
       
       // Apply colors to CSS variables

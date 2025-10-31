@@ -73,7 +73,7 @@ export const ImageUpload = ({ value, onChange, label = "Logo/Imagem" }: ImageUpl
       const { error: uploadError, data } = await supabase.storage
         .from('site-assets')
         .upload(filePath, file, {
-          cacheControl: '3600',
+          cacheControl: '300', // 5 minutos para reduzir cache
           upsert: false
         });
 

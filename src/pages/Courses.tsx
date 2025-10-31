@@ -34,7 +34,7 @@ const Courses = () => {
                     <div className="flex items-center gap-3 mb-2">
                       {course.logo_url ? (
                         <img 
-                          src={course.logo_url} 
+                          src={`${course.logo_url}?v=${Date.now()}`}
                           alt={course.title}
                           className={`object-contain rounded-lg border-2 border-primary/20 ${
                             course.logo_size === 'large' ? 'w-20 h-20' :

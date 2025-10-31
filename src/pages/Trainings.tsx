@@ -34,7 +34,7 @@ const Trainings = () => {
                     <div className="flex items-center gap-3 mb-2">
                       {training.logo_url ? (
                         <img 
-                          src={training.logo_url} 
+                          src={`${training.logo_url}?v=${Date.now()}`}
                           alt={training.title}
                           className={`object-contain rounded-lg border-2 border-primary/20 ${
                             training.logo_size === 'large' ? 'w-20 h-20' :
