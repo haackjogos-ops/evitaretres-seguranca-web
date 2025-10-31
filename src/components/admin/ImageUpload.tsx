@@ -15,6 +15,23 @@ export const ImageUpload = ({ value, onChange, label = "Logo/Imagem" }: ImageUpl
   const [uploading, setUploading] = useState(false);
   const { toast } = useToast();
 
+  const extractFilePath = (url: string): string | null => {
+    try {
+      const urlObj = new URL(url);
+      const pathParts = urlObj.pathname.split('/site-assets/');
+      return pathParts[1] || null;
+    } catch {
+      return null;
+    }
+  };
+
+  const deleteOldImage = async (oldUrl: string) => {
+    const filePath = extractFilePath(oldUrl);
+    if (filePath) {
+      await supabase.storage.from('site-assets').remove([filePath]);
+    }
+  };
+
   const handleUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
     try {
       const file = event.target.files?.[0];
@@ -41,6 +58,11 @@ export const ImageUpload = ({ value, onChange, label = "Logo/Imagem" }: ImageUpl
       }
 
       setUploading(true);
+
+      // Deletar imagem antiga se existir
+      if (value) {
+        await deleteOldImage(value);
+      }
 
       // Criar nome único para o arquivo
       const fileExt = file.name.split('.').pop();
@@ -80,7 +102,10 @@ export const ImageUpload = ({ value, onChange, label = "Logo/Imagem" }: ImageUpl
     }
   };
 
-  const handleRemove = () => {
+  const handleRemove = async () => {
+    if (value) {
+      await deleteOldImage(value);
+    }
     onChange(null);
   };
 
