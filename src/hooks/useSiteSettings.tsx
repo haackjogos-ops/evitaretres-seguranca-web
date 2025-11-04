@@ -36,7 +36,10 @@ export const useSiteSettings = () => {
     const cached = localStorage.getItem('site_settings');
     return cached ? JSON.parse(cached) : {};
   });
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(() => {
+    const cached = localStorage.getItem('site_settings');
+    return !cached; // Só mostra loading se não tiver cache
+  });
 
   const loadSettings = async () => {
     const { data, error } = await supabase

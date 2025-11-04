@@ -30,14 +30,14 @@ const Header = () => {
       <div className="container mx-auto px-4">
         <div className="flex h-16 items-center justify-between">
           <Link to="/" className="flex items-center space-x-2">
-            {isLoading ? (
-              <Skeleton className="h-12 w-32" />
-            ) : settings.branding?.logoUrl ? (
+            {settings.branding?.logoUrl ? (
               <img 
-                src={`${settings.branding.logoUrl}?v=${Date.now()}`}
+                src={settings.branding.logoUrl}
                 alt={settings.branding.siteName || "EVITARE"} 
                 className="h-12 object-contain"
               />
+            ) : isLoading ? (
+              <Skeleton className="h-12 w-32" />
             ) : (
               <div className="font-bold text-2xl text-primary">
                 {settings.branding?.siteName || "EVITARE"}
