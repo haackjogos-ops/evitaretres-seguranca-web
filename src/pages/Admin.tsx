@@ -176,7 +176,7 @@ const Admin = () => {
 
         <Tabs defaultValue="colors" className="space-y-6">
           <div className="bg-background border rounded-lg p-1 shadow-sm overflow-x-auto">
-            <TabsList className="grid w-full grid-cols-4 sm:grid-cols-6 lg:grid-cols-11 gap-1 bg-transparent">
+            <TabsList className="grid w-full grid-cols-4 sm:grid-cols-6 lg:grid-cols-10 gap-1 bg-transparent">
               <TabsTrigger value="colors" className="gap-2">
                 <Palette className="h-4 w-4" />
                 <span className="hidden sm:inline">Cores</span>
@@ -201,13 +201,9 @@ const Admin = () => {
                 <Info className="h-4 w-4" />
                 <span className="hidden sm:inline">Sobre</span>
               </TabsTrigger>
-              <TabsTrigger value="trainings" className="gap-2">
-                <GraduationCap className="h-4 w-4" />
-                <span className="hidden sm:inline">Treinamentos</span>
-              </TabsTrigger>
               <TabsTrigger value="courses" className="gap-2">
                 <BookOpen className="h-4 w-4" />
-                <span className="hidden sm:inline">Cursos</span>
+                <span className="hidden sm:inline">Cursos e Treinamentos</span>
               </TabsTrigger>
               <TabsTrigger value="benefits" className="gap-2">
                 <Award className="h-4 w-4" />
@@ -546,12 +542,26 @@ const Admin = () => {
             <AboutTab />
           </TabsContent>
 
-          <TabsContent value="trainings">
-            <TrainingsTab />
-          </TabsContent>
-
-          <TabsContent value="courses">
-            <CoursesTab />
+          <TabsContent value="courses" className="space-y-6">
+            <div className="space-y-6">
+              <div>
+                <h2 className="text-2xl font-semibold mb-4 flex items-center gap-2">
+                  <BookOpen className="h-6 w-6 text-primary" />
+                  Cursos
+                </h2>
+                <CoursesTab />
+              </div>
+              
+              <Separator />
+              
+              <div>
+                <h2 className="text-2xl font-semibold mb-4 flex items-center gap-2">
+                  <GraduationCap className="h-6 w-6 text-primary" />
+                  Treinamentos
+                </h2>
+                <TrainingsTab />
+              </div>
+            </div>
           </TabsContent>
 
           <TabsContent value="benefits">
