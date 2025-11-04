@@ -16,7 +16,7 @@ const Medicine = () => {
       <section className="container mx-auto px-4 py-16">
         <div className="max-w-6xl mx-auto">
           <h1 className="text-4xl md:text-5xl font-bold text-center mb-4">
-            {content?.title || "Medicina e Segurança do Trabalho"}
+            {content?.title || "Segurança do trabalho | Medicina"}
           </h1>
           <p className="text-xl text-center text-muted-foreground mb-12">
             {content?.subtitle || "Documentos e exames ocupacionais completos"}

@@ -16,10 +16,9 @@ const Header = () => {
     { path: "/", label: "Início" },
     { path: "/sobre", label: "Sobre" },
     { path: "/vantagens", label: "Vantagens" },
-    { path: "/treinamentos", label: "Treinamentos" },
     { path: "/cursos", label: "Cursos" },
     { path: "/monitoramento", label: "Monitoramento" },
-    { path: "/medicina", label: "Medicina" },
+    { path: "/medicina", label: "Segurança do Trabalho e Medicina" },
     { path: "/contato", label: "Contato" },
   ];
 

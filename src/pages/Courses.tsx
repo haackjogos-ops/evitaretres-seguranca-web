@@ -4,13 +4,20 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { usePageContent } from "@/hooks/usePageContent";
 import { useCourses } from "@/hooks/useCourses";
+import { useTrainings } from "@/hooks/useTrainings";
 import { useSiteSettings } from "@/hooks/useSiteSettings";
 import * as Icons from "lucide-react";
 
 const Courses = () => {
   const { content } = usePageContent("courses");
   const { courses } = useCourses();
+  const { trainings } = useTrainings();
   const { settings } = useSiteSettings();
+
+  // Combinar cursos e treinamentos em um único array ordenado
+  const allItems = [...courses, ...trainings].sort((a, b) => 
+    a.display_order - b.display_order
+  );
 
   return (
     <div className="min-h-screen bg-background">
@@ -19,26 +26,26 @@ const Courses = () => {
       <section className="container mx-auto px-4 py-16">
         <div className="max-w-6xl mx-auto">
           <h1 className="text-4xl md:text-5xl font-bold text-center mb-4">
-            {content?.title || "Cursos"}
+            {content?.title || "Cursos e Treinamentos"}
           </h1>
           <p className="text-xl text-center text-muted-foreground mb-12">
-            {content?.subtitle || "Cursos especializados exigidos por normas regulamentadoras"}
+            {content?.subtitle || "Capacitação completa em normas regulamentadoras e segurança do trabalho"}
           </p>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {courses.map((course) => {
-              const IconComponent = (Icons as any)[course.icon] || Icons.Star;
+            {allItems.map((item) => {
+              const IconComponent = (Icons as any)[item.icon] || Icons.Star;
               return (
-                <Card key={course.id} className="hover:shadow-lg transition-shadow">
+                <Card key={item.id} className="hover:shadow-lg transition-shadow">
                   <CardHeader>
                     <div className="flex items-center gap-3 mb-2">
-                      {course.logo_url ? (
+                      {item.logo_url ? (
                         <img 
-                          src={`${course.logo_url}?v=${Date.now()}`}
-                          alt={course.title}
+                          src={`${item.logo_url}?v=${Date.now()}`}
+                          alt={item.title}
                           className={`object-contain rounded-lg border-2 border-primary/20 ${
-                            course.logo_size === 'large' ? 'w-20 h-20' :
-                            course.logo_size === 'medium' ? 'w-16 h-16' :
+                            item.logo_size === 'large' ? 'w-20 h-20' :
+                            item.logo_size === 'medium' ? 'w-16 h-16' :
                             'w-12 h-12'
                           }`}
                         />
@@ -48,13 +55,13 @@ const Courses = () => {
                         </div>
                       )}
                     </div>
-                    <CardTitle className="text-xl">{course.title}</CardTitle>
+                    <CardTitle className="text-xl">{item.title}</CardTitle>
                     <CardDescription className="font-semibold">
-                      {course.subtitle}
+                      {item.subtitle}
                     </CardDescription>
                   </CardHeader>
                   <CardContent>
-                    <p className="text-muted-foreground">{course.description}</p>
+                    <p className="text-muted-foreground">{item.description}</p>
                   </CardContent>
                   <CardFooter>
                     <Link to="/inscricao" className="w-full">
