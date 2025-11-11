@@ -6,10 +6,10 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { useToast } from "@/hooks/use-toast";
+import { useRegistrations } from "@/hooks/useRegistrations";
 
 const Registration = () => {
-  const { toast } = useToast();
+  const { createRegistration, isCreating } = useRegistrations();
   const [formData, setFormData] = useState({
     name: "",
     company: "",
@@ -23,9 +23,14 @@ const Registration = () => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     
-    toast({
-      title: "Inscrição recebida!",
-      description: "Recebemos sua inscrição. Nossa equipe entrará em contato em breve.",
+    createRegistration({
+      name: formData.name,
+      company: formData.company || null,
+      cnpj: formData.cnpj || null,
+      email: formData.email,
+      phone: formData.phone,
+      service_type: formData.serviceType,
+      message: formData.message || null,
     });
 
     // Reset form
@@ -146,8 +151,8 @@ const Registration = () => {
                   />
                 </div>
 
-                <Button type="submit" className="w-full" size="lg">
-                  Enviar inscrição
+                <Button type="submit" className="w-full" size="lg" disabled={isCreating}>
+                  {isCreating ? "Enviando..." : "Enviar inscrição"}
                 </Button>
               </form>
             </CardContent>

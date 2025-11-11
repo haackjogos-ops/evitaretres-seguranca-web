@@ -119,6 +119,39 @@ export type Database = {
         }
         Relationships: []
       }
+      faq_items: {
+        Row: {
+          answer: string
+          category: string
+          created_at: string
+          display_order: number
+          id: string
+          is_active: boolean | null
+          question: string
+          updated_at: string
+        }
+        Insert: {
+          answer: string
+          category?: string
+          created_at?: string
+          display_order?: number
+          id?: string
+          is_active?: boolean | null
+          question: string
+          updated_at?: string
+        }
+        Update: {
+          answer?: string
+          category?: string
+          created_at?: string
+          display_order?: number
+          id?: string
+          is_active?: boolean | null
+          question?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       medicine_services: {
         Row: {
           created_at: string | null
@@ -260,6 +293,51 @@ export type Database = {
         }
         Relationships: []
       }
+      registrations: {
+        Row: {
+          cnpj: string | null
+          company: string | null
+          created_at: string
+          email: string
+          id: string
+          message: string | null
+          name: string
+          notes: string | null
+          phone: string
+          service_type: string
+          status: string
+          updated_at: string
+        }
+        Insert: {
+          cnpj?: string | null
+          company?: string | null
+          created_at?: string
+          email: string
+          id?: string
+          message?: string | null
+          name: string
+          notes?: string | null
+          phone: string
+          service_type: string
+          status?: string
+          updated_at?: string
+        }
+        Update: {
+          cnpj?: string | null
+          company?: string | null
+          created_at?: string
+          email?: string
+          id?: string
+          message?: string | null
+          name?: string
+          notes?: string | null
+          phone?: string
+          service_type?: string
+          status?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       services: {
         Row: {
           action_label: string | null
@@ -320,6 +398,48 @@ export type Database = {
           updated_at?: string | null
           updated_by?: string | null
           value?: Json
+        }
+        Relationships: []
+      }
+      testimonials: {
+        Row: {
+          avatar_url: string | null
+          company: string | null
+          content: string
+          created_at: string
+          display_order: number
+          id: string
+          is_active: boolean | null
+          name: string
+          position: string | null
+          rating: number
+          updated_at: string
+        }
+        Insert: {
+          avatar_url?: string | null
+          company?: string | null
+          content: string
+          created_at?: string
+          display_order?: number
+          id?: string
+          is_active?: boolean | null
+          name: string
+          position?: string | null
+          rating?: number
+          updated_at?: string
+        }
+        Update: {
+          avatar_url?: string | null
+          company?: string | null
+          content?: string
+          created_at?: string
+          display_order?: number
+          id?: string
+          is_active?: boolean | null
+          name?: string
+          position?: string | null
+          rating?: number
+          updated_at?: string
         }
         Relationships: []
       }

@@ -12,9 +12,11 @@ import Monitoring from "./pages/Monitoring";
 import Medicine from "./pages/Medicine";
 import Registration from "./pages/Registration";
 import Contact from "./pages/Contact";
+import FAQ from "./pages/FAQ";
 import NotFound from "./pages/NotFound";
 import Auth from "./pages/Auth";
 import Admin from "./pages/Admin";
+import WhatsAppButton from "@/components/WhatsAppButton";
 
 const queryClient = new QueryClient();
 
@@ -25,6 +27,7 @@ const App = () => (
         <Toaster />
         <Sonner />
         <BrowserRouter>
+          <WhatsAppButton />
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/sobre" element={<About />} />
@@ -34,6 +37,7 @@ const App = () => (
             <Route path="/medicina" element={<Medicine />} />
             <Route path="/inscricao" element={<Registration />} />
             <Route path="/contato" element={<Contact />} />
+            <Route path="/faq" element={<FAQ />} />
             <Route path="/auth" element={<Auth />} />
             <Route path="/admin" element={<Admin />} />
             <Route path="*" element={<NotFound />} />

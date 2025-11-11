@@ -9,7 +9,7 @@ import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useToast } from "@/hooks/use-toast";
-import { Upload, Palette, Phone, Bookmark, Image, Home, Info, GraduationCap, BookOpen, Award, Activity, Stethoscope, LogOut, QrCode } from "lucide-react";
+import { Upload, Palette, Phone, Bookmark, Image, Home, Info, GraduationCap, BookOpen, Award, Activity, Stethoscope, LogOut, QrCode, FileText, MessageSquare, HelpCircle } from "lucide-react";
 import Header from "@/components/Header";
 import { ColorPicker } from "@/components/admin/ColorPicker";
 import { ServicesTab } from "@/components/admin/tabs/ServicesTab";
@@ -20,6 +20,9 @@ import { BenefitsTab } from "@/components/admin/tabs/BenefitsTab";
 import { MonitoringTab } from "@/components/admin/tabs/MonitoringTab";
 import { MedicineTab } from "@/components/admin/tabs/MedicineTab";
 import { QRCodesTab } from "@/components/admin/tabs/QRCodesTab";
+import RegistrationsTab from "@/components/admin/tabs/RegistrationsTab";
+import TestimonialsTab from "@/components/admin/tabs/TestimonialsTab";
+import FAQTab from "@/components/admin/tabs/FAQTab";
 import { Separator } from "@/components/ui/separator";
 
 const Admin = () => {
@@ -177,7 +180,7 @@ const Admin = () => {
 
         <Tabs defaultValue="colors" className="space-y-6">
           <div className="bg-background border rounded-lg p-1 shadow-sm overflow-x-auto">
-            <TabsList className="grid w-full grid-cols-4 sm:grid-cols-6 lg:grid-cols-11 gap-1 bg-transparent">
+            <TabsList className="grid w-full grid-cols-4 sm:grid-cols-7 lg:grid-cols-14 gap-1 bg-transparent">
               <TabsTrigger value="colors" className="gap-2">
                 <Palette className="h-4 w-4" />
                 <span className="hidden sm:inline">Cores</span>
@@ -221,6 +224,18 @@ const Admin = () => {
               <TabsTrigger value="qrcodes" className="gap-2">
                 <QrCode className="h-4 w-4" />
                 <span className="hidden sm:inline">QR Codes</span>
+              </TabsTrigger>
+              <TabsTrigger value="registrations" className="gap-2">
+                <FileText className="h-4 w-4" />
+                <span className="hidden sm:inline">Inscrições</span>
+              </TabsTrigger>
+              <TabsTrigger value="testimonials" className="gap-2">
+                <MessageSquare className="h-4 w-4" />
+                <span className="hidden sm:inline">Depoimentos</span>
+              </TabsTrigger>
+              <TabsTrigger value="faq" className="gap-2">
+                <HelpCircle className="h-4 w-4" />
+                <span className="hidden sm:inline">FAQ</span>
               </TabsTrigger>
             </TabsList>
           </div>
@@ -583,6 +598,18 @@ const Admin = () => {
 
           <TabsContent value="qrcodes">
             <QRCodesTab />
+          </TabsContent>
+
+          <TabsContent value="registrations">
+            <RegistrationsTab />
+          </TabsContent>
+
+          <TabsContent value="testimonials">
+            <TestimonialsTab />
+          </TabsContent>
+
+          <TabsContent value="faq">
+            <FAQTab />
           </TabsContent>
         </Tabs>
       </div>

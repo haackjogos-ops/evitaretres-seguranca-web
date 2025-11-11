@@ -40,6 +40,29 @@ const Contact = () => {
             </h2>
             <ContactButtons />
           </div>
+
+          <Card className="mt-8">
+            <CardHeader>
+              <CardTitle className="text-2xl">Como Chegar</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="aspect-video w-full rounded-lg overflow-hidden">
+                <iframe
+                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3553.0!2d-49.6833!3d-28.9333!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMjjCsDU1JzU5LjkiUyA0OcKwNDAnNTkuOSJX!5e0!3m2!1spt-BR!2sbr!4v1234567890"
+                  width="100%"
+                  height="100%"
+                  style={{ border: 0 }}
+                  allowFullScreen
+                  loading="lazy"
+                  referrerPolicy="no-referrer-when-downgrade"
+                  title="Localização EVITARE"
+                />
+              </div>
+              <p className="text-sm text-muted-foreground mt-4">
+                Estamos localizados no centro de Turvo, SC. Venha nos visitar!
+              </p>
+            </CardContent>
+          </Card>
         </div>
       </section>
 

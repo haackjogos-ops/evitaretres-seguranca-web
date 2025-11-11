@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import Header from "@/components/Header";
 import ServiceCard from "@/components/ServiceCard";
+import Testimonials from "@/components/Testimonials";
 import { useSiteSettings } from "@/hooks/useSiteSettings";
 import { useServices } from "@/hooks/useServices";
 import heroImage from "@/assets/hero-safety.jpg";
@@ -106,6 +107,9 @@ const Home = () => {
           })}
         </div>
       </section>
+
+      {/* Testimonials Section */}
+      <Testimonials />
 
       {/* Footer */}
       <footer className="bg-muted py-8 mt-16">
