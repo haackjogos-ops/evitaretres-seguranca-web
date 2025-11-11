@@ -224,6 +224,42 @@ export type Database = {
         }
         Relationships: []
       }
+      qr_codes: {
+        Row: {
+          client_name: string
+          created_at: string | null
+          display_order: number | null
+          id: string
+          is_active: boolean | null
+          link: string
+          updated_at: string | null
+          updated_by: string | null
+          whatsapp_number: string | null
+        }
+        Insert: {
+          client_name: string
+          created_at?: string | null
+          display_order?: number | null
+          id?: string
+          is_active?: boolean | null
+          link: string
+          updated_at?: string | null
+          updated_by?: string | null
+          whatsapp_number?: string | null
+        }
+        Update: {
+          client_name?: string
+          created_at?: string | null
+          display_order?: number | null
+          id?: string
+          is_active?: boolean | null
+          link?: string
+          updated_at?: string | null
+          updated_by?: string | null
+          whatsapp_number?: string | null
+        }
+        Relationships: []
+      }
       services: {
         Row: {
           action_label: string | null

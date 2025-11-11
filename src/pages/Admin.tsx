@@ -9,7 +9,7 @@ import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useToast } from "@/hooks/use-toast";
-import { Upload, Palette, Phone, Bookmark, Image, Home, Info, GraduationCap, BookOpen, Award, Activity, Stethoscope, LogOut } from "lucide-react";
+import { Upload, Palette, Phone, Bookmark, Image, Home, Info, GraduationCap, BookOpen, Award, Activity, Stethoscope, LogOut, QrCode } from "lucide-react";
 import Header from "@/components/Header";
 import { ColorPicker } from "@/components/admin/ColorPicker";
 import { ServicesTab } from "@/components/admin/tabs/ServicesTab";
@@ -19,6 +19,7 @@ import { CoursesTab } from "@/components/admin/tabs/CoursesTab";
 import { BenefitsTab } from "@/components/admin/tabs/BenefitsTab";
 import { MonitoringTab } from "@/components/admin/tabs/MonitoringTab";
 import { MedicineTab } from "@/components/admin/tabs/MedicineTab";
+import { QRCodesTab } from "@/components/admin/tabs/QRCodesTab";
 import { Separator } from "@/components/ui/separator";
 
 const Admin = () => {
@@ -176,7 +177,7 @@ const Admin = () => {
 
         <Tabs defaultValue="colors" className="space-y-6">
           <div className="bg-background border rounded-lg p-1 shadow-sm overflow-x-auto">
-            <TabsList className="grid w-full grid-cols-4 sm:grid-cols-6 lg:grid-cols-10 gap-1 bg-transparent">
+            <TabsList className="grid w-full grid-cols-4 sm:grid-cols-6 lg:grid-cols-11 gap-1 bg-transparent">
               <TabsTrigger value="colors" className="gap-2">
                 <Palette className="h-4 w-4" />
                 <span className="hidden sm:inline">Cores</span>
@@ -216,6 +217,10 @@ const Admin = () => {
               <TabsTrigger value="medicine" className="gap-2">
                 <Stethoscope className="h-4 w-4" />
                 <span className="hidden sm:inline">Medicina</span>
+              </TabsTrigger>
+              <TabsTrigger value="qrcodes" className="gap-2">
+                <QrCode className="h-4 w-4" />
+                <span className="hidden sm:inline">QR Codes</span>
               </TabsTrigger>
             </TabsList>
           </div>
@@ -574,6 +579,10 @@ const Admin = () => {
 
           <TabsContent value="medicine">
             <MedicineTab />
+          </TabsContent>
+
+          <TabsContent value="qrcodes">
+            <QRCodesTab />
           </TabsContent>
         </Tabs>
       </div>
