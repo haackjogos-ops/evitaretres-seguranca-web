@@ -221,9 +221,9 @@ const Admin = () => {
                 <Stethoscope className="h-4 w-4" />
                 <span className="hidden sm:inline">Medicina</span>
               </TabsTrigger>
-              <TabsTrigger value="qrcodes" className="gap-2">
-                <QrCode className="h-4 w-4" />
-                <span className="hidden sm:inline">QR Codes</span>
+              <TabsTrigger value="certificates" className="gap-2">
+                <Award className="h-4 w-4" />
+                <span className="hidden sm:inline">Certificados</span>
               </TabsTrigger>
               <TabsTrigger value="registrations" className="gap-2">
                 <FileText className="h-4 w-4" />
