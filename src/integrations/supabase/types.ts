@@ -74,6 +74,66 @@ export type Database = {
         }
         Relationships: []
       }
+      certificates: {
+        Row: {
+          archive_code: string
+          course_date: string
+          course_hours: string
+          course_name: string
+          course_norm: string
+          course_type: string
+          created_at: string | null
+          id: string
+          is_active: boolean | null
+          issue_date: string
+          issue_location: string
+          pdf_url: string | null
+          qr_code_url: string | null
+          registration_number: string
+          student_name: string
+          updated_at: string | null
+          updated_by: string | null
+        }
+        Insert: {
+          archive_code: string
+          course_date: string
+          course_hours: string
+          course_name: string
+          course_norm: string
+          course_type: string
+          created_at?: string | null
+          id?: string
+          is_active?: boolean | null
+          issue_date: string
+          issue_location?: string
+          pdf_url?: string | null
+          qr_code_url?: string | null
+          registration_number: string
+          student_name: string
+          updated_at?: string | null
+          updated_by?: string | null
+        }
+        Update: {
+          archive_code?: string
+          course_date?: string
+          course_hours?: string
+          course_name?: string
+          course_norm?: string
+          course_type?: string
+          created_at?: string | null
+          id?: string
+          is_active?: boolean | null
+          issue_date?: string
+          issue_location?: string
+          pdf_url?: string | null
+          qr_code_url?: string | null
+          registration_number?: string
+          student_name?: string
+          updated_at?: string | null
+          updated_by?: string | null
+        }
+        Relationships: []
+      }
       courses: {
         Row: {
           created_at: string | null
@@ -254,42 +314,6 @@ export type Database = {
           subtitle?: string | null
           title?: string
           updated_at?: string | null
-        }
-        Relationships: []
-      }
-      qr_codes: {
-        Row: {
-          client_name: string
-          created_at: string | null
-          display_order: number | null
-          id: string
-          is_active: boolean | null
-          link: string
-          updated_at: string | null
-          updated_by: string | null
-          whatsapp_number: string | null
-        }
-        Insert: {
-          client_name: string
-          created_at?: string | null
-          display_order?: number | null
-          id?: string
-          is_active?: boolean | null
-          link: string
-          updated_at?: string | null
-          updated_by?: string | null
-          whatsapp_number?: string | null
-        }
-        Update: {
-          client_name?: string
-          created_at?: string | null
-          display_order?: number | null
-          id?: string
-          is_active?: boolean | null
-          link?: string
-          updated_at?: string | null
-          updated_by?: string | null
-          whatsapp_number?: string | null
         }
         Relationships: []
       }

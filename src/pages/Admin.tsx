@@ -19,7 +19,7 @@ import { CoursesTab } from "@/components/admin/tabs/CoursesTab";
 import { BenefitsTab } from "@/components/admin/tabs/BenefitsTab";
 import { MonitoringTab } from "@/components/admin/tabs/MonitoringTab";
 import { MedicineTab } from "@/components/admin/tabs/MedicineTab";
-import { QRCodesTab } from "@/components/admin/tabs/QRCodesTab";
+import { CertificatesTab } from "@/components/admin/tabs/CertificatesTab";
 import RegistrationsTab from "@/components/admin/tabs/RegistrationsTab";
 import TestimonialsTab from "@/components/admin/tabs/TestimonialsTab";
 import FAQTab from "@/components/admin/tabs/FAQTab";
@@ -596,8 +596,8 @@ const Admin = () => {
             <MedicineTab />
           </TabsContent>
 
-          <TabsContent value="qrcodes">
-            <QRCodesTab />
+          <TabsContent value="certificates">
+            <CertificatesTab />
           </TabsContent>
 
           <TabsContent value="registrations">

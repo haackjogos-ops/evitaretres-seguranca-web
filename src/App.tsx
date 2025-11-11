@@ -16,6 +16,7 @@ import FAQ from "./pages/FAQ";
 import NotFound from "./pages/NotFound";
 import Auth from "./pages/Auth";
 import Admin from "./pages/Admin";
+import Certificate from "./pages/Certificate";
 import WhatsAppButton from "@/components/WhatsAppButton";
 
 const queryClient = new QueryClient();
@@ -40,6 +41,7 @@ const App = () => (
             <Route path="/faq" element={<FAQ />} />
             <Route path="/auth" element={<Auth />} />
             <Route path="/admin" element={<Admin />} />
+            <Route path="/certificado/:registrationNumber" element={<Certificate />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </BrowserRouter>
