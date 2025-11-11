@@ -3,8 +3,9 @@ import { useParams } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Download, CheckCircle, XCircle, Shield } from "lucide-react";
+import { Printer, Shield, XCircle } from "lucide-react";
 import Header from "@/components/Header";
+import CertificateTemplate from "@/components/CertificateTemplate";
 
 const Certificate = () => {
   const { registrationNumber } = useParams();
@@ -48,6 +49,10 @@ const Certificate = () => {
     );
   }
 
+  const handlePrint = () => {
+    window.print();
+  };
+
   if (error || !certificate) {
     return (
       <div className="min-h-screen bg-background">
@@ -72,9 +77,9 @@ const Certificate = () => {
       <Header />
       
       <div className="container mx-auto px-4 py-20">
-        <div className="max-w-4xl mx-auto space-y-6">
-          {/* Validation Badge */}
-          <Card className="border-green-500 bg-green-50 dark:bg-green-950">
+        <div className="max-w-5xl mx-auto space-y-6">
+          {/* Validation Badge - Hidden on print */}
+          <Card className="border-green-500 bg-green-50 dark:bg-green-950 print:hidden">
             <CardContent className="pt-6">
               <div className="flex items-center gap-3">
                 <Shield className="h-8 w-8 text-green-600" />
@@ -88,8 +93,32 @@ const Certificate = () => {
             </CardContent>
           </Card>
 
-          {/* Certificate Information */}
-          <Card>
+          {/* Print Button - Hidden on print */}
+          <div className="flex justify-center gap-4 print:hidden">
+            <Button onClick={handlePrint} size="lg" className="gap-2">
+              <Printer className="h-5 w-5" />
+              Imprimir / Salvar como PDF
+            </Button>
+          </div>
+
+          {/* Certificate Display */}
+          <div className="print:mt-0">
+            <CertificateTemplate
+              studentName={certificate.student_name}
+              courseName={certificate.course_name}
+              courseNorm={certificate.course_norm}
+              courseType={certificate.course_type}
+              courseHours={certificate.course_hours}
+              courseDate={certificate.course_date}
+              issueDate={certificate.issue_date}
+              issueLocation={certificate.issue_location}
+              registrationNumber={certificate.registration_number}
+              archiveCode={certificate.archive_code}
+            />
+          </div>
+
+          {/* Certificate Information - Hidden on print */}
+          <Card className="print:hidden">
             <CardHeader>
               <CardTitle className="text-2xl">Informações do Certificado</CardTitle>
             </CardHeader>
@@ -149,35 +178,45 @@ const Certificate = () => {
                   <p className="font-semibold">{certificate.archive_code}</p>
                 </div>
               </div>
-
-              {certificate.pdf_url && (
-                <div className="pt-4 border-t">
-                  <Button onClick={() => window.open(certificate.pdf_url, '_blank')} className="w-full">
-                    <Download className="h-4 w-4 mr-2" />
-                    Baixar Certificado PDF
-                  </Button>
-                </div>
-              )}
             </CardContent>
           </Card>
 
-          {/* Certificate Preview */}
-          {certificate.pdf_url && (
-            <Card>
-              <CardHeader>
-                <CardTitle>Visualização do Certificado</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <iframe
-                  src={certificate.pdf_url}
-                  className="w-full h-[600px] border rounded"
-                  title="Certificado"
-                />
-              </CardContent>
-            </Card>
-          )}
+          {/* Instructions - Hidden on print */}
+          <Card className="print:hidden bg-muted">
+            <CardContent className="pt-6">
+              <p className="text-sm text-muted-foreground text-center">
+                💡 <strong>Dica:</strong> Use o botão acima para imprimir ou salvar como PDF. 
+                No diálogo de impressão, selecione "Salvar como PDF" como destino.
+              </p>
+            </CardContent>
+          </Card>
         </div>
       </div>
+
+      {/* Print-specific styles */}
+      <style>{`
+        @media print {
+          body {
+            margin: 0;
+            padding: 0;
+          }
+          
+          .print\\:hidden {
+            display: none !important;
+          }
+          
+          .certificate-container {
+            box-shadow: none !important;
+            margin: 0 !important;
+            padding: 20mm !important;
+          }
+          
+          @page {
+            size: A4;
+            margin: 0;
+          }
+        }
+      `}</style>
     </div>
   );
 };
