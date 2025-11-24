@@ -34,7 +34,17 @@ const generateCertificateHTML = (data: CertificateData): string => {
   
   // Generate curriculum HTML
   const curriculumHtml = (data.course_curriculum || [])
-    .map(item => `<li>${item}</li>`)
+    .map(item => `<li><span style="color: #0066CC; font-weight: bold; font-size: 18px;">•</span> ${item}</li>`)
+    .join('');
+  
+  // Parse instructor credentials for styling
+  const instructorCredentialsHtml = (data.instructor_credentials || '').split('\n')
+    .map(line => {
+      if (line.includes('TÉCNICO') || line.includes('BOMBEIRO') || line.includes('CIVIL')) {
+        return `<p style="font-weight: 600; color: #0066CC;">• ${line}</p>`;
+      }
+      return `<p style="color: #4a5568;">${line}</p>`;
+    })
     .join('');
   
   return `
@@ -62,300 +72,506 @@ const generateCertificateHTML = (data: CertificateData): string => {
       width: 210mm;
       height: 297mm;
       background: white;
-      padding: 20mm;
       position: relative;
       page-break-after: always;
+      overflow: hidden;
     }
     .certificate-page:last-child {
       page-break-after: auto;
     }
     
+    /* Decorative border */
+    .border-decoration {
+      position: absolute;
+      inset: 10mm;
+      border: 3px solid #0066CC;
+      border-radius: 8px;
+      pointer-events: none;
+    }
+    
     /* Page 1 Styles */
-    .header {
+    .header-gradient {
+      background: linear-gradient(to right, #0066CC, #0088FF);
+      color: white;
+      padding: 30px 40px;
       text-align: center;
-      margin-bottom: 30px;
+      position: relative;
     }
-    .header img {
-      height: 60px;
-      margin-bottom: 10px;
+    .header-logo {
+      height: 80px;
+      margin-bottom: 15px;
     }
-    .title {
-      font-size: 42px;
+    .header-title {
+      font-size: 36px;
       font-weight: bold;
-      color: #1e3a8a;
-      text-align: center;
-      margin: 30px 0;
-      text-transform: uppercase;
       letter-spacing: 2px;
     }
-    .content {
+    .main-content {
+      padding: 30px 60px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      min-height: calc(297mm - 200px);
+    }
+    .certificate-text {
       text-align: center;
-      font-size: 16px;
-      color: #334155;
+      font-size: 18px;
       line-height: 1.8;
-    }
-    .student-name {
-      font-size: 32px;
-      font-weight: bold;
-      color: #0066CC;
-      margin: 25px 0;
-      text-align: center;
-    }
-    .course-logo {
-      text-align: center;
       margin: 20px 0;
     }
-    .course-logo img {
-      max-height: 80px;
-    }
-    .course-details {
-      font-size: 18px;
-      color: #334155;
-      text-align: center;
-      margin: 15px 0;
-      line-height: 1.6;
-    }
-    .tracking-box {
-      background: #f8fafc;
-      border: 2px solid #e2e8f0;
-      border-radius: 8px;
-      padding: 15px;
-      margin: 30px auto;
-      max-width: 500px;
-    }
-    .tracking-title {
+    .student-name-highlight {
       font-weight: bold;
-      color: #1e3a8a;
-      margin-bottom: 10px;
+      font-size: 22px;
+      color: #0066CC;
+      background: #fffbeb;
+      padding: 5px 15px;
+      border-radius: 4px;
+      border-bottom: 2px solid #0066CC;
+      display: inline-block;
+      margin: 0 5px;
+    }
+    .course-logo-section {
       text-align: center;
+      margin: 30px 0;
     }
-    .tracking-info {
-      display: grid;
-      grid-template-columns: auto 1fr;
-      gap: 8px;
-      font-size: 14px;
+    .course-logo-border {
+      display: inline-block;
+      border: 4px solid #0066CC;
+      border-radius: 8px;
+      padding: 20px;
+      background: white;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
     }
-    .tracking-label {
-      font-weight: 600;
-      color: #475569;
+    .course-logo-border img {
+      height: 120px;
+      object-fit: contain;
     }
     .signature-section {
       margin-top: 40px;
       text-align: center;
     }
     .signature-line {
-      border-top: 2px solid #334155;
-      width: 300px;
-      margin: 40px auto 10px;
+      width: 320px;
+      border-top: 2px solid #1a1a1a;
+      margin: 0 auto;
+      margin-bottom: 10px;
     }
-    .signature-text {
-      font-size: 14px;
-      color: #334155;
-    }
-    .cnpj {
-      text-align: center;
+    .student-info-box {
+      background: #0066CC;
+      color: white;
+      padding: 15px 25px;
+      border-radius: 8px;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+      display: flex;
+      justify-content: space-between;
       margin-top: 20px;
-      font-size: 12px;
-      color: #64748b;
+      font-weight: bold;
+    }
+    .tracking-section {
+      margin-top: 30px;
+    }
+    .tracking-title {
+      font-size: 20px;
+      font-weight: bold;
+      color: #0066CC;
+      border-bottom: 2px solid #0066CC;
+      padding-bottom: 5px;
+      margin-bottom: 15px;
+    }
+    .tracking-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 15px;
+      background: #f7fafc;
+      border: 2px solid #cbd5e0;
+      border-radius: 8px;
+      padding: 20px;
+    }
+    .tracking-item {
+      display: flex;
+      justify-content: space-between;
+      border-bottom: 1px solid #cbd5e0;
+      padding-bottom: 10px;
+    }
+    .tracking-label {
+      font-weight: 600;
+      color: #4a5568;
+    }
+    .tracking-value {
+      font-weight: bold;
+      color: #0066CC;
+    }
+    .footer-gradient {
+      background: linear-gradient(to right, #f7fafc, #edf2f7);
+      padding: 25px 40px;
+      border-top: 2px solid #0066CC;
+      position: absolute;
+      bottom: 0;
+      width: 100%;
+    }
+    .footer-contacts {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+    }
+    .contact-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 14px;
+      font-weight: 600;
     }
     .qr-section {
       display: flex;
-      justify-content: flex-end;
       align-items: center;
-      margin-top: 20px;
-      gap: 10px;
+      gap: 12px;
     }
-    .qr-code {
-      width: 80px;
-      height: 80px;
+    .qr-code-border {
+      background: white;
+      padding: 8px;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      border: 2px solid #0066CC;
     }
-    .qr-text {
-      font-size: 10px;
-      color: #64748b;
-      font-weight: 600;
-    }
-    .footer {
+    .copyright {
       text-align: center;
+      margin-top: 15px;
+      padding-top: 15px;
+      border-top: 1px solid #cbd5e0;
       font-size: 12px;
-      color: #64748b;
-      margin-top: 20px;
+      color: #718096;
     }
     
     /* Page 2 Styles */
-    .back-page-header {
+    .back-header {
+      padding: 30px 40px;
+      border-bottom: 2px solid #0066CC;
       text-align: center;
-      margin-bottom: 30px;
     }
-    .back-page-header img {
-      height: 50px;
+    .back-logo {
+      height: 60px;
+      margin-bottom: 15px;
     }
-    .section {
+    .company-name {
+      font-size: 18px;
+      font-weight: bold;
+      color: #0066CC;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+    .back-content {
+      padding: 25px 40px;
+    }
+    .section-box {
       margin-bottom: 25px;
     }
     .section-title {
-      font-size: 18px;
+      font-size: 20px;
       font-weight: bold;
-      color: #1e3a8a;
-      margin-bottom: 10px;
-      border-bottom: 2px solid #e2e8f0;
-      padding-bottom: 5px;
+      color: #0066CC;
+      border-bottom: 2px solid #0066CC;
+      padding-bottom: 8px;
+      margin-bottom: 15px;
+    }
+    .instructor-box {
+      background: linear-gradient(to right, #eff6ff, #dbeafe);
+      border: 2px solid #0066CC;
+      border-radius: 8px;
+      padding: 25px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    }
+    .instructor-name {
+      font-size: 20px;
+      font-weight: bold;
+      color: #0066CC;
+      text-align: center;
+      margin-bottom: 15px;
     }
     .curriculum-list {
-      list-style-type: disc;
-      padding-left: 25px;
-      font-size: 14px;
-      color: #334155;
-      line-height: 1.8;
+      list-style: none;
+      padding: 0;
     }
-    .instructor-info {
+    .curriculum-list li {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      margin-bottom: 10px;
       font-size: 14px;
-      color: #334155;
+      color: #2d3748;
       line-height: 1.6;
     }
     .status-box {
-      background: #f0fdf4;
-      border: 2px solid #86efac;
+      border: 4px solid #0066CC;
       border-radius: 8px;
-      padding: 15px;
-      margin-top: 10px;
-      text-align: center;
+      padding: 25px;
+      background: white;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
     }
-    .status-box.reproved {
-      background: #fef2f2;
-      border-color: #fca5a5;
-    }
-    .status-text {
-      font-size: 24px;
+    .status-title {
+      font-size: 20px;
       font-weight: bold;
-      color: #16a34a;
+      text-align: center;
+      color: #0066CC;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 20px;
     }
-    .status-text.reproved {
-      color: #dc2626;
+    .status-content {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
     }
-    .grade {
-      font-size: 18px;
-      color: #334155;
-      margin-top: 5px;
+    .status-approved {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+    .status-icon-approved {
+      color: #00CC66;
+      font-size: 48px;
+      font-weight: bold;
+    }
+    .status-text-approved {
+      font-size: 32px;
+      font-weight: bold;
+      color: #00CC66;
+    }
+    .status-icon-reproved {
+      color: #CC0000;
+      font-size: 48px;
+      font-weight: bold;
+    }
+    .status-text-reproved {
+      font-size: 32px;
+      font-weight: bold;
+      color: #CC0000;
+    }
+    .grade-box {
+      background: #f7fafc;
+      padding: 20px 30px;
+      border-radius: 8px;
+      border: 2px solid #cbd5e0;
+      text-align: right;
+    }
+    .grade-label {
+      font-size: 14px;
+      color: #718096;
+      font-weight: 600;
+      margin-bottom: 5px;
+    }
+    .grade-value {
+      font-size: 32px;
+      font-weight: bold;
+      color: #0066CC;
+    }
+    .validity-box {
+      background: linear-gradient(to right, #fef3c7, #fde68a);
+      border-left: 4px solid #FFD700;
+      border-radius: 4px;
+      padding: 15px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
     }
     .validity-text {
       font-size: 14px;
-      color: #334155;
+      color: #2d3748;
+      font-style: italic;
       line-height: 1.6;
-      white-space: pre-line;
+    }
+    .validity-icon {
+      color: #d97706;
+      font-weight: bold;
+      margin-right: 5px;
+    }
+    .back-footer {
+      background: linear-gradient(to right, #f7fafc, #edf2f7);
+      padding: 15px 40px;
+      border-top: 2px solid #0066CC;
+      position: absolute;
+      bottom: 0;
+      width: 100%;
+      text-align: center;
+      font-size: 12px;
+      color: #718096;
     }
   </style>
 </head>
 <body>
   <!-- Page 1 -->
   <div class="certificate-page">
-    <div class="header">
-      <img src="data:image/svg+xml,${encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="200" height="60"><text x="50%" y="50%" font-family="Arial" font-size="32" font-weight="bold" fill="#1e3a8a" text-anchor="middle" dominant-baseline="middle">EVITARE</text></svg>')}" alt="EVITARE">
-      <div style="font-size: 12px; color: #64748b;">Saúde e Segurança do Trabalho</div>
+    <div class="border-decoration"></div>
+    
+    <!-- Header -->
+    <div class="header-gradient">
+      <img class="header-logo" src="data:image/svg+xml,${encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="200" height="80"><text x="50%" y="50%" font-family="Arial" font-size="48" font-weight="bold" fill="white" text-anchor="middle" dominant-baseline="middle">EVITARE</text></svg>')}" alt="EVITARE">
+      <div class="header-title">Certificado de Conclusão</div>
     </div>
     
-    <div class="title">Certificado</div>
-    
-    <div class="content">
-      Certificamos que
-    </div>
-    
-    <div class="student-name">${data.student_name}</div>
-    
-    ${data.course_logo_url ? `
-    <div class="course-logo">
-      <img src="${data.course_logo_url}" alt="Logo do Curso">
-    </div>
-    ` : ''}
-    
-    <div class="content">
-      Concluiu com êxito o curso de
-    </div>
-    
-    <div class="course-details">
-      <strong>${data.course_name}</strong><br>
-      ${data.course_norm} • ${data.course_hours}<br>
-      <span style="font-size: 16px;">${data.course_type}</span>
-    </div>
-    
-    <div class="content">
-      Realizado em ${courseDate}
-    </div>
-    
-    <div class="tracking-box">
-      <div class="tracking-title">RASTREAMENTO</div>
-      <div class="tracking-info">
-        <span class="tracking-label">Período:</span>
-        <span>${courseDate}</span>
-        <span class="tracking-label">Registro:</span>
-        <span>${data.registration_number}</span>
-        <span class="tracking-label">Arquivo:</span>
-        <span>${data.archive_code}</span>
+    <!-- Main Content -->
+    <div class="main-content">
+      <div>
+        <p class="certificate-text">
+          Certificamos que o senhor (a), 
+          <span class="student-name-highlight">${data.student_name}</span>, 
+          participou e concluiu com êxito o 
+          <strong style="text-transform: uppercase;">${data.course_type}</strong> de: 
+          <strong style="color: #0066CC; text-transform: uppercase;">${data.course_name}</strong>.
+        </p>
+        
+        <p class="certificate-text">
+          Com carga horária de <strong>${data.course_hours}</strong>, conforme
+          exigências da <strong>${data.course_norm}</strong>.
+        </p>
+        
+        ${data.course_logo_url ? `
+        <div class="course-logo-section">
+          <div class="course-logo-border">
+            <img src="${data.course_logo_url}" alt="Logo do Curso">
+          </div>
+        </div>
+        ` : ''}
+        
+        <div class="signature-section">
+          <div class="signature-line"></div>
+          <p style="font-weight: bold; font-size: 14px;">EVITARE - SEGURANÇA E MEDICINA DO TRABALHO</p>
+        </div>
+        
+        <div class="student-info-box">
+          <span>ALUNO: ${data.student_name}</span>
+          <span>CNPJ: 28.842.691/0001-90</span>
+        </div>
+      </div>
+      
+      <div class="tracking-section">
+        <div class="tracking-title">RASTREAMENTO</div>
+        <div class="tracking-grid">
+          <div class="tracking-item">
+            <span class="tracking-label">Arquivo:</span>
+            <span class="tracking-value">${data.archive_code}</span>
+          </div>
+          <div class="tracking-item">
+            <span class="tracking-label">Registro:</span>
+            <span class="tracking-value">${data.registration_number}</span>
+          </div>
+          <div class="tracking-item" style="border-bottom: none;">
+            <span class="tracking-label">Período de estudos:</span>
+            <span class="tracking-value">${courseDate}</span>
+          </div>
+          <div class="tracking-item" style="border-bottom: none;">
+            <span class="tracking-label">Emissão:</span>
+            <span class="tracking-value">${data.issue_location}, ${issueDate}</span>
+          </div>
+        </div>
       </div>
     </div>
     
-    <div class="signature-section">
-      <div class="signature-line"></div>
-      <div class="signature-text">
-        <strong>EVITARE - Saúde e Segurança do Trabalho</strong><br>
-        ${data.issue_location}, ${issueDate}
+    <!-- Footer -->
+    <div class="footer-gradient">
+      <div class="footer-contacts">
+        <div style="display: flex; gap: 25px;">
+          <div class="contact-item">
+            📞 9.9608-5605
+          </div>
+          <div class="contact-item">
+            📧 evitare@outlook.com.br
+          </div>
+          <div class="contact-item">
+            📱 9.9608-5605
+          </div>
+          <div class="contact-item">
+            📷 evitare_turvo
+          </div>
+        </div>
+        
+        <div class="qr-section">
+          <div style="text-align: right;">
+            <p style="font-size: 12px; font-weight: 600; color: #4a5568;">Validar Certificado:</p>
+            <p style="font-size: 11px; color: #718096;">Escaneie o QR Code</p>
+          </div>
+          <div class="qr-code-border">
+            <img style="width: 64px; height: 64px;" src="https://api.qrserver.com/v1/create-qr-code/?size=64x64&data=${encodeURIComponent(qrCodeUrl)}" alt="QR Code">
+          </div>
+        </div>
       </div>
-    </div>
-    
-    <div class="cnpj">CNPJ: 28.842.691/0001-90</div>
-    
-    <div class="qr-section">
-      <div class="qr-text">Valide online</div>
-      <img class="qr-code" src="https://api.qrserver.com/v1/create-qr-code/?size=80x80&data=${encodeURIComponent(qrCodeUrl)}" alt="QR Code">
-    </div>
-    
-    <div class="footer">
-      📞 (11) 94321-5318 | 📧 contato@evitare.com.br | 📷 @evitarebrasil
+      
+      <div class="copyright">
+        © 2025 EVITARE
+      </div>
     </div>
   </div>
   
   <!-- Page 2 -->
   <div class="certificate-page">
-    <div class="back-page-header">
-      <img src="data:image/svg+xml,${encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="180" height="50"><text x="50%" y="50%" font-family="Arial" font-size="28" font-weight="bold" fill="#1e3a8a" text-anchor="middle" dominant-baseline="middle">EVITARE</text></svg>')}" alt="EVITARE">
+    <div class="border-decoration"></div>
+    
+    <!-- Header -->
+    <div class="back-header">
+      <img class="back-logo" src="data:image/svg+xml,${encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="180" height="60"><text x="50%" y="50%" font-family="Arial" font-size="40" font-weight="bold" fill="#0066CC" text-anchor="middle" dominant-baseline="middle">EVITARE</text></svg>')}" alt="EVITARE">
+      <div class="company-name">Assessoria em Segurança e Medicina do Trabalho</div>
     </div>
     
-    ${curriculumHtml ? `
-    <div class="section">
-      <div class="section-title">CONTEÚDO PROGRAMÁTICO</div>
-      <ul class="curriculum-list">
-        ${curriculumHtml}
-      </ul>
-    </div>
-    ` : ''}
-    
-    ${data.instructor_name ? `
-    <div class="section">
-      <div class="section-title">INSTRUTOR</div>
-      <div class="instructor-info">
-        <strong>${data.instructor_name}</strong><br>
-        ${data.instructor_credentials || ''}
-      </div>
-    </div>
-    ` : ''}
-    
-    ${data.student_status ? `
-    <div class="section">
-      <div class="section-title">APROVEITAMENTO</div>
-      <div class="status-box ${data.student_status === 'REPROVADO' ? 'reproved' : ''}">
-        <div class="status-text ${data.student_status === 'REPROVADO' ? 'reproved' : ''}">
-          ${data.student_status === 'REPROVADO' ? '✗ REPROVADO' : '✓ APROVADO'}
+    <!-- Content -->
+    <div class="back-content">
+      ${data.instructor_name ? `
+      <div class="section-box">
+        <div class="instructor-box">
+          <div class="instructor-name">${data.instructor_name}</div>
+          <div style="font-size: 14px;">
+            ${instructorCredentialsHtml}
+          </div>
         </div>
-        ${data.student_grade ? `<div class="grade">Nota: ${data.student_grade}</div>` : ''}
       </div>
+      ` : ''}
+      
+      ${curriculumHtml ? `
+      <div class="section-box">
+        <div class="section-title">Conteúdo Programático do Curso:</div>
+        <ul class="curriculum-list">
+          ${curriculumHtml}
+        </ul>
+      </div>
+      ` : ''}
+      
+      ${data.student_status ? `
+      <div class="section-box">
+        <div class="status-box">
+          <div class="status-title">SITUAÇÃO DO ALUNO</div>
+          <div class="status-content">
+            ${data.student_status === 'APROVADO' ? `
+            <div class="status-approved">
+              <span class="status-icon-approved">✓</span>
+              <span class="status-text-approved">APROVADO</span>
+            </div>
+            ` : `
+            <div class="status-approved">
+              <span class="status-icon-reproved">✗</span>
+              <span class="status-text-reproved">REPROVADO</span>
+            </div>
+            `}
+            <div class="grade-box">
+              <div class="grade-label">Aproveitamento</div>
+              <div class="grade-value">${data.student_grade || '-'}</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      ` : ''}
+      
+      ${data.validity_text ? `
+      <div class="section-box">
+        <div class="validity-box">
+          <p class="validity-text">
+            <span class="validity-icon">⚠ IMPORTANTE:</span> ${data.validity_text}
+          </p>
+        </div>
+      </div>
+      ` : ''}
     </div>
-    ` : ''}
     
-    ${data.validity_text ? `
-    <div class="section">
-      <div class="section-title">VALIDADE</div>
-      <div class="validity-text">${data.validity_text}</div>
+    <!-- Footer -->
+    <div class="back-footer">
+      © 2025 EVITARE - Todos os direitos reservados
     </div>
-    ` : ''}
   </div>
 </body>
 </html>
