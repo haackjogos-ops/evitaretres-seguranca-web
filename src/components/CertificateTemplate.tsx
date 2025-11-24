@@ -2,6 +2,7 @@ import certificateLogo from "@/assets/certificate-logo.png";
 import certificateIcon1 from "@/assets/certificate-icon-1.png";
 import certificateIcon2 from "@/assets/certificate-icon-2.png";
 import { Mail, Phone, Instagram } from "lucide-react";
+import { QRCodeSVG } from "qrcode.react";
 
 interface CertificateTemplateProps {
   studentName: string;
@@ -141,9 +142,10 @@ const CertificateTemplate = ({
         </div>
       </div>
 
-      {/* Footer Contact Info */}
+      {/* QR Code and Footer */}
       <div className="border-t border-border pt-4 mt-8">
-        <div className="flex justify-center items-center gap-6 text-xs text-muted-foreground mb-2">
+        {/* Contact Info */}
+        <div className="flex justify-center items-center gap-6 text-xs text-muted-foreground mb-3">
           <div className="flex items-center gap-1">
             <Phone className="w-3 h-3" />
             <span>9.9608-5605</span>
@@ -158,13 +160,27 @@ const CertificateTemplate = ({
           </div>
         </div>
         
-        <p className="text-center text-xs text-muted-foreground">
-          © 2025 EVITARE
-        </p>
+        {/* QR Code Section */}
+        <div className="flex items-center justify-between">
+          <p className="text-xs text-muted-foreground flex-1">
+            © 2025 EVITARE
+          </p>
+          
+          <div className="flex flex-col items-center gap-1">
+            <QRCodeSVG 
+              value={`${window.location.origin}/certificado/${registrationNumber}`}
+              size={80}
+              level="M"
+              includeMargin={false}
+              className="border-2 border-border/20 rounded p-1"
+            />
+            <span className="text-[10px] text-muted-foreground font-semibold">Valide online</span>
+          </div>
+        </div>
       </div>
 
       {/* Validation Footer */}
-      <div className="text-center mt-6 pt-4 border-t border-border/50 text-xs text-muted-foreground">
+      <div className="text-center mt-4 pt-3 border-t border-border/50 text-xs text-muted-foreground">
         <p>Certificado válido e autêntico. Verifique em: evitare.com.br/certificado/{registrationNumber}</p>
       </div>
     </div>

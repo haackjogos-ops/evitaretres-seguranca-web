@@ -3,7 +3,8 @@ import { useParams } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Printer, Shield, XCircle } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
+import { Printer, Shield, XCircle, Download, CheckCircle2 } from "lucide-react";
 import Header from "@/components/Header";
 import CertificateTemplate from "@/components/CertificateTemplate";
 import { CertificateBackPage } from "@/components/CertificateBackPage";
@@ -54,6 +55,11 @@ const Certificate = () => {
     window.print();
   };
 
+  const handleDownload = () => {
+    // Trigger print dialog with instructions to save as PDF
+    window.print();
+  };
+
   if (error || !certificate) {
     return (
       <div className="min-h-screen bg-background">
@@ -79,27 +85,23 @@ const Certificate = () => {
       
       <div className="container mx-auto px-4 py-20">
         <div className="max-w-5xl mx-auto space-y-6">
-          {/* Validation Badge - Hidden on print */}
-          <Card className="border-green-500 bg-green-50 dark:bg-green-950 print:hidden">
-            <CardContent className="pt-6">
-              <div className="flex items-center gap-3">
-                <Shield className="h-8 w-8 text-green-600" />
-                <div>
-                  <h2 className="font-bold text-green-900 dark:text-green-100">Certificado Válido</h2>
-                  <p className="text-sm text-green-700 dark:text-green-200">
-                    Este certificado foi emitido pela EVITARE e é autêntico
-                  </p>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-
-          {/* Print Button - Hidden on print */}
-          <div className="flex justify-center gap-4 print:hidden">
-            <Button onClick={handlePrint} size="lg" className="gap-2">
-              <Printer className="h-5 w-5" />
-              Imprimir / Salvar como PDF
-            </Button>
+          {/* Validation Badge and Actions - Hidden on print */}
+          <div className="flex items-center justify-between gap-4 print:hidden">
+            <Badge variant="default" className="bg-green-500 hover:bg-green-600 px-4 py-2 text-base">
+              <CheckCircle2 className="w-5 h-5 mr-2" />
+              Certificado Válido
+            </Badge>
+            
+            <div className="flex gap-3">
+              <Button onClick={handleDownload} size="lg" className="gap-2">
+                <Download className="h-5 w-5" />
+                Baixar PDF
+              </Button>
+              <Button onClick={handlePrint} variant="outline" size="lg" className="gap-2">
+                <Printer className="h-5 w-5" />
+                Imprimir
+              </Button>
+            </div>
           </div>
 
           {/* Certificate Display - 2 Pages */}
@@ -200,12 +202,29 @@ const Certificate = () => {
           </Card>
 
           {/* Instructions - Hidden on print */}
-          <Card className="print:hidden bg-muted">
-            <CardContent className="pt-6">
-              <p className="text-sm text-muted-foreground text-center">
-                💡 <strong>Dica:</strong> Use o botão acima para imprimir ou salvar como PDF. 
-                No diálogo de impressão, selecione "Salvar como PDF" como destino.
-              </p>
+          <Card className="print:hidden">
+            <CardHeader>
+              <CardTitle className="text-lg flex items-center gap-2">
+                💡 Instruções para Download
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div>
+                <h4 className="font-semibold text-sm mb-2">📄 Para salvar como PDF:</h4>
+                <ol className="list-decimal list-inside space-y-1 text-sm text-muted-foreground">
+                  <li>Clique no botão <strong>"Baixar PDF"</strong> acima</li>
+                  <li>Na janela de impressão, selecione <strong>"Salvar como PDF"</strong></li>
+                  <li>Escolha onde deseja salvar e clique em <strong>"Salvar"</strong></li>
+                </ol>
+              </div>
+              
+              <div className="pt-3 border-t border-border">
+                <h4 className="font-semibold text-sm mb-2">✅ Validação do certificado:</h4>
+                <p className="text-sm text-muted-foreground">
+                  Use o <strong>QR Code</strong> no certificado para validar sua autenticidade a qualquer momento. 
+                  Basta escanear com a câmera do seu celular.
+                </p>
+              </div>
             </CardContent>
           </Card>
         </div>
