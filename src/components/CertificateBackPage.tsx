@@ -24,32 +24,27 @@ export const CertificateBackPage = ({
 }: CertificateBackPageProps) => {
   return (
     <div className="w-[210mm] h-[297mm] bg-white relative overflow-hidden flex flex-col certificate-page">
-      {/* Decorative border */}
-      <div className="absolute inset-4 border-[3px] border-[#0066CC] rounded-lg pointer-events-none"></div>
-
-      {/* Header with logo and company name */}
-      <div className="px-12 py-8 border-b-2 border-[#0066CC]">
-        <div className="flex items-center justify-center gap-4 mb-4">
+      {/* Header with logo */}
+      <div className="px-12 py-8 bg-[#E8F5E9]">
+        <div className="flex items-center justify-center mb-4">
           <img src={evitareLogo} alt="Evitare" className="h-16" />
         </div>
-        <h2 className="text-center text-lg font-bold text-[#0066CC] uppercase tracking-wide">
-          Assessoria em Segurança e Medicina do Trabalho
+        <h2 className="text-center text-xl font-bold text-[#4CAF50] uppercase tracking-wide">
+          Grade Curricular
         </h2>
       </div>
 
-      <div className="flex-1 px-12 py-6 flex flex-col">
-        {/* Instructor Info */}
-        <div className="bg-gradient-to-r from-blue-50 to-blue-100 border-2 border-[#0066CC] rounded-lg p-6 mb-6 shadow-md">
-          <div className="text-center mb-4">
-            <h3 className="text-xl font-bold text-[#0066CC] mb-2">{instructorName}</h3>
-          </div>
-          <div className="text-sm text-gray-800 space-y-1">
+      <div className="flex-1 px-12 py-8 flex flex-col">
+        {/* Instructor Info - Simple list */}
+        <div className="mb-8">
+          <h3 className="text-lg font-bold text-[#333333] mb-3">{instructorName}</h3>
+          <div className="text-sm text-[#666666] space-y-1">
             {instructorCredentials.split('\n').map((line, index) => (
-              <p key={index} className="font-semibold">
+              <p key={index}>
                 {line.includes('TÉCNICO') || line.includes('BOMBEIRO') || line.includes('CIVIL') ? (
-                  <span className="text-[#0066CC]">• {line}</span>
+                  <span>• {line}</span>
                 ) : (
-                  <span className="text-gray-700">{line}</span>
+                  <span>{line}</span>
                 )}
               </p>
             ))}
@@ -57,58 +52,47 @@ export const CertificateBackPage = ({
         </div>
 
         {/* Course Content */}
-        <div className="mb-6 flex-1">
-          <h3 className="text-xl font-bold mb-4 text-[#0066CC] border-b-2 border-[#0066CC] pb-2">
-            Conteúdo Programático do Curso:
-          </h3>
-          <ul className="space-y-2 text-sm">
+        <div className="mb-8 flex-1">
+          <ul className="space-y-2 text-sm text-[#333333]">
             {courseCurriculum.map((item, index) => (
-              <li key={index} className="flex items-start gap-3 text-gray-800">
-                <span className="text-[#0066CC] font-bold text-lg">•</span>
+              <li key={index} className="flex items-start gap-2">
+                <span className="text-[#4CAF50] font-bold">•</span>
                 <span className="leading-relaxed">{item}</span>
               </li>
             ))}
           </ul>
         </div>
 
-        {/* Student Status */}
-        <div className="border-4 border-[#0066CC] rounded-lg p-6 mb-6 bg-white shadow-lg">
-          <h3 className="text-xl font-bold mb-4 text-center text-[#0066CC] uppercase tracking-wide">
-            SITUAÇÃO DO ALUNO
-          </h3>
-          <div className="flex items-center justify-between">
+        {/* Student Status - Inline text */}
+        <div className="border-t-2 border-[#E0E0E0] pt-6">
+          <div className="flex items-center justify-between text-sm">
             <div className="flex items-center gap-4">
+              <span className="font-semibold text-[#666666]">SITUAÇÃO:</span>
               {studentStatus === 'APROVADO' ? (
-                <>
-                  <CheckCircle2 className="w-12 h-12 text-[#00CC66]" strokeWidth={3} />
-                  <span className="text-3xl font-bold text-[#00CC66]">APROVADO</span>
-                </>
+                <span className="font-bold text-[#4CAF50] text-lg">APROVADO</span>
               ) : (
-                <>
-                  <XCircle className="w-12 h-12 text-[#CC0000]" strokeWidth={3} />
-                  <span className="text-3xl font-bold text-[#CC0000]">REPROVADO</span>
-                </>
+                <span className="font-bold text-[#CC0000] text-lg">REPROVADO</span>
               )}
             </div>
-            <div className="text-right bg-gray-50 px-6 py-4 rounded-lg border-2 border-gray-300">
-              <p className="text-sm text-gray-600 font-semibold mb-1">Aproveitamento</p>
-              <p className="text-3xl font-bold text-[#0066CC]">{studentGrade}</p>
+            <div className="flex items-center gap-2">
+              <span className="font-semibold text-[#666666]">APROVEITAMENTO:</span>
+              <span className="font-bold text-[#333333] text-lg">{studentGrade}</span>
             </div>
           </div>
         </div>
 
         {/* Validity Text */}
-        <div className="bg-gradient-to-r from-yellow-100 to-yellow-200 border-l-4 border-[#FFD700] rounded p-4 shadow-md">
-          <p className="text-sm text-gray-800 italic leading-relaxed">
-            <span className="font-bold text-yellow-800">⚠ IMPORTANTE:</span> {validityText}
+        <div className="bg-[#FFF9C4] border-l-4 border-[#FDD835] rounded p-4 mt-6">
+          <p className="text-sm text-[#333333] leading-relaxed">
+            <span className="font-bold">⚠ IMPORTANTE:</span> {validityText}
           </p>
         </div>
       </div>
 
       {/* Footer */}
-      <div className="bg-gradient-to-r from-gray-100 to-gray-200 px-12 py-4 border-t-2 border-[#0066CC]">
+      <div className="bg-[#F5F5F5] px-12 py-4">
         <div className="text-center">
-          <p className="text-xs text-gray-600">© 2025 EVITARE - Todos os direitos reservados</p>
+          <p className="text-xs text-[#999999]">© 2025 EVITARE - Todos os direitos reservados</p>
         </div>
       </div>
     </div>
