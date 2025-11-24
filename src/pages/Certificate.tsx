@@ -6,6 +6,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Printer, Shield, XCircle } from "lucide-react";
 import Header from "@/components/Header";
 import CertificateTemplate from "@/components/CertificateTemplate";
+import { CertificateBackPage } from "@/components/CertificateBackPage";
 
 const Certificate = () => {
   const { registrationNumber } = useParams();
@@ -101,8 +102,9 @@ const Certificate = () => {
             </Button>
           </div>
 
-          {/* Certificate Display */}
-          <div className="print:mt-0">
+          {/* Certificate Display - 2 Pages */}
+          <div className="print:mt-0 space-y-0">
+            {/* Page 1 */}
             <CertificateTemplate
               studentName={certificate.student_name}
               courseName={certificate.course_name}
@@ -114,6 +116,22 @@ const Certificate = () => {
               issueLocation={certificate.issue_location}
               registrationNumber={certificate.registration_number}
               archiveCode={certificate.archive_code}
+              courseLogo={certificate.course_logo_url}
+            />
+            
+            {/* Page Break */}
+            <div className="page-break" />
+            
+            {/* Page 2 */}
+            <CertificateBackPage
+              studentName={certificate.student_name}
+              courseName={certificate.course_name}
+              instructorName={certificate.instructor_name || 'ISMAEL S. FERREIRA'}
+              instructorCredentials={certificate.instructor_credentials || 'Técnico em Segurança do Trabalho - Reg. MTESC N° 07.0.00008-5/SC\nBombeiro Profissional Civil - CBM-SC\nInstrutores Credenciados'}
+              courseCurriculum={certificate.course_curriculum || []}
+              studentStatus={certificate.student_status || 'APROVADO'}
+              studentGrade={certificate.student_grade || '70% ACIMA'}
+              validityText={certificate.validity_text || 'Este certificado tem validade de 02 (DOIS ANOS) contado a partir da data de emissão, ou ocorrendo sua revisão, o que prevalecer (conforme item 34.3.3 da NR-34).'}
             />
           </div>
 
@@ -209,6 +227,19 @@ const Certificate = () => {
             box-shadow: none !important;
             margin: 0 !important;
             padding: 20mm !important;
+          }
+          
+          .certificate-page {
+            box-shadow: none !important;
+            margin: 0 !important;
+          }
+          
+          .page-break {
+            page-break-after: always;
+            break-after: page;
+            height: 0;
+            margin: 0;
+            padding: 0;
           }
           
           @page {

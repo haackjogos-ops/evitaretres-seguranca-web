@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "@/components/ui/alert-dialog";
@@ -30,15 +31,26 @@ export const CertificatesTab = () => {
     registration_number: "",
     issue_location: "Turvo",
     issue_date: new Date().toISOString().split('T')[0],
+    course_logo_url: "",
+    instructor_name: "ISMAEL S. FERREIRA",
+    instructor_credentials: "Técnico em Segurança do Trabalho - Reg. MTESC N° 07.0.00008-5/SC\nBombeiro Profissional Civil - CBM-SC\nInstrutores Credenciados",
+    course_curriculum: "",
+    student_status: "APROVADO",
+    student_grade: "70% ACIMA",
+    validity_text: "Este certificado tem validade de 02 (DOIS ANOS) contado a partir da data de emissão, ou ocorrendo sua revisão, o que prevalecer (conforme item 34.3.3 da NR-34).",
   });
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    const submitData = {
+      ...formData,
+      course_curriculum: formData.course_curriculum.split('\n').filter(line => line.trim()),
+    };
     if (editingId) {
-      updateCertificate({ id: editingId, ...formData });
+      updateCertificate({ id: editingId, ...submitData });
       setEditingId(null);
     } else {
-      createCertificate(formData);
+      createCertificate(submitData);
     }
     setIsModalOpen(false);
     resetForm();
@@ -56,6 +68,13 @@ export const CertificatesTab = () => {
       registration_number: "",
       issue_location: "Turvo",
       issue_date: new Date().toISOString().split('T')[0],
+      course_logo_url: "",
+      instructor_name: "ISMAEL S. FERREIRA",
+      instructor_credentials: "Técnico em Segurança do Trabalho - Reg. MTESC N° 07.0.00008-5/SC\nBombeiro Profissional Civil - CBM-SC\nInstrutores Credenciados",
+      course_curriculum: "",
+      student_status: "APROVADO",
+      student_grade: "70% ACIMA",
+      validity_text: "Este certificado tem validade de 02 (DOIS ANOS) contado a partir da data de emissão, ou ocorrendo sua revisão, o que prevalecer (conforme item 34.3.3 da NR-34).",
     });
   };
 
@@ -71,6 +90,13 @@ export const CertificatesTab = () => {
       registration_number: certificate.registration_number,
       issue_location: certificate.issue_location,
       issue_date: certificate.issue_date,
+      course_logo_url: certificate.course_logo_url || "",
+      instructor_name: certificate.instructor_name || "ISMAEL S. FERREIRA",
+      instructor_credentials: certificate.instructor_credentials || "Técnico em Segurança do Trabalho - Reg. MTESC N° 07.0.00008-5/SC\nBombeiro Profissional Civil - CBM-SC\nInstrutores Credenciados",
+      course_curriculum: Array.isArray(certificate.course_curriculum) ? certificate.course_curriculum.join('\n') : "",
+      student_status: certificate.student_status || "APROVADO",
+      student_grade: certificate.student_grade || "70% ACIMA",
+      validity_text: certificate.validity_text || "Este certificado tem validade de 02 (DOIS ANOS) contado a partir da data de emissão, ou ocorrendo sua revisão, o que prevalecer (conforme item 34.3.3 da NR-34).",
     });
     setEditingId(certificate.id);
     setIsModalOpen(true);
@@ -222,17 +248,97 @@ export const CertificatesTab = () => {
                   />
                 </div>
 
-                <div>
-                  <Label htmlFor="issue_date">Data de Emissão *</Label>
-                  <Input
-                    id="issue_date"
-                    type="date"
-                    value={formData.issue_date}
-                    onChange={(e) => setFormData({ ...formData, issue_date: e.target.value })}
-                    required
-                  />
-                </div>
-              </div>
+                 <div>
+                   <Label htmlFor="issue_date">Data de Emissão *</Label>
+                   <Input
+                     id="issue_date"
+                     type="date"
+                     value={formData.issue_date}
+                     onChange={(e) => setFormData({ ...formData, issue_date: e.target.value })}
+                     required
+                   />
+                 </div>
+               </div>
+
+               {/* New Section: Page 2 Fields */}
+               <div className="border-t pt-4 mt-4">
+                 <h3 className="font-semibold text-lg mb-4">Informações da Página 2</h3>
+                 <div className="grid grid-cols-2 gap-4">
+                   <div className="col-span-2">
+                     <Label htmlFor="course_logo_url">Logo do Curso (URL)</Label>
+                     <Input
+                       id="course_logo_url"
+                       value={formData.course_logo_url}
+                       onChange={(e) => setFormData({ ...formData, course_logo_url: e.target.value })}
+                       placeholder="https://exemplo.com/logo.png"
+                     />
+                   </div>
+
+                   <div>
+                     <Label htmlFor="instructor_name">Nome do Instrutor</Label>
+                     <Input
+                       id="instructor_name"
+                       value={formData.instructor_name}
+                       onChange={(e) => setFormData({ ...formData, instructor_name: e.target.value })}
+                     />
+                   </div>
+
+                   <div>
+                     <Label htmlFor="student_status">Status do Aluno</Label>
+                     <Select value={formData.student_status} onValueChange={(value) => setFormData({ ...formData, student_status: value })}>
+                       <SelectTrigger>
+                         <SelectValue />
+                       </SelectTrigger>
+                       <SelectContent>
+                         <SelectItem value="APROVADO">APROVADO</SelectItem>
+                         <SelectItem value="REPROVADO">REPROVADO</SelectItem>
+                       </SelectContent>
+                     </Select>
+                   </div>
+
+                   <div className="col-span-2">
+                     <Label htmlFor="instructor_credentials">Credenciais do Instrutor</Label>
+                     <Textarea
+                       id="instructor_credentials"
+                       className="min-h-[80px]"
+                       value={formData.instructor_credentials}
+                       onChange={(e) => setFormData({ ...formData, instructor_credentials: e.target.value })}
+                       placeholder="Técnico em Segurança..."
+                     />
+                   </div>
+
+                   <div className="col-span-2">
+                     <Label htmlFor="course_curriculum">Conteúdo Programático (um item por linha)</Label>
+                     <Textarea
+                       id="course_curriculum"
+                       className="min-h-[120px]"
+                       value={formData.course_curriculum}
+                       onChange={(e) => setFormData({ ...formData, course_curriculum: e.target.value })}
+                       placeholder="Introdução à NR-35&#10;Análise de Riscos&#10;Equipamentos de Proteção..."
+                     />
+                   </div>
+
+                   <div>
+                     <Label htmlFor="student_grade">Aproveitamento</Label>
+                     <Input
+                       id="student_grade"
+                       value={formData.student_grade}
+                       onChange={(e) => setFormData({ ...formData, student_grade: e.target.value })}
+                       placeholder="70% ACIMA"
+                     />
+                   </div>
+
+                   <div className="col-span-2">
+                     <Label htmlFor="validity_text">Texto de Validade</Label>
+                     <Textarea
+                       id="validity_text"
+                       className="min-h-[60px]"
+                       value={formData.validity_text}
+                       onChange={(e) => setFormData({ ...formData, validity_text: e.target.value })}
+                     />
+                   </div>
+                 </div>
+               </div>
 
               <div className="flex justify-end gap-2">
                 <Button type="button" variant="outline" onClick={() => setIsModalOpen(false)}>

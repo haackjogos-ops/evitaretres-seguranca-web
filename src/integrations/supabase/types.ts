@@ -77,60 +77,81 @@ export type Database = {
       certificates: {
         Row: {
           archive_code: string
+          course_curriculum: string[] | null
           course_date: string
           course_hours: string
+          course_logo_url: string | null
           course_name: string
           course_norm: string
           course_type: string
           created_at: string | null
           id: string
+          instructor_credentials: string | null
+          instructor_name: string | null
           is_active: boolean | null
           issue_date: string
           issue_location: string
           pdf_url: string | null
           qr_code_url: string | null
           registration_number: string
+          student_grade: string | null
           student_name: string
+          student_status: string | null
           updated_at: string | null
           updated_by: string | null
+          validity_text: string | null
         }
         Insert: {
           archive_code: string
+          course_curriculum?: string[] | null
           course_date: string
           course_hours: string
+          course_logo_url?: string | null
           course_name: string
           course_norm: string
           course_type: string
           created_at?: string | null
           id?: string
+          instructor_credentials?: string | null
+          instructor_name?: string | null
           is_active?: boolean | null
           issue_date: string
           issue_location?: string
           pdf_url?: string | null
           qr_code_url?: string | null
           registration_number: string
+          student_grade?: string | null
           student_name: string
+          student_status?: string | null
           updated_at?: string | null
           updated_by?: string | null
+          validity_text?: string | null
         }
         Update: {
           archive_code?: string
+          course_curriculum?: string[] | null
           course_date?: string
           course_hours?: string
+          course_logo_url?: string | null
           course_name?: string
           course_norm?: string
           course_type?: string
           created_at?: string | null
           id?: string
+          instructor_credentials?: string | null
+          instructor_name?: string | null
           is_active?: boolean | null
           issue_date?: string
           issue_location?: string
           pdf_url?: string | null
           qr_code_url?: string | null
           registration_number?: string
+          student_grade?: string | null
           student_name?: string
+          student_status?: string | null
           updated_at?: string | null
           updated_by?: string | null
+          validity_text?: string | null
         }
         Relationships: []
       }

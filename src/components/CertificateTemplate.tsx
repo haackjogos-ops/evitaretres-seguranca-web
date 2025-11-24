@@ -14,6 +14,7 @@ interface CertificateTemplateProps {
   issueLocation: string;
   registrationNumber: string;
   archiveCode: string;
+  courseLogo?: string;
 }
 
 const CertificateTemplate = ({
@@ -27,9 +28,10 @@ const CertificateTemplate = ({
   issueLocation,
   registrationNumber,
   archiveCode,
+  courseLogo,
 }: CertificateTemplateProps) => {
   return (
-    <div className="certificate-container bg-white text-black p-8 max-w-[210mm] min-h-[297mm] mx-auto shadow-2xl print:shadow-none relative">
+    <div className="certificate-container certificate-page bg-white text-black p-8 w-[210mm] h-[297mm] mx-auto shadow-2xl print:shadow-none relative">
       {/* Decorative Icons - Top Left and Right */}
       <div className="absolute top-4 left-4 opacity-20">
         <img src={certificateIcon1} alt="" className="w-16 h-16" />
@@ -58,9 +60,16 @@ const CertificateTemplate = ({
 
       {/* Main Content */}
       <div className="space-y-6 text-center mb-8 px-8">
+        {/* Course Logo */}
+        {courseLogo && (
+          <div className="flex justify-center my-6">
+            <img src={courseLogo} alt={courseName} className="h-24 object-contain" />
+          </div>
+        )}
+        
         <p className="text-base leading-relaxed text-foreground">
           Certificamos que o senhor (a),{" "}
-          <span className="font-bold text-foreground text-lg">{studentName}</span>, 
+          <span className="font-bold text-lg" style={{ color: '#0066CC' }}>{studentName}</span>, 
           participou e concluiu com êxito o <span className="font-bold">{courseType}</span> de:
         </p>
         
