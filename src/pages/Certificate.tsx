@@ -4,16 +4,20 @@ import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Printer, Shield, XCircle, Download, CheckCircle2 } from "lucide-react";
+import { Printer, Shield, XCircle, Download, CheckCircle2, Loader2 } from "lucide-react";
 import Header from "@/components/Header";
 import CertificateTemplate from "@/components/CertificateTemplate";
 import { CertificateBackPage } from "@/components/CertificateBackPage";
+import html2pdf from "html2pdf.js";
+import { useToast } from "@/hooks/use-toast";
 
 const Certificate = () => {
   const { registrationNumber } = useParams();
   const [certificate, setCertificate] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [downloadingPdf, setDownloadingPdf] = useState(false);
+  const { toast } = useToast();
 
   useEffect(() => {
     const fetchCertificate = async () => {
@@ -55,9 +59,60 @@ const Certificate = () => {
     window.print();
   };
 
-  const handleDownload = () => {
-    // Trigger print dialog with instructions to save as PDF
-    window.print();
+  const handleDownload = async () => {
+    if (!certificate) return;
+    
+    setDownloadingPdf(true);
+    
+    try {
+      toast({
+        title: "Gerando PDF...",
+        description: "Por favor aguarde, isso pode levar alguns segundos.",
+      });
+
+      // Get the certificate content
+      const element = document.getElementById('certificate-content');
+      
+      if (!element) {
+        throw new Error('Elemento do certificado não encontrado');
+      }
+
+      // Configure html2pdf options
+      const opt = {
+        margin: 0,
+        filename: `Certificado-${certificate.registration_number}.pdf`,
+        image: { type: 'jpeg' as const, quality: 0.98 },
+        html2canvas: { 
+          scale: 2,
+          useCORS: true,
+          logging: false,
+          letterRendering: true
+        },
+        jsPDF: { 
+          unit: 'mm', 
+          format: 'a4', 
+          orientation: 'portrait' as const
+        },
+        pagebreak: { mode: ['avoid-all', 'css', 'legacy'] }
+      };
+
+      // Generate PDF
+      await html2pdf().set(opt).from(element).save();
+
+      toast({
+        title: "PDF baixado com sucesso!",
+        description: "Verifique sua pasta de downloads.",
+      });
+    } catch (error) {
+      console.error('Erro ao gerar PDF:', error);
+      toast({
+        title: "Erro ao gerar PDF",
+        description: "Tente usar o botão Imprimir e salve como PDF.",
+        variant: "destructive",
+      });
+    } finally {
+      setDownloadingPdf(false);
+    }
   };
 
   if (error || !certificate) {
@@ -93,9 +148,23 @@ const Certificate = () => {
             </Badge>
             
             <div className="flex gap-3">
-              <Button onClick={handleDownload} size="lg" className="gap-2">
-                <Download className="h-5 w-5" />
-                Baixar PDF
+              <Button 
+                onClick={handleDownload} 
+                size="lg" 
+                className="gap-2"
+                disabled={downloadingPdf}
+              >
+                {downloadingPdf ? (
+                  <>
+                    <Loader2 className="h-5 w-5 animate-spin" />
+                    Gerando PDF...
+                  </>
+                ) : (
+                  <>
+                    <Download className="h-5 w-5" />
+                    Baixar PDF
+                  </>
+                )}
               </Button>
               <Button onClick={handlePrint} variant="outline" size="lg" className="gap-2">
                 <Printer className="h-5 w-5" />
@@ -105,7 +174,7 @@ const Certificate = () => {
           </div>
 
           {/* Certificate Display - 2 Pages */}
-          <div className="print:mt-0 space-y-0">
+          <div id="certificate-content" className="print:mt-0 space-y-0">
             {/* Page 1 */}
             <CertificateTemplate
               studentName={certificate.student_name}
