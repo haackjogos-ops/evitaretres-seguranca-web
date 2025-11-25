@@ -43,10 +43,18 @@ export const PdfEditor = ({ open, onOpenChange, pdfUrl, onSave }: PdfEditorProps
   const loadPdf = async () => {
     try {
       setLoading(true);
+      console.log("Carregando PDF:", pdfUrl);
 
-      // Carregar PDF
-      const loadingTask = pdfjsLib.getDocument(pdfUrl);
+      // Carregar PDF com configuração de CORS
+      const loadingTask = pdfjsLib.getDocument({
+        url: pdfUrl,
+        cMapUrl: `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjsLib.version}/cmaps/`,
+        cMapPacked: true,
+      });
+      
       const pdf = await loadingTask.promise;
+      console.log("PDF carregado com sucesso, páginas:", pdf.numPages);
+      
       const page = await pdf.getPage(1);
 
       // Configurar escala
@@ -87,12 +95,16 @@ export const PdfEditor = ({ open, onOpenChange, pdfUrl, onSave }: PdfEditorProps
         fabricCanvasRef.current.renderAll();
       }
 
+      console.log("PDF renderizado no canvas");
       setLoading(false);
     } catch (error: any) {
       console.error("Erro ao carregar PDF:", error);
+      console.error("URL do PDF:", pdfUrl);
+      console.error("Detalhes do erro:", error.name, error.message);
+      
       toast({
         title: "Erro ao carregar PDF",
-        description: error.message,
+        description: `${error.message}. Verifique se o arquivo é um PDF válido.`,
         variant: "destructive",
       });
       setLoading(false);
