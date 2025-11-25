@@ -14,7 +14,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "@/components/ui/alert-dialog";
 
 export const MedicineTab = () => {
-  const { documents, exams, isLoading, refetch } = useMedicineServices();
+  const { services, documents, exams, isLoading, refetch } = useMedicineServices();
   const { toast } = useToast();
   const [modalOpen, setModalOpen] = useState(false);
   const [deleteDialog, setDeleteDialog] = useState<string | null>(null);
@@ -33,9 +33,9 @@ export const MedicineTab = () => {
     localStorage.setItem("admin-view-mode-medicine", mode);
   };
 
-  const handleAdd = (type: "document" | "exam") => {
+  const handleAdd = (type: "service" | "document" | "exam") => {
     setCurrentItem(null);
-    setFormData({ title: "", section_type: type });
+    setFormData({ title: "", description: "", section_type: type });
     setModalOpen(true);
   };
 
@@ -52,9 +52,10 @@ export const MedicineTab = () => {
     }
 
     setSaving(true);
-    const allItems = formData.section_type === "document" ? documents : exams;
+    const allItems = formData.section_type === "service" ? services : (formData.section_type === "document" ? documents : exams);
     const data = {
       title: formData.title,
+      description: formData.description || null,
       section_type: formData.section_type,
       display_order: currentItem ? currentItem.display_order : (allItems.length > 0 ? Math.max(...allItems.map(i => i.display_order)) + 1 : 0),
       is_active: currentItem ? currentItem.is_active : true,
@@ -107,7 +108,7 @@ export const MedicineTab = () => {
     if (!error) refetch();
   };
 
-  const renderSection = (items: any[], title: string, type: "document" | "exam") => (
+  const renderSection = (items: any[], title: string, type: "service" | "document" | "exam") => (
     <Card>
       <CardHeader>
         <div className="flex justify-between items-center">
@@ -156,6 +157,7 @@ export const MedicineTab = () => {
         <div className="text-center py-8 text-muted-foreground">Carregando...</div>
       ) : (
         <div className="space-y-4">
+          {renderSection(services, "Atendimento Personalizado", "service")}
           {renderSection(documents, "Documentos", "document")}
           {renderSection(exams, "Exames", "exam")}
         </div>
@@ -180,6 +182,7 @@ export const MedicineTab = () => {
                   <SelectValue placeholder="Selecione o tipo" />
                 </SelectTrigger>
                 <SelectContent>
+                  <SelectItem value="service">Atendimento Personalizado</SelectItem>
                   <SelectItem value="document">Documento</SelectItem>
                   <SelectItem value="exam">Exame</SelectItem>
                 </SelectContent>
@@ -192,6 +195,15 @@ export const MedicineTab = () => {
                 value={formData.title || ""}
                 onChange={(e) => setFormData({ ...formData, title: e.target.value })}
                 placeholder="Digite o título"
+              />
+            </div>
+            
+            <div className="space-y-2">
+              <Label>Descrição</Label>
+              <Input
+                value={formData.description || ""}
+                onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+                placeholder="Digite a descrição (opcional)"
               />
             </div>
           </div>

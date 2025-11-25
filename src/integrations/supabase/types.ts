@@ -236,6 +236,7 @@ export type Database = {
       medicine_services: {
         Row: {
           created_at: string | null
+          description: string | null
           display_order: number
           id: string
           is_active: boolean | null
@@ -245,6 +246,7 @@ export type Database = {
         }
         Insert: {
           created_at?: string | null
+          description?: string | null
           display_order?: number
           id?: string
           is_active?: boolean | null
@@ -254,6 +256,7 @@ export type Database = {
         }
         Update: {
           created_at?: string | null
+          description?: string | null
           display_order?: number
           id?: string
           is_active?: boolean | null

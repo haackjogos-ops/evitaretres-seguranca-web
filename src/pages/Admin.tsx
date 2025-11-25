@@ -9,7 +9,7 @@ import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useToast } from "@/hooks/use-toast";
-import { Upload, Palette, Phone, Bookmark, Image, Home, Info, GraduationCap, BookOpen, Award, Activity, Stethoscope, LogOut, QrCode, FileText, MessageSquare, HelpCircle, Menu } from "lucide-react";
+import { Upload, Palette, Phone, Bookmark, Image, Home, Info, GraduationCap, BookOpen, Award, Activity, Stethoscope, Heart, LogOut, QrCode, FileText, MessageSquare, HelpCircle, Menu } from "lucide-react";
 import Header from "@/components/Header";
 import { ColorPicker } from "@/components/admin/ColorPicker";
 import { ServicesTab } from "@/components/admin/tabs/ServicesTab";
@@ -223,8 +223,8 @@ const Admin = () => {
                 <span className="hidden sm:inline">Monitoramento</span>
               </TabsTrigger>
               <TabsTrigger value="medicine" className="gap-2 py-3">
-                <Stethoscope className="h-5 w-5" />
-                <span className="hidden sm:inline">Medicina</span>
+                <Heart className="h-5 w-5" />
+                <span className="hidden sm:inline">Seg. Trabalho e Medicina</span>
               </TabsTrigger>
               <TabsTrigger value="certificates" className="gap-2 py-3">
                 <Award className="h-5 w-5" />

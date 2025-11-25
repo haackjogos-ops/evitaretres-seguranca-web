@@ -1,10 +1,23 @@
 import Header from "@/components/Header";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useSiteSettings } from "@/hooks/useSiteSettings";
+import { useMedicineServices } from "@/hooks/useMedicineServices";
 import { UserCheck, FileText, Stethoscope } from "lucide-react";
 
 const Medicine = () => {
   const { settings } = useSiteSettings();
+  const { services, documents, exams, isLoading } = useMedicineServices();
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-background">
+        <Header />
+        <div className="container mx-auto px-4 py-16 text-center">
+          <p className="text-muted-foreground">Carregando...</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-background">
@@ -32,26 +45,12 @@ const Medicine = () => {
               </CardHeader>
               <CardContent>
                 <ul className="space-y-3">
-                  <li className="flex items-start gap-2">
-                    <div className="h-2 w-2 rounded-full bg-primary mt-2 flex-shrink-0" />
-                    <span className="text-muted-foreground">Cursos e treinamentos inloco no conforto de seu ambiente e data e horário desejado</span>
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <div className="h-2 w-2 rounded-full bg-primary mt-2 flex-shrink-0" />
-                    <span className="text-muted-foreground">Visitas técnicas periódicas com relatórios online em tempo real em seu smartphone</span>
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <div className="h-2 w-2 rounded-full bg-primary mt-2 flex-shrink-0" />
-                    <span className="text-muted-foreground">Atendimento em tempo integral presencial ou remoto</span>
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <div className="h-2 w-2 rounded-full bg-primary mt-2 flex-shrink-0" />
-                    <span className="text-muted-foreground">Implantação e controle para atendimento na NOVA NR01 Riscos psicossociais</span>
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <div className="h-2 w-2 rounded-full bg-primary mt-2 flex-shrink-0" />
-                    <span className="text-muted-foreground">Tratamento diferenciado de nossa equipe</span>
-                  </li>
+                  {services.map((service) => (
+                    <li key={service.id} className="flex items-start gap-2">
+                      <div className="h-2 w-2 rounded-full bg-primary mt-2 flex-shrink-0" />
+                      <span className="text-muted-foreground">{service.description || service.title}</span>
+                    </li>
+                  ))}
                 </ul>
               </CardContent>
             </Card>
@@ -68,38 +67,14 @@ const Medicine = () => {
               </CardHeader>
               <CardContent>
                 <ul className="space-y-3">
-                  <li className="flex items-start gap-2">
-                    <div className="h-2 w-2 rounded-full bg-primary mt-2 flex-shrink-0" />
-                    <span className="text-muted-foreground"><strong>PGR</strong> - Programa de Gerenciamento de Riscos</span>
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <div className="h-2 w-2 rounded-full bg-primary mt-2 flex-shrink-0" />
-                    <span className="text-muted-foreground"><strong>LTCAT</strong> - Laudo Técnico das condições Ambientais de Trabalho</span>
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <div className="h-2 w-2 rounded-full bg-primary mt-2 flex-shrink-0" />
-                    <span className="text-muted-foreground"><strong>PCMSO</strong> - Programa de Controle Médico de Saúde Ocupacional</span>
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <div className="h-2 w-2 rounded-full bg-primary mt-2 flex-shrink-0" />
-                    <span className="text-muted-foreground"><strong>CAT</strong> - Comunicado de Acidente de Trabalho</span>
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <div className="h-2 w-2 rounded-full bg-primary mt-2 flex-shrink-0" />
-                    <span className="text-muted-foreground"><strong>PPP</strong> - Perfil Profissiográfico Previdenciário</span>
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <div className="h-2 w-2 rounded-full bg-primary mt-2 flex-shrink-0" />
-                    <span className="text-muted-foreground"><strong>AET</strong> - Análise Ergonômica do Trabalho</span>
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <div className="h-2 w-2 rounded-full bg-primary mt-2 flex-shrink-0" />
-                    <span className="text-muted-foreground"><strong>APRE</strong> - Análise Preliminar de Risco Ergonômico</span>
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <div className="h-2 w-2 rounded-full bg-primary mt-2 flex-shrink-0" />
-                    <span className="text-muted-foreground"><strong>FRE</strong> - Ficha de registro de EPI</span>
-                  </li>
+                  {documents.map((doc) => (
+                    <li key={doc.id} className="flex items-start gap-2">
+                      <div className="h-2 w-2 rounded-full bg-primary mt-2 flex-shrink-0" />
+                      <span className="text-muted-foreground">
+                        <strong>{doc.title}</strong> - {doc.description}
+                      </span>
+                    </li>
+                  ))}
                 </ul>
               </CardContent>
             </Card>
@@ -116,18 +91,14 @@ const Medicine = () => {
               </CardHeader>
               <CardContent>
                 <ul className="space-y-3">
-                  <li className="flex items-start gap-2">
-                    <div className="h-2 w-2 rounded-full bg-primary mt-2 flex-shrink-0" />
-                    <span className="text-muted-foreground"><strong>ASO</strong> - Atestados de saúde ocupacionais: Admissão, Mudança de função/riscos, Retorno ao trabalho, demissão e abono de atestados</span>
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <div className="h-2 w-2 rounded-full bg-primary mt-2 flex-shrink-0" />
-                    <span className="text-muted-foreground"><strong>COMPLEMENTARES</strong> - Audiometria, Espirometria, Eletrocardiograma, Eletroencefalograma, Acuidade visual</span>
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <div className="h-2 w-2 rounded-full bg-primary mt-2 flex-shrink-0" />
-                    <span className="text-muted-foreground"><strong>LABORATORIAIS</strong> - Encaminhamento interno a parceiros</span>
-                  </li>
+                  {exams.map((exam) => (
+                    <li key={exam.id} className="flex items-start gap-2">
+                      <div className="h-2 w-2 rounded-full bg-primary mt-2 flex-shrink-0" />
+                      <span className="text-muted-foreground">
+                        <strong>{exam.title}</strong> - {exam.description}
+                      </span>
+                    </li>
+                  ))}
                 </ul>
               </CardContent>
             </Card>
