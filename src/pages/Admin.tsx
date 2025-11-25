@@ -181,7 +181,7 @@ const Admin = () => {
 
         <Tabs defaultValue="colors" className="space-y-8">
           <div className="bg-background border rounded-lg py-6 px-4 shadow-sm overflow-x-auto">
-            <TabsList className="grid w-full grid-cols-4 sm:grid-cols-7 lg:grid-cols-15 gap-3 bg-transparent min-h-[60px]">
+            <TabsList className="grid w-full grid-cols-4 sm:grid-cols-8 lg:grid-cols-16 gap-3 bg-transparent min-h-[60px]">
               <TabsTrigger value="colors" className="gap-2 py-3">
                 <Palette className="h-5 w-5" />
                 <span className="hidden sm:inline">Cores</span>
@@ -208,7 +208,11 @@ const Admin = () => {
               </TabsTrigger>
               <TabsTrigger value="courses" className="gap-2 py-3">
                 <BookOpen className="h-5 w-5" />
-                <span className="hidden sm:inline">Cursos e Treinamentos</span>
+                <span className="hidden sm:inline">Cursos</span>
+              </TabsTrigger>
+              <TabsTrigger value="trainings" className="gap-2 py-3">
+                <GraduationCap className="h-5 w-5" />
+                <span className="hidden sm:inline">Seg. do Trabalho</span>
               </TabsTrigger>
               <TabsTrigger value="benefits" className="gap-2 py-3">
                 <Award className="h-5 w-5" />
@@ -567,26 +571,12 @@ const Admin = () => {
             <AboutTab />
           </TabsContent>
 
-          <TabsContent value="courses" className="space-y-6">
-            <div className="space-y-6">
-              <div>
-                <h2 className="text-2xl font-semibold mb-4 flex items-center gap-2">
-                  <BookOpen className="h-6 w-6 text-primary" />
-                  Cursos
-                </h2>
-                <CoursesTab />
-              </div>
-              
-              <Separator />
-              
-              <div>
-                <h2 className="text-2xl font-semibold mb-4 flex items-center gap-2">
-                  <GraduationCap className="h-6 w-6 text-primary" />
-                  Treinamentos
-                </h2>
-                <TrainingsTab />
-              </div>
-            </div>
+          <TabsContent value="courses">
+            <CoursesTab />
+          </TabsContent>
+
+          <TabsContent value="trainings">
+            <TrainingsTab />
           </TabsContent>
 
           <TabsContent value="benefits">
