@@ -16,7 +16,7 @@ const Header = () => {
     { path: "/", label: "Início" },
     { path: "/sobre", label: "Sobre" },
     { path: "/vantagens", label: "Vantagens" },
-    { path: "/cursos", label: "Cursos" },
+    { path: "/cursos", label: "Cursos | Treinamentos" },
     { path: "/monitoramento", label: "Monitoramento" },
     { path: "/medicina", label: "Segurança do Trabalho e Medicina" },
     { path: "/contato", label: "Contato" },
