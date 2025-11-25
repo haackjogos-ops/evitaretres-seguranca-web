@@ -91,6 +91,7 @@ export type Database = {
           is_active: boolean | null
           issue_date: string
           issue_location: string
+          pdf_type: string | null
           pdf_url: string | null
           qr_code_url: string | null
           registration_number: string
@@ -99,6 +100,7 @@ export type Database = {
           student_status: string | null
           updated_at: string | null
           updated_by: string | null
+          uploaded_pdf_url: string | null
           validity_text: string | null
         }
         Insert: {
@@ -117,6 +119,7 @@ export type Database = {
           is_active?: boolean | null
           issue_date: string
           issue_location?: string
+          pdf_type?: string | null
           pdf_url?: string | null
           qr_code_url?: string | null
           registration_number: string
@@ -125,6 +128,7 @@ export type Database = {
           student_status?: string | null
           updated_at?: string | null
           updated_by?: string | null
+          uploaded_pdf_url?: string | null
           validity_text?: string | null
         }
         Update: {
@@ -143,6 +147,7 @@ export type Database = {
           is_active?: boolean | null
           issue_date?: string
           issue_location?: string
+          pdf_type?: string | null
           pdf_url?: string | null
           qr_code_url?: string | null
           registration_number?: string
@@ -151,6 +156,7 @@ export type Database = {
           student_status?: string | null
           updated_at?: string | null
           updated_by?: string | null
+          uploaded_pdf_url?: string | null
           validity_text?: string | null
         }
         Relationships: []

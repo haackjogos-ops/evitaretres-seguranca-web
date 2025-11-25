@@ -4,7 +4,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Printer, Shield, XCircle, Download, CheckCircle2, Loader2 } from "lucide-react";
+import { Printer, Shield, XCircle, Download, CheckCircle2, Loader2, Share2 } from "lucide-react";
 import Header from "@/components/Header";
 import CertificateTemplate from "@/components/CertificateTemplate";
 import { CertificateBackPage } from "@/components/CertificateBackPage";
@@ -62,6 +62,16 @@ const Certificate = () => {
   const handleDownload = async () => {
     if (!certificate) return;
     
+    // If there's an uploaded PDF, use it directly
+    if (certificate.uploaded_pdf_url) {
+      window.open(certificate.uploaded_pdf_url, '_blank');
+      toast({
+        title: "PDF aberto",
+        description: "O certificado foi aberto em uma nova aba.",
+      });
+      return;
+    }
+    
     setDownloadingPdf(true);
     
     try {
@@ -70,14 +80,12 @@ const Certificate = () => {
         description: "Por favor aguarde, isso pode levar alguns segundos.",
       });
 
-      // Get the certificate content
       const element = document.getElementById('certificate-content');
       
       if (!element) {
         throw new Error('Elemento do certificado não encontrado');
       }
 
-      // Configure html2pdf options
       const opt = {
         margin: 0,
         filename: `Certificado-${certificate.registration_number}.pdf`,
@@ -96,7 +104,6 @@ const Certificate = () => {
         pagebreak: { mode: ['avoid-all', 'css', 'legacy'] }
       };
 
-      // Generate PDF
       await html2pdf().set(opt).from(element).save();
 
       toast({
@@ -113,6 +120,17 @@ const Certificate = () => {
     } finally {
       setDownloadingPdf(false);
     }
+  };
+
+  const shareOnWhatsApp = () => {
+    if (!certificate) return;
+    const url = `${window.location.origin}/certificado/${certificate.registration_number}`;
+    const text = `📜 Certificado de ${certificate.student_name}\n📚 ${certificate.course_name} - ${certificate.course_norm}\n🔗 Validar: ${url}`;
+    window.open(`https://wa.me/?text=${encodeURIComponent(text)}`, '_blank');
+    toast({
+      title: "Compartilhamento preparado",
+      description: "A janela do WhatsApp foi aberta.",
+    });
   };
 
   if (error || !certificate) {
@@ -140,38 +158,50 @@ const Certificate = () => {
       
       <div className="container mx-auto px-4 py-20">
         <div className="max-w-5xl mx-auto space-y-6">
-          {/* Validation Badge and Actions - Hidden on print */}
-          <div className="flex items-center justify-between gap-4 print:hidden">
-            <Badge variant="default" className="bg-green-500 hover:bg-green-600 px-4 py-2 text-base">
-              <CheckCircle2 className="w-5 h-5 mr-2" />
-              Certificado Válido
-            </Badge>
-            
-            <div className="flex gap-3">
-              <Button 
-                onClick={handleDownload} 
-                size="lg" 
-                className="gap-2"
-                disabled={downloadingPdf}
-              >
-                {downloadingPdf ? (
-                  <>
-                    <Loader2 className="h-5 w-5 animate-spin" />
-                    Gerando PDF...
-                  </>
-                ) : (
-                  <>
-                    <Download className="h-5 w-5" />
-                    Baixar PDF
-                  </>
-                )}
-              </Button>
-              <Button onClick={handlePrint} variant="outline" size="lg" className="gap-2">
-                <Printer className="h-5 w-5" />
-                Imprimir
-              </Button>
-            </div>
-          </div>
+          {/* Validation Section - Enhanced */}
+          <Card className="print:hidden bg-gradient-to-r from-green-50 to-emerald-50 border-green-200">
+            <CardContent className="pt-6">
+              <div className="flex items-center justify-center gap-3 mb-4">
+                <Shield className="w-12 h-12 text-green-600" />
+                <div className="text-center">
+                  <h1 className="text-3xl font-bold text-green-700">✓ CERTIFICADO VÁLIDO</h1>
+                  <p className="text-sm text-green-600">Este certificado é autêntico e está ativo</p>
+                </div>
+                <Shield className="w-12 h-12 text-green-600" />
+              </div>
+              
+              <div className="flex items-center justify-center gap-3 pt-4 border-t border-green-200">
+                <Button 
+                  onClick={handleDownload} 
+                  size="lg" 
+                  className="gap-2"
+                  disabled={downloadingPdf}
+                >
+                  {downloadingPdf ? (
+                    <>
+                      <Loader2 className="h-5 w-5 animate-spin" />
+                      Gerando...
+                    </>
+                  ) : (
+                    <>
+                      <Download className="h-5 w-5" />
+                      Baixar PDF
+                    </>
+                  )}
+                </Button>
+                
+                <Button onClick={shareOnWhatsApp} variant="outline" size="lg" className="gap-2">
+                  <Share2 className="h-5 w-5" />
+                  Compartilhar
+                </Button>
+                
+                <Button onClick={handlePrint} variant="outline" size="lg" className="gap-2">
+                  <Printer className="h-5 w-5" />
+                  Imprimir
+                </Button>
+              </div>
+            </CardContent>
+          </Card>
 
           {/* Certificate Display - 2 Pages */}
           <div id="certificate-content" className="print:mt-0 space-y-0">

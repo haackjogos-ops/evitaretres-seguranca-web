@@ -7,18 +7,26 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "@/components/ui/alert-dialog";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useCertificates } from "@/hooks/useCertificates";
-import { Plus, Download, Eye, Trash2, QrCode, Edit } from "lucide-react";
+import { Plus, Download, Eye, Trash2, QrCode, Edit, Share2, FileEdit } from "lucide-react";
 import { QRCodeSVG } from "qrcode.react";
+import { PdfUpload } from "../PdfUpload";
+import { PdfEditor } from "../PdfEditor";
+import { useToast } from "@/hooks/use-toast";
 
 export const CertificatesTab = () => {
   const { certificates, isLoading, createCertificate, updateCertificate, deleteCertificate } = useCertificates();
+  const { toast } = useToast();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
   const [selectedCertificate, setSelectedCertificate] = useState<any>(null);
   const [editingId, setEditingId] = useState<string | null>(null);
   const [qrDialogOpen, setQrDialogOpen] = useState(false);
   const [selectedQRCode, setSelectedQRCode] = useState<string>("");
+  const [editorDialogOpen, setEditorDialogOpen] = useState(false);
+  const [uploadedPdfUrl, setUploadedPdfUrl] = useState<string>("");
+  const [pdfType, setPdfType] = useState<"generated" | "uploaded">("generated");
 
   const [formData, setFormData] = useState({
     student_name: "",
@@ -45,6 +53,8 @@ export const CertificatesTab = () => {
     const submitData = {
       ...formData,
       course_curriculum: formData.course_curriculum.split('\n').filter(line => line.trim()),
+      uploaded_pdf_url: uploadedPdfUrl || undefined,
+      pdf_type: pdfType,
     };
     if (editingId) {
       updateCertificate({ id: editingId, ...submitData });
@@ -54,6 +64,45 @@ export const CertificatesTab = () => {
     }
     setIsModalOpen(false);
     resetForm();
+  };
+
+  const shareOnWhatsApp = (cert: any) => {
+    const url = `${window.location.origin}/certificado/${cert.registration_number}`;
+    const text = `📜 Certificado de ${cert.student_name}\n📚 ${cert.course_name} - ${cert.course_norm}\n🔗 Validar: ${url}`;
+    window.open(`https://wa.me/?text=${encodeURIComponent(text)}`, '_blank');
+    toast({
+      title: "Compartilhamento preparado",
+      description: "A janela do WhatsApp foi aberta.",
+    });
+  };
+
+  const downloadQRCode = (registrationNumber: string) => {
+    const svg = document.getElementById(`qr-${registrationNumber}`);
+    if (!svg) return;
+
+    const svgData = new XMLSerializer().serializeToString(svg);
+    const canvas = document.createElement('canvas');
+    const ctx = canvas.getContext('2d');
+    const img = new Image();
+    
+    img.onload = () => {
+      canvas.width = img.width;
+      canvas.height = img.height;
+      ctx?.drawImage(img, 0, 0);
+      const pngFile = canvas.toDataURL('image/png');
+      
+      const downloadLink = document.createElement('a');
+      downloadLink.download = `QRCode-${registrationNumber}.png`;
+      downloadLink.href = pngFile;
+      downloadLink.click();
+      
+      toast({
+        title: "QR Code baixado",
+        description: "O arquivo PNG foi salvo.",
+      });
+    };
+    
+    img.src = 'data:image/svg+xml;base64,' + btoa(svgData);
   };
 
   const resetForm = () => {
@@ -76,6 +125,8 @@ export const CertificatesTab = () => {
       student_grade: "70% ACIMA",
       validity_text: "Este certificado tem validade de 02 (DOIS ANOS) contado a partir da data de emissão, ou ocorrendo sua revisão, o que prevalecer (conforme item 34.3.3 da NR-34).",
     });
+    setUploadedPdfUrl("");
+    setPdfType("generated");
   };
 
   const handleEdit = (certificate: any) => {
@@ -138,11 +189,34 @@ export const CertificatesTab = () => {
               Novo Certificado
             </Button>
           </DialogTrigger>
-          <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
+          <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
             <DialogHeader>
               <DialogTitle>{editingId ? 'Editar' : 'Novo'} Certificado</DialogTitle>
             </DialogHeader>
             <form onSubmit={handleSubmit} className="space-y-4">
+              {/* PDF Type Selection */}
+              <Tabs value={pdfType} onValueChange={(v) => setPdfType(v as "generated" | "uploaded")} className="w-full">
+                <TabsList className="grid w-full grid-cols-2">
+                  <TabsTrigger value="generated">📝 Gerar Certificado</TabsTrigger>
+                  <TabsTrigger value="uploaded">📤 Enviar PDF</TabsTrigger>
+                </TabsList>
+                
+                <TabsContent value="uploaded" className="mt-4">
+                  <PdfUpload 
+                    onUploadComplete={setUploadedPdfUrl}
+                    certificateId={editingId || undefined}
+                  />
+                  {uploadedPdfUrl && (
+                    <p className="text-sm text-green-600 mt-2">✓ PDF enviado com sucesso!</p>
+                  )}
+                </TabsContent>
+                
+                <TabsContent value="generated">
+                  <p className="text-sm text-muted-foreground">
+                    Preencha os dados abaixo e o certificado será gerado automaticamente.
+                  </p>
+                </TabsContent>
+              </Tabs>
               <div className="grid grid-cols-2 gap-4">
                 <div className="col-span-2">
                   <Label htmlFor="student_name">Nome do Aluno *</Label>
@@ -370,24 +444,29 @@ export const CertificatesTab = () => {
               </div>
 
               <div className="flex flex-wrap gap-2">
+                <Button size="sm" variant="outline" onClick={() => window.open(`/certificado/${cert.registration_number}`, '_blank')}>
+                  <Eye className="h-3 w-3 mr-1" />
+                  Ver
+                </Button>
+
+                <Button size="sm" variant="outline" onClick={() => shareOnWhatsApp(cert)}>
+                  <Share2 className="h-3 w-3 mr-1" />
+                  WhatsApp
+                </Button>
+
+                {cert.qr_code_url && (
+                  <Button size="sm" variant="outline" onClick={() => showQRCode(cert.registration_number)}>
+                    <QrCode className="h-3 w-3 mr-1" />
+                    QR
+                  </Button>
+                )}
+
                 {cert.pdf_url && (
                   <Button size="sm" variant="outline" onClick={() => window.open(cert.pdf_url, '_blank')}>
                     <Download className="h-3 w-3 mr-1" />
                     PDF
                   </Button>
                 )}
-                
-                {cert.qr_code_url && (
-                  <Button size="sm" variant="outline" onClick={() => showQRCode(cert.qr_code_url)}>
-                    <QrCode className="h-3 w-3 mr-1" />
-                    QR Code
-                  </Button>
-                )}
-
-                <Button size="sm" variant="outline" onClick={() => window.open(`/certificado/${cert.registration_number}`, '_blank')}>
-                  <Eye className="h-3 w-3 mr-1" />
-                  Ver
-                </Button>
 
                 <Button size="sm" variant="outline" onClick={() => handleEdit(cert)}>
                   <Edit className="h-3 w-3 mr-1" />
@@ -426,23 +505,36 @@ export const CertificatesTab = () => {
             <DialogTitle>QR Code do Certificado</DialogTitle>
           </DialogHeader>
           <div className="flex flex-col items-center gap-4 p-6">
-            <QRCodeSVG value={selectedQRCode} size={256} level="H" />
-            <p className="text-sm text-muted-foreground text-center">
-              Escaneie o QR Code para acessar o certificado online
-            </p>
-            <Button onClick={() => {
-              const canvas = document.querySelector('canvas');
-              if (canvas) {
-                const url = canvas.toDataURL();
-                const a = document.createElement('a');
-                a.download = 'qrcode.png';
-                a.href = url;
-                a.click();
-              }
-            }}>
-              Baixar QR Code
-            </Button>
+            {selectedQRCode && (
+              <>
+                <div id={`qr-${selectedQRCode}`}>
+                  <QRCodeSVG 
+                    value={`${window.location.origin}/certificado/${selectedQRCode}`}
+                    size={256}
+                    level="H"
+                  />
+                </div>
+                <p className="text-sm text-muted-foreground text-center">
+                  Escaneie este código para validar o certificado
+                </p>
+                <div className="flex gap-2">
+                  <Button onClick={() => downloadQRCode(selectedQRCode)} variant="outline">
+                    <Download className="h-4 w-4 mr-2" />
+                    Baixar QR Code
+                  </Button>
+                </div>
+              </>
+            )}
           </div>
+        </DialogContent>
+      </Dialog>
+
+      <Dialog open={editorDialogOpen} onOpenChange={setEditorDialogOpen}>
+        <DialogContent className="max-w-5xl max-h-[90vh] overflow-y-auto">
+          <DialogHeader>
+            <DialogTitle>Editor de PDF</DialogTitle>
+          </DialogHeader>
+          <PdfEditor pdfUrl={selectedCertificate?.uploaded_pdf_url} />
         </DialogContent>
       </Dialog>
     </div>
