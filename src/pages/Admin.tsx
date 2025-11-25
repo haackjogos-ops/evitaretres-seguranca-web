@@ -180,66 +180,66 @@ const Admin = () => {
         </div>
 
         <Tabs defaultValue="colors" className="space-y-8">
-          <div className="bg-background border rounded-lg p-2 shadow-sm overflow-x-auto">
-            <TabsList className="grid w-full grid-cols-4 sm:grid-cols-7 lg:grid-cols-15 gap-2 bg-transparent">
-              <TabsTrigger value="colors" className="gap-2">
-                <Palette className="h-4 w-4" />
+          <div className="bg-background border rounded-lg py-6 px-4 shadow-sm overflow-x-auto">
+            <TabsList className="grid w-full grid-cols-4 sm:grid-cols-7 lg:grid-cols-15 gap-3 bg-transparent min-h-[60px]">
+              <TabsTrigger value="colors" className="gap-2 py-3">
+                <Palette className="h-5 w-5" />
                 <span className="hidden sm:inline">Cores</span>
               </TabsTrigger>
-              <TabsTrigger value="contact" className="gap-2">
-                <Phone className="h-4 w-4" />
+              <TabsTrigger value="contact" className="gap-2 py-3">
+                <Phone className="h-5 w-5" />
                 <span className="hidden sm:inline">Contato</span>
               </TabsTrigger>
-              <TabsTrigger value="branding" className="gap-2">
-                <Bookmark className="h-4 w-4" />
+              <TabsTrigger value="branding" className="gap-2 py-3">
+                <Bookmark className="h-5 w-5" />
                 <span className="hidden sm:inline">Marca</span>
               </TabsTrigger>
-              <TabsTrigger value="hero" className="gap-2">
-                <Image className="h-4 w-4" />
+              <TabsTrigger value="hero" className="gap-2 py-3">
+                <Image className="h-5 w-5" />
                 <span className="hidden sm:inline">Banner</span>
               </TabsTrigger>
-              <TabsTrigger value="services" className="gap-2">
-                <Home className="h-4 w-4" />
+              <TabsTrigger value="services" className="gap-2 py-3">
+                <Home className="h-5 w-5" />
                 <span className="hidden sm:inline">Home</span>
               </TabsTrigger>
-              <TabsTrigger value="about" className="gap-2">
-                <Info className="h-4 w-4" />
+              <TabsTrigger value="about" className="gap-2 py-3">
+                <Info className="h-5 w-5" />
                 <span className="hidden sm:inline">Sobre</span>
               </TabsTrigger>
-              <TabsTrigger value="courses" className="gap-2">
-                <BookOpen className="h-4 w-4" />
+              <TabsTrigger value="courses" className="gap-2 py-3">
+                <BookOpen className="h-5 w-5" />
                 <span className="hidden sm:inline">Cursos e Treinamentos</span>
               </TabsTrigger>
-              <TabsTrigger value="benefits" className="gap-2">
-                <Award className="h-4 w-4" />
+              <TabsTrigger value="benefits" className="gap-2 py-3">
+                <Award className="h-5 w-5" />
                 <span className="hidden sm:inline">Vantagens</span>
               </TabsTrigger>
-              <TabsTrigger value="monitoring" className="gap-2">
-                <Activity className="h-4 w-4" />
+              <TabsTrigger value="monitoring" className="gap-2 py-3">
+                <Activity className="h-5 w-5" />
                 <span className="hidden sm:inline">Monitoramento</span>
               </TabsTrigger>
-              <TabsTrigger value="medicine" className="gap-2">
-                <Stethoscope className="h-4 w-4" />
+              <TabsTrigger value="medicine" className="gap-2 py-3">
+                <Stethoscope className="h-5 w-5" />
                 <span className="hidden sm:inline">Medicina</span>
               </TabsTrigger>
-              <TabsTrigger value="certificates" className="gap-2">
-                <Award className="h-4 w-4" />
+              <TabsTrigger value="certificates" className="gap-2 py-3">
+                <Award className="h-5 w-5" />
                 <span className="hidden sm:inline">Certificados</span>
               </TabsTrigger>
-              <TabsTrigger value="registrations" className="gap-2">
-                <FileText className="h-4 w-4" />
+              <TabsTrigger value="registrations" className="gap-2 py-3">
+                <FileText className="h-5 w-5" />
                 <span className="hidden sm:inline">Inscrições</span>
               </TabsTrigger>
-              <TabsTrigger value="testimonials" className="gap-2">
-                <MessageSquare className="h-4 w-4" />
+              <TabsTrigger value="testimonials" className="gap-2 py-3">
+                <MessageSquare className="h-5 w-5" />
                 <span className="hidden sm:inline">Depoimentos</span>
               </TabsTrigger>
-              <TabsTrigger value="faq" className="gap-2">
-                <HelpCircle className="h-4 w-4" />
+              <TabsTrigger value="faq" className="gap-2 py-3">
+                <HelpCircle className="h-5 w-5" />
                 <span className="hidden sm:inline">FAQ</span>
               </TabsTrigger>
-              <TabsTrigger value="menu" className="gap-2">
-                <Menu className="h-4 w-4" />
+              <TabsTrigger value="menu" className="gap-2 py-3">
+                <Menu className="h-5 w-5" />
                 <span className="hidden sm:inline">Menu</span>
               </TabsTrigger>
             </TabsList>
