@@ -1,15 +1,18 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useTestimonials } from "@/hooks/useTestimonials";
 import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Plus } from "lucide-react";
 import { ItemCard } from "@/components/admin/ItemCard";
 import { ItemModal } from "@/components/admin/ItemModal";
-import { Plus } from "lucide-react";
+import { ViewToggle } from "../ViewToggle";
 
-const TestimonialsTab = () => {
+export const TestimonialsTab = () => {
   const { testimonials, isLoading, createTestimonial, updateTestimonial, deleteTestimonial } =
     useTestimonials();
   const [modalOpen, setModalOpen] = useState(false);
   const [editingItem, setEditingItem] = useState<any>(null);
+  const [viewMode, setViewMode] = useState<"grid" | "list">("list");
   const [formValues, setFormValues] = useState({
     name: "",
     company: "",
@@ -20,6 +23,16 @@ const TestimonialsTab = () => {
     is_active: true,
     display_order: 0,
   });
+
+  useEffect(() => {
+    const saved = localStorage.getItem("admin-view-mode-testimonials");
+    if (saved) setViewMode(saved as "grid" | "list");
+  }, []);
+
+  const handleViewModeChange = (mode: "grid" | "list") => {
+    setViewMode(mode);
+    localStorage.setItem("admin-view-mode-testimonials", mode);
+  };
 
   const handleEdit = (item: any) => {
     setEditingItem(item);
@@ -69,33 +82,51 @@ const TestimonialsTab = () => {
   };
 
   if (isLoading) {
-    return <div>Carregando depoimentos...</div>;
+    return <div className="text-center py-8 text-muted-foreground">Carregando depoimentos...</div>;
   }
 
   return (
-    <div className="space-y-4">
-      <div className="flex items-center justify-between">
-        <h2 className="text-2xl font-bold">Depoimentos</h2>
-        <Button onClick={handleOpenNew}>
-          <Plus className="h-4 w-4 mr-2" />
-          Novo Depoimento
-        </Button>
-      </div>
-
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-        {testimonials.map((item) => (
-          <ItemCard
-            key={item.id}
-            title={item.name}
-            subtitle={item.company || undefined}
-            description={item.content}
-            icon="⭐"
-            onEdit={() => handleEdit(item)}
-            onDelete={() => handleDelete(item.id)}
-            isActive={item.is_active}
-          />
-        ))}
-      </div>
+    <>
+      <Card>
+        <CardHeader>
+          <div className="flex items-center justify-between">
+            <div>
+              <CardTitle>Depoimentos</CardTitle>
+              <CardDescription>{testimonials.length} depoimentos cadastrados</CardDescription>
+            </div>
+            <div className="flex gap-2">
+              <ViewToggle viewMode={viewMode} onViewModeChange={handleViewModeChange} />
+              <Button onClick={handleOpenNew}>
+                <Plus className="h-4 w-4 mr-2" />
+                Novo Depoimento
+              </Button>
+            </div>
+          </div>
+        </CardHeader>
+        <CardContent>
+          {testimonials.length === 0 ? (
+            <div className="text-center py-8 text-muted-foreground">
+              Nenhum depoimento cadastrado ainda.
+            </div>
+          ) : (
+            <div className={viewMode === "grid" ? "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4" : "space-y-2"}>
+              {testimonials.map((item) => (
+                <ItemCard
+                  key={item.id}
+                  emoji="⭐"
+                  title={item.name}
+                  subtitle={item.company ? `${item.position || ""} - ${item.company}` : item.position}
+                  description={item.content}
+                  isActive={item.is_active}
+                  onEdit={() => handleEdit(item)}
+                  onDelete={() => handleDelete(item.id)}
+                  viewMode={viewMode}
+                />
+              ))}
+            </div>
+          )}
+        </CardContent>
+      </Card>
 
       <ItemModal
         open={modalOpen}
@@ -120,13 +151,12 @@ const TestimonialsTab = () => {
               { value: "5", label: "5 Estrelas" },
             ],
           },
-          { name: "display_order", label: "Ordem de Exibição", type: "text" },
         ]}
         values={formValues}
         onChange={(field, value) => setFormValues({ ...formValues, [field]: value })}
         onSave={handleSave}
       />
-    </div>
+    </>
   );
 };
 

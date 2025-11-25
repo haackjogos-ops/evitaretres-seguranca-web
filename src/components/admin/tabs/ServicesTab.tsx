@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useServices } from "@/hooks/useServices";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
@@ -7,6 +7,7 @@ import { useToast } from "@/hooks/use-toast";
 import { Plus } from "lucide-react";
 import { ItemCard } from "../ItemCard";
 import { ItemModal } from "../ItemModal";
+import { ViewToggle } from "../ViewToggle";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "@/components/ui/alert-dialog";
 
 export const ServicesTab = () => {
@@ -17,6 +18,17 @@ export const ServicesTab = () => {
   const [currentItem, setCurrentItem] = useState<any>(null);
   const [formData, setFormData] = useState<any>({});
   const [saving, setSaving] = useState(false);
+  const [viewMode, setViewMode] = useState<"grid" | "list">("list");
+
+  useEffect(() => {
+    const saved = localStorage.getItem("admin-view-mode-services");
+    if (saved) setViewMode(saved as "grid" | "list");
+  }, []);
+
+  const handleViewModeChange = (mode: "grid" | "list") => {
+    setViewMode(mode);
+    localStorage.setItem("admin-view-mode-services", mode);
+  };
 
   const fields = [
     { name: "title", label: "Título", type: "text" as const, required: true },
@@ -111,10 +123,13 @@ export const ServicesTab = () => {
               <CardTitle>Gerenciar Serviços da Home</CardTitle>
               <CardDescription>{services.length} serviços cadastrados</CardDescription>
             </div>
-            <Button onClick={handleAdd}>
-              <Plus className="h-4 w-4 mr-2" />
-              Adicionar
-            </Button>
+            <div className="flex gap-2">
+              <ViewToggle viewMode={viewMode} onViewModeChange={handleViewModeChange} />
+              <Button onClick={handleAdd}>
+                <Plus className="h-4 w-4 mr-2" />
+                Adicionar
+              </Button>
+            </div>
           </div>
         </CardHeader>
         <CardContent>
@@ -123,7 +138,7 @@ export const ServicesTab = () => {
           ) : services.length === 0 ? (
             <div className="text-center py-8 text-muted-foreground">Nenhum serviço cadastrado</div>
           ) : (
-            <div className="space-y-2">
+            <div className={viewMode === "grid" ? "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4" : "space-y-2"}>
               {services.map((service, index) => (
                 <ItemCard
                   key={service.id}
@@ -138,6 +153,7 @@ export const ServicesTab = () => {
                   onMoveUp={() => handleMove(service.id, "up")}
                   onMoveDown={() => handleMove(service.id, "down")}
                   onToggleActive={() => handleToggleActive(service.id, service.is_active)}
+                  viewMode={viewMode}
                 />
               ))}
             </div>

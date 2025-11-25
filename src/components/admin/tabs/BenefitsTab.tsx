@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useBenefits } from "@/hooks/useBenefits";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
@@ -7,6 +7,7 @@ import { useToast } from "@/hooks/use-toast";
 import { Plus } from "lucide-react";
 import { ItemCard } from "../ItemCard";
 import { ItemModal } from "../ItemModal";
+import { ViewToggle } from "../ViewToggle";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "@/components/ui/alert-dialog";
 
 export const BenefitsTab = () => {
@@ -17,6 +18,17 @@ export const BenefitsTab = () => {
   const [currentItem, setCurrentItem] = useState<any>(null);
   const [formData, setFormData] = useState<any>({});
   const [saving, setSaving] = useState(false);
+  const [viewMode, setViewMode] = useState<"grid" | "list">("list");
+
+  useEffect(() => {
+    const saved = localStorage.getItem("admin-view-mode-benefits");
+    if (saved) setViewMode(saved as "grid" | "list");
+  }, []);
+
+  const handleViewModeChange = (mode: "grid" | "list") => {
+    setViewMode(mode);
+    localStorage.setItem("admin-view-mode-benefits", mode);
+  };
 
   const fields = [
     { name: "description", label: "Descrição", type: "textarea" as const, required: true },
@@ -103,10 +115,13 @@ export const BenefitsTab = () => {
               <CardTitle>Gerenciar Vantagens</CardTitle>
               <CardDescription>{benefits.length} vantagens cadastradas</CardDescription>
             </div>
-            <Button onClick={handleAdd}>
-              <Plus className="h-4 w-4 mr-2" />
-              Adicionar
-            </Button>
+            <div className="flex gap-2">
+              <ViewToggle viewMode={viewMode} onViewModeChange={handleViewModeChange} />
+              <Button onClick={handleAdd}>
+                <Plus className="h-4 w-4 mr-2" />
+                Adicionar
+              </Button>
+            </div>
           </div>
         </CardHeader>
         <CardContent>
@@ -115,7 +130,7 @@ export const BenefitsTab = () => {
           ) : benefits.length === 0 ? (
             <div className="text-center py-8 text-muted-foreground">Nenhuma vantagem cadastrada</div>
           ) : (
-            <div className="space-y-2">
+            <div className={viewMode === "grid" ? "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4" : "space-y-2"}>
               {benefits.map((benefit, index) => (
                 <ItemCard
                   key={benefit.id}
@@ -128,6 +143,7 @@ export const BenefitsTab = () => {
                   onMoveUp={() => handleMove(benefit.id, "up")}
                   onMoveDown={() => handleMove(benefit.id, "down")}
                   onToggleActive={() => handleToggleActive(benefit.id, benefit.is_active)}
+                  viewMode={viewMode}
                 />
               ))}
             </div>

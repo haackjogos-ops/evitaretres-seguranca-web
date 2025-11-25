@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useMedicineServices } from "@/hooks/useMedicineServices";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
@@ -6,6 +6,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { useToast } from "@/hooks/use-toast";
 import { Plus } from "lucide-react";
 import { ItemCard } from "../ItemCard";
+import { ViewToggle } from "../ViewToggle";
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -20,6 +21,17 @@ export const MedicineTab = () => {
   const [currentItem, setCurrentItem] = useState<any>(null);
   const [formData, setFormData] = useState<any>({});
   const [saving, setSaving] = useState(false);
+  const [viewMode, setViewMode] = useState<"grid" | "list">("list");
+
+  useEffect(() => {
+    const saved = localStorage.getItem("admin-view-mode-medicine");
+    if (saved) setViewMode(saved as "grid" | "list");
+  }, []);
+
+  const handleViewModeChange = (mode: "grid" | "list") => {
+    setViewMode(mode);
+    localStorage.setItem("admin-view-mode-medicine", mode);
+  };
 
   const handleAdd = (type: "document" | "exam") => {
     setCurrentItem(null);
@@ -103,17 +115,20 @@ export const MedicineTab = () => {
             <CardTitle>{title}</CardTitle>
             <CardDescription>{items.length} itens cadastrados</CardDescription>
           </div>
-          <Button onClick={() => handleAdd(type)}>
-            <Plus className="h-4 w-4 mr-2" />
-            Adicionar
-          </Button>
+          <div className="flex gap-2">
+            <ViewToggle viewMode={viewMode} onViewModeChange={handleViewModeChange} />
+            <Button onClick={() => handleAdd(type)}>
+              <Plus className="h-4 w-4 mr-2" />
+              Adicionar
+            </Button>
+          </div>
         </div>
       </CardHeader>
       <CardContent>
         {items.length === 0 ? (
           <div className="text-center py-8 text-muted-foreground">Nenhum item cadastrado</div>
         ) : (
-          <div className="space-y-2">
+          <div className={viewMode === "grid" ? "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4" : "space-y-2"}>
             {items.map((item, index) => (
               <ItemCard
                 key={item.id}
@@ -126,6 +141,7 @@ export const MedicineTab = () => {
                 onMoveUp={() => handleMove(item.id, "up", items)}
                 onMoveDown={() => handleMove(item.id, "down", items)}
                 onToggleActive={() => handleToggleActive(item.id, item.is_active)}
+                viewMode={viewMode}
               />
             ))}
           </div>
