@@ -52,20 +52,20 @@ const Benefits = () => {
             </p>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
               <div className="p-4 bg-background rounded-lg">
-                <p className="font-semibold">PCMSO</p>
-                <p className="text-sm text-muted-foreground">Empresa a partir de 1 trabalhador</p>
+                <p className="font-semibold">Inspeção Técnica</p>
+                <p className="text-sm text-muted-foreground">Reconhecimento de riscos</p>
               </div>
               <div className="p-4 bg-background rounded-lg">
-                <p className="font-semibold">PGR</p>
-                <p className="text-sm text-muted-foreground">Gestão de riscos</p>
+                <p className="font-semibold">Elaboração</p>
+                <p className="text-sm text-muted-foreground">Laudos PGR/LTCAT/PCMSO</p>
               </div>
               <div className="p-4 bg-background rounded-lg">
-                <p className="font-semibold">Treinamento</p>
-                <p className="text-sm text-muted-foreground">Uso correto de EPI</p>
+                <p className="font-semibold">Cursos e Treinamentos</p>
+                <p className="text-sm text-muted-foreground">&nbsp;</p>
               </div>
               <div className="p-4 bg-background rounded-lg">
-                <p className="font-semibold">CIPA</p>
-                <p className="text-sm text-muted-foreground">Fiscalização</p>
+                <p className="font-semibold">Fiscalização</p>
+                <p className="text-sm text-muted-foreground">Visitas técnicas</p>
               </div>
             </div>
           </div>
