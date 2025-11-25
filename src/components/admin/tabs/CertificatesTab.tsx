@@ -49,6 +49,7 @@ export const CertificatesTab = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isEditorOpen, setIsEditorOpen] = useState(false);
+  const [editorPdfUrl, setEditorPdfUrl] = useState<string | null>(null);
   const [deleteId, setDeleteId] = useState<string | null>(null);
   const [editingCertificate, setEditingCertificate] = useState<Partial<Certificate> | null>(null);
 
@@ -161,20 +162,39 @@ export const CertificatesTab = () => {
       return;
     }
     setEditingCertificate(certificate);
+    setEditorPdfUrl(certificate.pdf_url);
     setIsEditorOpen(true);
   };
 
   const handleEditorSave = async (dataUrl: string) => {
-    if (!editingCertificate?.id) return;
-
     try {
-      // Aqui você pode fazer upload da imagem editada ou salvá-la
-      await updateCertificate({
-        id: editingCertificate.id,
-        pdf_url: dataUrl,
-      });
+      // Se está editando certificado existente
+      if (editingCertificate?.id) {
+        await updateCertificate({
+          id: editingCertificate.id,
+          pdf_url: dataUrl,
+        });
+        toast({
+          title: "Certificado atualizado",
+          description: "O certificado foi atualizado com sucesso.",
+        });
+      } else {
+        // Se é novo certificado, atualizar formData e reabrir modal
+        setFormData({ ...formData, pdf_url: dataUrl });
+        setIsEditorOpen(false);
+        setIsModalOpen(true);
+        toast({
+          title: "Edição concluída",
+          description: "Agora salve o certificado para finalizar.",
+        });
+      }
     } catch (error) {
       console.error("Erro ao salvar edição:", error);
+      toast({
+        title: "Erro ao salvar",
+        description: "Ocorreu um erro ao salvar as alterações.",
+        variant: "destructive",
+      });
     }
   };
 
@@ -421,6 +441,7 @@ export const CertificatesTab = () => {
                 variant="outline"
                 className="w-full"
                 onClick={() => {
+                  setEditorPdfUrl(formData.pdf_url);
                   setIsModalOpen(false);
                   setIsEditorOpen(true);
                 }}
@@ -441,11 +462,14 @@ export const CertificatesTab = () => {
       </Dialog>
 
       {/* PDF Editor */}
-      {editingCertificate?.pdf_url && (
+      {editorPdfUrl && (
         <PdfEditor
           open={isEditorOpen}
-          onOpenChange={setIsEditorOpen}
-          pdfUrl={editingCertificate.pdf_url}
+          onOpenChange={(open) => {
+            setIsEditorOpen(open);
+            if (!open) setEditorPdfUrl(null);
+          }}
+          pdfUrl={editorPdfUrl}
           onSave={handleEditorSave}
         />
       )}
