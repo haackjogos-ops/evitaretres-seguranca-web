@@ -263,6 +263,36 @@ export type Database = {
         }
         Relationships: []
       }
+      menu_items: {
+        Row: {
+          created_at: string | null
+          display_order: number
+          id: string
+          is_active: boolean | null
+          label: string
+          path: string
+          updated_at: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          display_order?: number
+          id?: string
+          is_active?: boolean | null
+          label: string
+          path: string
+          updated_at?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          display_order?: number
+          id?: string
+          is_active?: boolean | null
+          label?: string
+          path?: string
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
       monitoring_services: {
         Row: {
           created_at: string | null

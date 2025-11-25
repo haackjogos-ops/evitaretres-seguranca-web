@@ -5,22 +5,14 @@ import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useAuth } from "@/contexts/AuthContext";
 import { useSiteSettings } from "@/hooks/useSiteSettings";
+import { useMenuItems } from "@/hooks/useMenuItems";
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const location = useLocation();
   const { user, isAdmin } = useAuth();
   const { settings, isLoading } = useSiteSettings();
-
-  const navItems = [
-    { path: "/", label: "Início" },
-    { path: "/sobre", label: "Sobre" },
-    { path: "/vantagens", label: "Vantagens" },
-    { path: "/cursos", label: "Cursos | Treinamentos" },
-    { path: "/monitoramento", label: "Monitoramento" },
-    { path: "/medicina", label: "Segurança do Trabalho e Medicina" },
-    { path: "/contato", label: "Contato" },
-  ];
+  const { menuItems, isLoading: menuLoading } = useMenuItems();
 
   const isActive = (path: string) => location.pathname === path;
 
@@ -46,16 +38,20 @@ const Header = () => {
 
           {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center space-x-1">
-            {navItems.map((item) => (
-              <Link key={item.path} to={item.path}>
-                <Button
-                  variant={isActive(item.path) ? "default" : "ghost"}
-                  size="sm"
-                >
-                  {item.label}
-                </Button>
-              </Link>
-            ))}
+            {menuLoading ? (
+              <Skeleton className="h-8 w-96" />
+            ) : (
+              menuItems.map((item) => (
+                <Link key={item.path} to={item.path}>
+                  <Button
+                    variant={isActive(item.path) ? "default" : "ghost"}
+                    size="sm"
+                  >
+                    {item.label}
+                  </Button>
+                </Link>
+              ))
+            )}
           </nav>
 
           {/* Auth Buttons Desktop */}
@@ -94,7 +90,7 @@ const Header = () => {
         {/* Mobile Navigation */}
         {isMenuOpen && (
           <nav className="md:hidden py-4 space-y-2">
-            {navItems.map((item) => (
+            {menuItems.map((item) => (
               <Link
                 key={item.path}
                 to={item.path}
