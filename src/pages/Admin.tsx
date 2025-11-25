@@ -9,7 +9,7 @@ import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useToast } from "@/hooks/use-toast";
-import { Upload, Palette, Phone, Bookmark, Image, Home, Info, GraduationCap, BookOpen, Award, Activity, Stethoscope, LogOut, QrCode, FileText, MessageSquare, HelpCircle } from "lucide-react";
+import { Upload, Palette, Phone, Bookmark, Image, Home, Info, GraduationCap, BookOpen, Award, Activity, Stethoscope, LogOut, QrCode, FileText, MessageSquare, HelpCircle, Menu } from "lucide-react";
 import Header from "@/components/Header";
 import { ColorPicker } from "@/components/admin/ColorPicker";
 import { ServicesTab } from "@/components/admin/tabs/ServicesTab";
@@ -23,6 +23,7 @@ import { CertificatesTab } from "@/components/admin/tabs/CertificatesTab";
 import RegistrationsTab from "@/components/admin/tabs/RegistrationsTab";
 import TestimonialsTab from "@/components/admin/tabs/TestimonialsTab";
 import FAQTab from "@/components/admin/tabs/FAQTab";
+import { MenuTab } from "@/components/admin/tabs/MenuTab";
 import { Separator } from "@/components/ui/separator";
 
 const Admin = () => {
@@ -180,7 +181,7 @@ const Admin = () => {
 
         <Tabs defaultValue="colors" className="space-y-6">
           <div className="bg-background border rounded-lg p-1 shadow-sm overflow-x-auto">
-            <TabsList className="grid w-full grid-cols-4 sm:grid-cols-7 lg:grid-cols-14 gap-1 bg-transparent">
+            <TabsList className="grid w-full grid-cols-4 sm:grid-cols-7 lg:grid-cols-15 gap-1 bg-transparent">
               <TabsTrigger value="colors" className="gap-2">
                 <Palette className="h-4 w-4" />
                 <span className="hidden sm:inline">Cores</span>
@@ -236,6 +237,10 @@ const Admin = () => {
               <TabsTrigger value="faq" className="gap-2">
                 <HelpCircle className="h-4 w-4" />
                 <span className="hidden sm:inline">FAQ</span>
+              </TabsTrigger>
+              <TabsTrigger value="menu" className="gap-2">
+                <Menu className="h-4 w-4" />
+                <span className="hidden sm:inline">Menu</span>
               </TabsTrigger>
             </TabsList>
           </div>
@@ -610,6 +615,10 @@ const Admin = () => {
 
           <TabsContent value="faq">
             <FAQTab />
+          </TabsContent>
+
+          <TabsContent value="menu">
+            <MenuTab />
           </TabsContent>
         </Tabs>
       </div>
