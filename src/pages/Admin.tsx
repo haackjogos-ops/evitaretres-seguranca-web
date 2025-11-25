@@ -167,8 +167,8 @@ const Admin = () => {
     <div className="min-h-screen bg-muted/30">
       <Header />
       
-      <div className="container mx-auto px-4 py-6 max-w-7xl">
-        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
+      <div className="container mx-auto px-4 py-8 max-w-7xl">
+        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-8">
           <div>
             <h1 className="text-3xl font-bold text-foreground">Painel Administrativo</h1>
             <p className="text-sm text-muted-foreground mt-1">Gerencie o conteúdo e configurações do site</p>
@@ -179,9 +179,9 @@ const Admin = () => {
           </Button>
         </div>
 
-        <Tabs defaultValue="colors" className="space-y-6">
-          <div className="bg-background border rounded-lg p-1 shadow-sm overflow-x-auto">
-            <TabsList className="grid w-full grid-cols-4 sm:grid-cols-7 lg:grid-cols-15 gap-1 bg-transparent">
+        <Tabs defaultValue="colors" className="space-y-8">
+          <div className="bg-background border rounded-lg p-2 shadow-sm overflow-x-auto">
+            <TabsList className="grid w-full grid-cols-4 sm:grid-cols-7 lg:grid-cols-15 gap-2 bg-transparent">
               <TabsTrigger value="colors" className="gap-2">
                 <Palette className="h-4 w-4" />
                 <span className="hidden sm:inline">Cores</span>
@@ -245,20 +245,20 @@ const Admin = () => {
             </TabsList>
           </div>
 
-          <TabsContent value="colors" className="space-y-4">
+          <TabsContent value="colors" className="space-y-6">
             <Card className="shadow-sm">
-              <CardHeader className="space-y-1">
-                <CardTitle className="text-xl flex items-center gap-2">
-                  <Palette className="h-5 w-5 text-primary" />
+              <CardHeader className="space-y-2 p-8">
+                <CardTitle className="text-2xl flex items-center gap-3">
+                  <Palette className="h-6 w-6 text-primary" />
                   Gerenciar Cores
                 </CardTitle>
-                <CardDescription>
+                <CardDescription className="text-base">
                   Configure as cores do site. Use formato HSL (ex: 220 90% 56%)
                 </CardDescription>
               </CardHeader>
               <Separator />
-              <CardContent className="pt-6">
-                <div className="grid gap-6 sm:grid-cols-2">
+              <CardContent className="pt-8 px-8 pb-8">
+                <div className="grid gap-8 sm:grid-cols-2">
                   <ColorPicker
                     id="primary"
                     label="Cor Primária"
@@ -295,9 +295,9 @@ const Admin = () => {
                     placeholder="222.2 84% 4.9%"
                   />
                 </div>
-                <Separator className="my-6" />
+                <Separator className="my-8" />
                 <div className="flex justify-end">
-                  <Button onClick={() => updateSetting("colors", colors)} size="lg">
+                  <Button onClick={() => updateSetting("colors", colors)} size="lg" className="px-8">
                     Salvar Cores
                   </Button>
                 </div>
@@ -305,85 +305,85 @@ const Admin = () => {
             </Card>
           </TabsContent>
 
-          <TabsContent value="contact" className="space-y-4">
+          <TabsContent value="contact" className="space-y-6">
             <Card className="shadow-sm">
-              <CardHeader className="space-y-1">
-                <CardTitle className="text-xl flex items-center gap-2">
-                  <Phone className="h-5 w-5 text-primary" />
+              <CardHeader className="space-y-2 p-8">
+                <CardTitle className="text-2xl flex items-center gap-3">
+                  <Phone className="h-6 w-6 text-primary" />
                   Informações de Contato
                 </CardTitle>
-                <CardDescription>
+                <CardDescription className="text-base">
                   Configure as informações de contato exibidas no site
                 </CardDescription>
               </CardHeader>
               <Separator />
-              <CardContent className="pt-6">
-                <div className="grid gap-6 sm:grid-cols-2">
-                  <div className="space-y-2">
-                    <Label htmlFor="phone" className="text-sm font-medium">Telefone</Label>
+              <CardContent className="pt-8 px-8 pb-8">
+                <div className="grid gap-8 sm:grid-cols-2">
+                  <div className="space-y-3">
+                    <Label htmlFor="phone" className="text-base font-medium">Telefone</Label>
                     <Input
                       id="phone"
                       value={contact.phone}
                       onChange={(e) => setContact({ ...contact, phone: e.target.value })}
                       placeholder="+5548999999999"
-                      className="h-10"
+                      className="h-12 text-base"
                     />
                   </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="email" className="text-sm font-medium">Email</Label>
+                  <div className="space-y-3">
+                    <Label htmlFor="email" className="text-base font-medium">Email</Label>
                     <Input
                       id="email"
                       type="email"
                       value={contact.email}
                       onChange={(e) => setContact({ ...contact, email: e.target.value })}
                       placeholder="contato@evitare.com.br"
-                      className="h-10"
+                      className="h-12 text-base"
                     />
                   </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="whatsapp" className="text-sm font-medium">WhatsApp</Label>
+                  <div className="space-y-3">
+                    <Label htmlFor="whatsapp" className="text-base font-medium">WhatsApp</Label>
                     <Input
                       id="whatsapp"
                       value={contact.whatsapp}
                       onChange={(e) => setContact({ ...contact, whatsapp: e.target.value })}
                       placeholder="5548999999999"
-                      className="h-10"
+                      className="h-12 text-base"
                     />
                   </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="instagram" className="text-sm font-medium">Instagram</Label>
+                  <div className="space-y-3">
+                    <Label htmlFor="instagram" className="text-base font-medium">Instagram</Label>
                     <Input
                       id="instagram"
                       value={contact.instagram}
                       onChange={(e) => setContact({ ...contact, instagram: e.target.value })}
                       placeholder="evitare"
-                      className="h-10"
+                      className="h-12 text-base"
                     />
                   </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="facebook" className="text-sm font-medium">Facebook</Label>
+                  <div className="space-y-3">
+                    <Label htmlFor="facebook" className="text-base font-medium">Facebook</Label>
                     <Input
                       id="facebook"
                       value={contact.facebook}
                       onChange={(e) => setContact({ ...contact, facebook: e.target.value })}
                       placeholder="evitare"
-                      className="h-10"
+                      className="h-12 text-base"
                     />
                   </div>
-                  <div className="space-y-2 sm:col-span-2">
-                    <Label htmlFor="address" className="text-sm font-medium">Endereço</Label>
+                  <div className="space-y-3 sm:col-span-2">
+                    <Label htmlFor="address" className="text-base font-medium">Endereço</Label>
                     <Input
                       id="address"
                       value={contact.address}
                       onChange={(e) => setContact({ ...contact, address: e.target.value })}
                       placeholder="Rua Coronel Marcos Rovaris, 328..."
-                      className="h-10"
+                      className="h-12 text-base"
                     />
                   </div>
                 </div>
-                <Separator className="my-6" />
+                <Separator className="my-8" />
                 <div className="flex justify-end">
-                  <Button onClick={() => updateSetting("contact", contact)} size="lg">
+                  <Button onClick={() => updateSetting("contact", contact)} size="lg" className="px-8">
                     Salvar Contato
                   </Button>
                 </div>
@@ -391,42 +391,42 @@ const Admin = () => {
             </Card>
           </TabsContent>
 
-          <TabsContent value="branding" className="space-y-4">
+          <TabsContent value="branding" className="space-y-6">
             <Card className="shadow-sm">
-              <CardHeader className="space-y-1">
-                <CardTitle className="text-xl flex items-center gap-2">
-                  <Bookmark className="h-5 w-5 text-primary" />
+              <CardHeader className="space-y-2 p-8">
+                <CardTitle className="text-2xl flex items-center gap-3">
+                  <Bookmark className="h-6 w-6 text-primary" />
                   Marca e Identidade
                 </CardTitle>
-                <CardDescription>
+                <CardDescription className="text-base">
                   Configure o nome e tagline do site
                 </CardDescription>
               </CardHeader>
               <Separator />
-              <CardContent className="pt-6">
-                <div className="space-y-6">
-                  <div className="space-y-2">
-                    <Label htmlFor="siteName" className="text-sm font-medium">Nome do Site</Label>
+              <CardContent className="pt-8 px-8 pb-8">
+                <div className="space-y-8">
+                  <div className="space-y-3">
+                    <Label htmlFor="siteName" className="text-base font-medium">Nome do Site</Label>
                     <Input
                       id="siteName"
                       value={branding.siteName}
                       onChange={(e) => setBranding({ ...branding, siteName: e.target.value })}
                       placeholder="EVITARE"
-                      className="h-10"
+                      className="h-12 text-base"
                     />
                   </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="tagline" className="text-sm font-medium">Slogan</Label>
+                  <div className="space-y-3">
+                    <Label htmlFor="tagline" className="text-base font-medium">Slogan</Label>
                     <Input
                       id="tagline"
                       value={branding.tagline}
                       onChange={(e) => setBranding({ ...branding, tagline: e.target.value })}
                       placeholder="Você já imaginou ter todas as novidades..."
-                      className="h-10"
+                      className="h-12 text-base"
                     />
                   </div>
-                  <div className="space-y-3">
-                    <Label htmlFor="logoUrl" className="text-sm font-medium">Logo do Site</Label>
+                  <div className="space-y-4">
+                    <Label htmlFor="logoUrl" className="text-base font-medium">Logo do Site</Label>
                     {branding.logoUrl && (
                       <div className="p-4 border rounded-lg bg-muted/30 flex items-center justify-center">
                         <img src={branding.logoUrl} alt="Logo atual" className="h-20 object-contain" />
@@ -460,9 +460,9 @@ const Admin = () => {
                     </div>
                   </div>
                 </div>
-                <Separator className="my-6" />
+                <Separator className="my-8" />
                 <div className="flex justify-end">
-                  <Button onClick={() => updateSetting("branding", branding)} size="lg">
+                  <Button onClick={() => updateSetting("branding", branding)} size="lg" className="px-8">
                     Salvar Marca
                   </Button>
                 </div>
