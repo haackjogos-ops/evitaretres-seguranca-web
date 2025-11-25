@@ -19,6 +19,7 @@ import { CoursesTab } from "@/components/admin/tabs/CoursesTab";
 import { BenefitsTab } from "@/components/admin/tabs/BenefitsTab";
 import { MonitoringTab } from "@/components/admin/tabs/MonitoringTab";
 import { MedicineTab } from "@/components/admin/tabs/MedicineTab";
+import { CertificatesTab } from "@/components/admin/tabs/CertificatesTab";
 import RegistrationsTab from "@/components/admin/tabs/RegistrationsTab";
 import TestimonialsTab from "@/components/admin/tabs/TestimonialsTab";
 import FAQTab from "@/components/admin/tabs/FAQTab";
@@ -224,6 +225,10 @@ const Admin = () => {
               <TabsTrigger value="medicine" className="gap-2 py-3">
                 <Heart className="h-5 w-5" />
                 <span className="hidden sm:inline">Seg. Trabalho e Medicina</span>
+              </TabsTrigger>
+              <TabsTrigger value="certificates" className="gap-2 py-3">
+                <Award className="h-5 w-5" />
+                <span className="hidden sm:inline">Certificados</span>
               </TabsTrigger>
               <TabsTrigger value="registrations" className="gap-2 py-3">
                 <FileText className="h-5 w-5" />
@@ -584,6 +589,10 @@ const Admin = () => {
 
           <TabsContent value="medicine">
             <MedicineTab />
+          </TabsContent>
+
+          <TabsContent value="certificates">
+            <CertificatesTab />
           </TabsContent>
 
           <TabsContent value="registrations">
