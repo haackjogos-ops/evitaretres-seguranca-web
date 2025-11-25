@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useTrainings } from "@/hooks/useTrainings";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
@@ -7,6 +7,7 @@ import { useToast } from "@/hooks/use-toast";
 import { Plus } from "lucide-react";
 import { ItemCard } from "../ItemCard";
 import { ItemModal } from "../ItemModal";
+import { ViewToggle } from "../ViewToggle";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "@/components/ui/alert-dialog";
 
 export const TrainingsTab = () => {
@@ -17,6 +18,17 @@ export const TrainingsTab = () => {
   const [currentItem, setCurrentItem] = useState<any>(null);
   const [formData, setFormData] = useState<any>({});
   const [saving, setSaving] = useState(false);
+  const [viewMode, setViewMode] = useState<"grid" | "list">("list");
+
+  useEffect(() => {
+    const saved = localStorage.getItem("admin-view-mode-trainings");
+    if (saved) setViewMode(saved as "grid" | "list");
+  }, []);
+
+  const handleViewModeChange = (mode: "grid" | "list") => {
+    setViewMode(mode);
+    localStorage.setItem("admin-view-mode-trainings", mode);
+  };
 
   const fields = [
     { name: "logo_url", label: "Logo/Imagem (opcional)", type: "image" as const },
@@ -122,10 +134,13 @@ export const TrainingsTab = () => {
               <CardTitle>Gerenciar Treinamentos</CardTitle>
               <CardDescription>{trainings.length} treinamentos cadastrados</CardDescription>
             </div>
-            <Button onClick={handleAdd}>
-              <Plus className="h-4 w-4 mr-2" />
-              Adicionar
-            </Button>
+            <div className="flex gap-2">
+              <ViewToggle viewMode={viewMode} onViewModeChange={handleViewModeChange} />
+              <Button onClick={handleAdd}>
+                <Plus className="h-4 w-4 mr-2" />
+                Adicionar
+              </Button>
+            </div>
           </div>
         </CardHeader>
         <CardContent>
@@ -134,7 +149,7 @@ export const TrainingsTab = () => {
           ) : trainings.length === 0 ? (
             <div className="text-center py-8 text-muted-foreground">Nenhum treinamento cadastrado</div>
           ) : (
-            <div className="space-y-2">
+            <div className={viewMode === "grid" ? "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4" : "space-y-2"}>
               {trainings.map((training, index) => (
                 <ItemCard
                   key={training.id}
@@ -151,6 +166,7 @@ export const TrainingsTab = () => {
                   onMoveUp={() => handleMove(training.id, "up")}
                   onMoveDown={() => handleMove(training.id, "down")}
                   onToggleActive={() => handleToggleActive(training.id, training.is_active)}
+                  viewMode={viewMode}
                 />
               ))}
             </div>

@@ -1,14 +1,17 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useFAQ } from "@/hooks/useFAQ";
 import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Plus } from "lucide-react";
 import { ItemCard } from "@/components/admin/ItemCard";
 import { ItemModal } from "@/components/admin/ItemModal";
-import { Plus } from "lucide-react";
+import { ViewToggle } from "../ViewToggle";
 
-const FAQTab = () => {
+export const FAQTab = () => {
   const { faqItems, isLoading, createFAQItem, updateFAQItem, deleteFAQItem } = useFAQ();
   const [modalOpen, setModalOpen] = useState(false);
   const [editingItem, setEditingItem] = useState<any>(null);
+  const [viewMode, setViewMode] = useState<"grid" | "list">("list");
   const [formValues, setFormValues] = useState({
     question: "",
     answer: "",
@@ -16,6 +19,16 @@ const FAQTab = () => {
     is_active: true,
     display_order: 0,
   });
+
+  useEffect(() => {
+    const saved = localStorage.getItem("admin-view-mode-faq");
+    if (saved) setViewMode(saved as "grid" | "list");
+  }, []);
+
+  const handleViewModeChange = (mode: "grid" | "list") => {
+    setViewMode(mode);
+    localStorage.setItem("admin-view-mode-faq", mode);
+  };
 
   const handleEdit = (item: any) => {
     setEditingItem(item);
@@ -59,33 +72,51 @@ const FAQTab = () => {
   };
 
   if (isLoading) {
-    return <div>Carregando perguntas...</div>;
+    return <div className="text-center py-8 text-muted-foreground">Carregando perguntas...</div>;
   }
 
   return (
-    <div className="space-y-4">
-      <div className="flex items-center justify-between">
-        <h2 className="text-2xl font-bold">Perguntas Frequentes (FAQ)</h2>
-        <Button onClick={handleOpenNew}>
-          <Plus className="h-4 w-4 mr-2" />
-          Nova Pergunta
-        </Button>
-      </div>
-
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        {faqItems.map((item) => (
-          <ItemCard
-            key={item.id}
-            title={item.question}
-            subtitle={item.category}
-            description={item.answer}
-            icon="❓"
-            onEdit={() => handleEdit(item)}
-            onDelete={() => handleDelete(item.id)}
-            isActive={item.is_active}
-          />
-        ))}
-      </div>
+    <>
+      <Card>
+        <CardHeader>
+          <div className="flex items-center justify-between">
+            <div>
+              <CardTitle>Perguntas Frequentes (FAQ)</CardTitle>
+              <CardDescription>{faqItems.length} perguntas cadastradas</CardDescription>
+            </div>
+            <div className="flex gap-2">
+              <ViewToggle viewMode={viewMode} onViewModeChange={handleViewModeChange} />
+              <Button onClick={handleOpenNew}>
+                <Plus className="h-4 w-4 mr-2" />
+                Nova Pergunta
+              </Button>
+            </div>
+          </div>
+        </CardHeader>
+        <CardContent>
+          {faqItems.length === 0 ? (
+            <div className="text-center py-8 text-muted-foreground">
+              Nenhuma pergunta cadastrada ainda.
+            </div>
+          ) : (
+            <div className={viewMode === "grid" ? "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4" : "space-y-2"}>
+              {faqItems.map((item) => (
+                <ItemCard
+                  key={item.id}
+                  emoji="❓"
+                  title={item.question}
+                  subtitle={item.category}
+                  description={item.answer}
+                  isActive={item.is_active}
+                  onEdit={() => handleEdit(item)}
+                  onDelete={() => handleDelete(item.id)}
+                  viewMode={viewMode}
+                />
+              ))}
+            </div>
+          )}
+        </CardContent>
+      </Card>
 
       <ItemModal
         open={modalOpen}
@@ -107,13 +138,12 @@ const FAQTab = () => {
               { value: "medicina", label: "Medicina do Trabalho" },
             ],
           },
-          { name: "display_order", label: "Ordem de Exibição", type: "text" },
         ]}
         values={formValues}
         onChange={(field, value) => setFormValues({ ...formValues, [field]: value })}
         onSave={handleSave}
       />
-    </div>
+    </>
   );
 };
 

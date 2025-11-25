@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import { useMenuItems } from "@/hooks/useMenuItems";
@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Plus, Menu } from "lucide-react";
 import { ItemCard } from "../ItemCard";
 import { ItemModal } from "../ItemModal";
+import { ViewToggle } from "../ViewToggle";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "@/components/ui/alert-dialog";
 import { Separator } from "@/components/ui/separator";
 
@@ -18,6 +19,17 @@ export const MenuTab = () => {
   const [currentItem, setCurrentItem] = useState<any>(null);
   const [formData, setFormData] = useState({ label: "", path: "" });
   const [saving, setSaving] = useState(false);
+  const [viewMode, setViewMode] = useState<"grid" | "list">("list");
+
+  useEffect(() => {
+    const saved = localStorage.getItem("admin-view-mode-menu");
+    if (saved) setViewMode(saved as "grid" | "list");
+  }, []);
+
+  const handleViewModeChange = (mode: "grid" | "list") => {
+    setViewMode(mode);
+    localStorage.setItem("admin-view-mode-menu", mode);
+  };
 
   const handleAdd = () => {
     setCurrentItem(null);
@@ -169,15 +181,18 @@ export const MenuTab = () => {
                 Configure os itens do menu de navegação
               </CardDescription>
             </div>
-            <Button onClick={handleAdd} size="sm">
-              <Plus className="h-4 w-4 mr-2" />
-              Adicionar Item
-            </Button>
+            <div className="flex gap-2">
+              <ViewToggle viewMode={viewMode} onViewModeChange={handleViewModeChange} />
+              <Button onClick={handleAdd} size="sm">
+                <Plus className="h-4 w-4 mr-2" />
+                Adicionar Item
+              </Button>
+            </div>
           </div>
         </CardHeader>
         <Separator />
         <CardContent className="pt-6">
-          <div className="space-y-3">
+          <div className={viewMode === "grid" ? "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4" : "space-y-3"}>
             {menuItems.map((item, index) => (
               <ItemCard
                 key={item.id}
@@ -193,6 +208,7 @@ export const MenuTab = () => {
                     : undefined
                 }
                 onToggleActive={() => handleToggleActive(item.id, item.is_active)}
+                viewMode={viewMode}
               />
             ))}
             {menuItems.length === 0 && (
