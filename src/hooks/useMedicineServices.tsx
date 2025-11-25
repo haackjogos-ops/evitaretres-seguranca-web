@@ -5,11 +5,13 @@ interface MedicineService {
   id: string;
   section_type: string;
   title: string;
+  description?: string;
   display_order: number;
   is_active: boolean;
 }
 
 export const useMedicineServices = () => {
+  const [services, setServices] = useState<MedicineService[]>([]);
   const [documents, setDocuments] = useState<MedicineService[]>([]);
   const [exams, setExams] = useState<MedicineService[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -22,6 +24,7 @@ export const useMedicineServices = () => {
       .order("display_order");
 
     if (!error && data) {
+      setServices(data.filter(s => s.section_type === 'service'));
       setDocuments(data.filter(s => s.section_type === 'document'));
       setExams(data.filter(s => s.section_type === 'exam'));
     }
@@ -51,5 +54,5 @@ export const useMedicineServices = () => {
     };
   }, []);
 
-  return { documents, exams, isLoading, refetch: loadServices };
+  return { services, documents, exams, isLoading, refetch: loadServices };
 };
