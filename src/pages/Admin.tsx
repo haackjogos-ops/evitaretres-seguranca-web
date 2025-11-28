@@ -9,7 +9,7 @@ import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useToast } from "@/hooks/use-toast";
-import { Upload, Palette, Phone, Bookmark, Image, Home, Info, GraduationCap, BookOpen, Award, Activity, Stethoscope, Heart, LogOut, FileText, MessageSquare, HelpCircle, Menu } from "lucide-react";
+import { Upload, Palette, Phone, Bookmark, Image, Home, Info, GraduationCap, BookOpen, Award, Activity, Stethoscope, Heart, LogOut, FileText, MessageSquare, HelpCircle, Menu, FileEdit } from "lucide-react";
 import Header from "@/components/Header";
 import { ColorPicker } from "@/components/admin/ColorPicker";
 import { ServicesTab } from "@/components/admin/tabs/ServicesTab";
@@ -24,6 +24,7 @@ import RegistrationsTab from "@/components/admin/tabs/RegistrationsTab";
 import TestimonialsTab from "@/components/admin/tabs/TestimonialsTab";
 import FAQTab from "@/components/admin/tabs/FAQTab";
 import { MenuTab } from "@/components/admin/tabs/MenuTab";
+import PagesTab from "@/components/admin/tabs/PagesTab";
 import { Separator } from "@/components/ui/separator";
 
 const Admin = () => {
@@ -245,6 +246,10 @@ const Admin = () => {
               <TabsTrigger value="menu" className="gap-2 py-3">
                 <Menu className="h-5 w-5" />
                 <span className="hidden sm:inline">Menu</span>
+              </TabsTrigger>
+              <TabsTrigger value="pages" className="gap-2 py-3">
+                <FileEdit className="h-5 w-5" />
+                <span className="hidden sm:inline">Páginas</span>
               </TabsTrigger>
             </TabsList>
           </div>
@@ -609,6 +614,10 @@ const Admin = () => {
 
           <TabsContent value="menu">
             <MenuTab />
+          </TabsContent>
+
+          <TabsContent value="pages">
+            <PagesTab />
           </TabsContent>
         </Tabs>
       </div>

@@ -2,11 +2,13 @@ import Header from "@/components/Header";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useSiteSettings } from "@/hooks/useSiteSettings";
 import { useMedicineServices } from "@/hooks/useMedicineServices";
+import { usePageContent } from "@/hooks/usePageContent";
 import { UserCheck, FileText, Stethoscope } from "lucide-react";
 
 const Medicine = () => {
   const { settings } = useSiteSettings();
   const { services, documents, exams, isLoading } = useMedicineServices();
+  const { content: pageContent } = usePageContent("medicine");
 
   if (isLoading) {
     return (
@@ -26,10 +28,10 @@ const Medicine = () => {
       <section className="container mx-auto px-4 py-16">
         <div className="max-w-6xl mx-auto">
           <h1 className="text-4xl md:text-5xl font-bold text-center mb-4">
-            Medicina | Segurança do Trabalho
+            {pageContent?.title || "Medicina | Segurança do Trabalho"}
           </h1>
           <p className="text-xl text-center text-muted-foreground mb-12">
-            Serviços completos em medicina e segurança ocupacional
+            {pageContent?.subtitle || "Serviços completos em medicina e segurança ocupacional"}
           </p>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
