@@ -1,13 +1,18 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useCallback } from "react";
 import { Button } from "@/components/ui/button";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogFooter,
+} from "@/components/ui/dialog";
 import { useToast } from "@/hooks/use-toast";
-import { Canvas, IText, Image as FabricImage } from "fabric";
+import { Canvas, IText, Rect, Line } from "fabric";
 import * as fabric from "fabric";
 import * as pdfjsLib from "pdfjs-dist";
-import { Type, Trash2, Save } from "lucide-react";
+import { Save, Loader2 } from "lucide-react";
+import { PdfEditorToolbar } from "./PdfEditorToolbar";
 
 // Configurar worker do PDF.js
 pdfjsLib.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjsLib.version}/pdf.worker.min.js`;
@@ -22,10 +27,36 @@ interface PdfEditorProps {
 export const PdfEditor = ({ open, onOpenChange, pdfUrl, onSave }: PdfEditorProps) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const fabricCanvasRef = useRef<Canvas | null>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
   const [loading, setLoading] = useState(true);
-  const [textColor, setTextColor] = useState("#000000");
-  const [fontSize, setFontSize] = useState(16);
+  const [loadingMessage, setLoadingMessage] = useState("Carregando PDF...");
   const { toast } = useToast();
+
+  // Text formatting state
+  const [textColor, setTextColor] = useState("#000000");
+  const [fillColor, setFillColor] = useState("#3b82f6");
+  const [fontSize, setFontSize] = useState(16);
+  const [fontFamily, setFontFamily] = useState("Arial");
+  const [isBold, setIsBold] = useState(false);
+  const [isItalic, setIsItalic] = useState(false);
+  const [isUnderline, setIsUnderline] = useState(false);
+
+  // History state for undo/redo
+  const [history, setHistory] = useState<string[]>([]);
+  const [historyIndex, setHistoryIndex] = useState(-1);
+  const isHistoryAction = useRef(false);
+
+  const saveToHistory = useCallback(() => {
+    if (isHistoryAction.current || !fabricCanvasRef.current) return;
+
+    const json = JSON.stringify(fabricCanvasRef.current.toJSON());
+    setHistory((prev) => {
+      const newHistory = prev.slice(0, historyIndex + 1);
+      newHistory.push(json);
+      return newHistory.slice(-50); // Keep last 50 states
+    });
+    setHistoryIndex((prev) => Math.min(prev + 1, 49));
+  }, [historyIndex]);
 
   useEffect(() => {
     if (open && pdfUrl && canvasRef.current) {
@@ -40,43 +71,70 @@ export const PdfEditor = ({ open, onOpenChange, pdfUrl, onSave }: PdfEditorProps
     };
   }, [open, pdfUrl]);
 
+  // Update selected object when formatting changes
+  useEffect(() => {
+    if (!fabricCanvasRef.current) return;
+
+    const activeObject = fabricCanvasRef.current.getActiveObject();
+    if (activeObject && (activeObject.type === "i-text" || activeObject.type === "text")) {
+      const textObj = activeObject as IText;
+      textObj.set({
+        fill: textColor,
+        fontSize: fontSize,
+        fontFamily: fontFamily,
+        fontWeight: isBold ? "bold" : "normal",
+        fontStyle: isItalic ? "italic" : "normal",
+        underline: isUnderline,
+      });
+      fabricCanvasRef.current.renderAll();
+    }
+  }, [textColor, fontSize, fontFamily, isBold, isItalic, isUnderline]);
+
   const loadPdf = async () => {
     try {
       setLoading(true);
+      setLoadingMessage("Baixando PDF...");
       console.log("Carregando PDF:", pdfUrl);
 
-      // Carregar PDF com configuração de CORS
-      const loadingTask = pdfjsLib.getDocument({
-        url: pdfUrl,
-        cMapUrl: `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjsLib.version}/cmaps/`,
-        cMapPacked: true,
-      });
-      
-      const pdf = await loadingTask.promise;
+      // CORS FIX: Fetch PDF as ArrayBuffer instead of using URL directly
+      const response = await fetch(pdfUrl);
+      if (!response.ok) {
+        throw new Error(`Erro ao baixar PDF: ${response.status} ${response.statusText}`);
+      }
+
+      setLoadingMessage("Processando PDF...");
+      const arrayBuffer = await response.arrayBuffer();
+
+      // Load PDF from ArrayBuffer
+      const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
       console.log("PDF carregado com sucesso, páginas:", pdf.numPages);
-      
+
       const page = await pdf.getPage(1);
 
-      // Configurar escala
-      const viewport = page.getViewport({ scale: 1.5 });
+      // Configure scale for better quality
+      const scale = 1.5;
+      const viewport = page.getViewport({ scale });
 
-      // Criar canvas temporário para renderizar o PDF
+      // Create temporary canvas to render PDF
       const tempCanvas = document.createElement("canvas");
       const context = tempCanvas.getContext("2d");
       tempCanvas.width = viewport.width;
       tempCanvas.height = viewport.height;
 
-      if (!context) return;
+      if (!context) {
+        throw new Error("Não foi possível criar contexto do canvas");
+      }
 
-      // Renderizar PDF no canvas temporário
+      setLoadingMessage("Renderizando PDF...");
+
+      // Render PDF to temporary canvas
       const renderContext = {
         canvasContext: context,
         viewport: viewport,
       };
-      
       await page.render(renderContext as any).promise;
 
-      // Inicializar Fabric.js canvas
+      // Initialize Fabric.js canvas
       if (canvasRef.current) {
         if (fabricCanvasRef.current) {
           fabricCanvasRef.current.dispose();
@@ -87,12 +145,24 @@ export const PdfEditor = ({ open, onOpenChange, pdfUrl, onSave }: PdfEditorProps
           height: viewport.height,
         });
 
-        // Definir a imagem do PDF como background
+        // Set PDF image as background
         fabricCanvasRef.current.backgroundImage = new fabric.Image(tempCanvas, {
           originX: "left",
           originY: "top",
         });
         fabricCanvasRef.current.renderAll();
+
+        // Setup event listeners for history
+        fabricCanvasRef.current.on("object:added", saveToHistory);
+        fabricCanvasRef.current.on("object:modified", saveToHistory);
+        fabricCanvasRef.current.on("object:removed", saveToHistory);
+
+        // Update formatting state when selection changes
+        fabricCanvasRef.current.on("selection:created", updateFormattingFromSelection);
+        fabricCanvasRef.current.on("selection:updated", updateFormattingFromSelection);
+
+        // Save initial state
+        saveToHistory();
       }
 
       console.log("PDF renderizado no canvas");
@@ -101,13 +171,28 @@ export const PdfEditor = ({ open, onOpenChange, pdfUrl, onSave }: PdfEditorProps
       console.error("Erro ao carregar PDF:", error);
       console.error("URL do PDF:", pdfUrl);
       console.error("Detalhes do erro:", error.name, error.message);
-      
+
       toast({
         title: "Erro ao carregar PDF",
         description: `${error.message}. Verifique se o arquivo é um PDF válido.`,
         variant: "destructive",
       });
       setLoading(false);
+    }
+  };
+
+  const updateFormattingFromSelection = () => {
+    if (!fabricCanvasRef.current) return;
+
+    const activeObject = fabricCanvasRef.current.getActiveObject();
+    if (activeObject && (activeObject.type === "i-text" || activeObject.type === "text")) {
+      const textObj = activeObject as IText;
+      setTextColor((textObj.fill as string) || "#000000");
+      setFontSize(textObj.fontSize || 16);
+      setFontFamily(textObj.fontFamily || "Arial");
+      setIsBold(textObj.fontWeight === "bold");
+      setIsItalic(textObj.fontStyle === "italic");
+      setIsUnderline(textObj.underline || false);
     }
   };
 
@@ -119,11 +204,87 @@ export const PdfEditor = ({ open, onOpenChange, pdfUrl, onSave }: PdfEditorProps
       top: 100,
       fontSize: fontSize,
       fill: textColor,
-      fontFamily: "Arial",
+      fontFamily: fontFamily,
+      fontWeight: isBold ? "bold" : "normal",
+      fontStyle: isItalic ? "italic" : "normal",
+      underline: isUnderline,
     });
 
     fabricCanvasRef.current.add(text);
     fabricCanvasRef.current.setActiveObject(text);
+    fabricCanvasRef.current.renderAll();
+  };
+
+  const addImage = () => {
+    fileInputRef.current?.click();
+  };
+
+  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file || !fabricCanvasRef.current) return;
+
+    const reader = new FileReader();
+    reader.onload = (event) => {
+      const imgElement = document.createElement("img");
+      imgElement.onload = () => {
+        const fabricImage = new fabric.Image(imgElement, {
+          left: 100,
+          top: 100,
+          scaleX: 0.5,
+          scaleY: 0.5,
+        });
+
+        // Limit max size
+        const maxSize = 300;
+        if (fabricImage.width && fabricImage.width > maxSize) {
+          fabricImage.scaleToWidth(maxSize);
+        }
+        if (fabricImage.height && fabricImage.height > maxSize) {
+          fabricImage.scaleToHeight(maxSize);
+        }
+
+        fabricCanvasRef.current?.add(fabricImage);
+        fabricCanvasRef.current?.setActiveObject(fabricImage);
+        fabricCanvasRef.current?.renderAll();
+      };
+      imgElement.src = event.target?.result as string;
+    };
+    reader.readAsDataURL(file);
+
+    // Reset input
+    e.target.value = "";
+  };
+
+  const addRectangle = () => {
+    if (!fabricCanvasRef.current) return;
+
+    const rect = new Rect({
+      left: 100,
+      top: 100,
+      width: 150,
+      height: 100,
+      fill: "transparent",
+      stroke: fillColor,
+      strokeWidth: 2,
+    });
+
+    fabricCanvasRef.current.add(rect);
+    fabricCanvasRef.current.setActiveObject(rect);
+    fabricCanvasRef.current.renderAll();
+  };
+
+  const addLine = () => {
+    if (!fabricCanvasRef.current) return;
+
+    const line = new Line([50, 100, 250, 100], {
+      left: 100,
+      top: 100,
+      stroke: fillColor,
+      strokeWidth: 2,
+    });
+
+    fabricCanvasRef.current.add(line);
+    fabricCanvasRef.current.setActiveObject(line);
     fabricCanvasRef.current.renderAll();
   };
 
@@ -142,12 +303,37 @@ export const PdfEditor = ({ open, onOpenChange, pdfUrl, onSave }: PdfEditorProps
 
     const objects = fabricCanvasRef.current.getObjects();
     objects.forEach((obj) => {
-      // Remover apenas objetos de texto (manter background)
-      if (obj.type === "i-text" || obj.type === "text") {
-        fabricCanvasRef.current?.remove(obj);
-      }
+      fabricCanvasRef.current?.remove(obj);
     });
     fabricCanvasRef.current.renderAll();
+  };
+
+  const undo = () => {
+    if (historyIndex <= 0 || !fabricCanvasRef.current) return;
+
+    isHistoryAction.current = true;
+    const newIndex = historyIndex - 1;
+    const state = history[newIndex];
+
+    fabricCanvasRef.current.loadFromJSON(JSON.parse(state), () => {
+      fabricCanvasRef.current?.renderAll();
+      setHistoryIndex(newIndex);
+      isHistoryAction.current = false;
+    });
+  };
+
+  const redo = () => {
+    if (historyIndex >= history.length - 1 || !fabricCanvasRef.current) return;
+
+    isHistoryAction.current = true;
+    const newIndex = historyIndex + 1;
+    const state = history[newIndex];
+
+    fabricCanvasRef.current.loadFromJSON(JSON.parse(state), () => {
+      fabricCanvasRef.current?.renderAll();
+      setHistoryIndex(newIndex);
+      isHistoryAction.current = false;
+    });
   };
 
   const handleSave = () => {
@@ -178,78 +364,74 @@ export const PdfEditor = ({ open, onOpenChange, pdfUrl, onSave }: PdfEditorProps
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-6xl max-h-[90vh] overflow-y-auto">
+      <DialogContent className="max-w-[95vw] max-h-[95vh] overflow-hidden flex flex-col">
         <DialogHeader>
-          <DialogTitle>Editor de Certificado</DialogTitle>
+          <DialogTitle>📄 Editor de Certificado</DialogTitle>
         </DialogHeader>
 
-        <div className="space-y-4">
-          {/* Ferramentas */}
-          <div className="flex items-center gap-4 p-4 bg-muted rounded-lg">
-            <Button onClick={addText} size="sm" variant="outline">
-              <Type className="h-4 w-4 mr-2" />
-              Adicionar Texto
-            </Button>
+        <div className="flex-1 flex flex-col gap-4 overflow-hidden">
+          {/* Toolbar */}
+          <PdfEditorToolbar
+            onAddText={addText}
+            onAddImage={addImage}
+            onAddRectangle={addRectangle}
+            onAddLine={addLine}
+            onDeleteSelected={deleteSelected}
+            onClearAll={clearAll}
+            onUndo={undo}
+            onRedo={redo}
+            textColor={textColor}
+            setTextColor={setTextColor}
+            fillColor={fillColor}
+            setFillColor={setFillColor}
+            fontSize={fontSize}
+            setFontSize={setFontSize}
+            fontFamily={fontFamily}
+            setFontFamily={setFontFamily}
+            isBold={isBold}
+            setIsBold={setIsBold}
+            isItalic={isItalic}
+            setIsItalic={setIsItalic}
+            isUnderline={isUnderline}
+            setIsUnderline={setIsUnderline}
+            canUndo={historyIndex > 0}
+            canRedo={historyIndex < history.length - 1}
+          />
 
-            <div className="flex items-center gap-2">
-              <Label htmlFor="text-color" className="text-sm">
-                Cor:
-              </Label>
-              <Input
-                id="text-color"
-                type="color"
-                value={textColor}
-                onChange={(e) => setTextColor(e.target.value)}
-                className="w-16 h-9"
-              />
-            </div>
-
-            <div className="flex items-center gap-2">
-              <Label htmlFor="font-size" className="text-sm">
-                Tamanho:
-              </Label>
-              <Input
-                id="font-size"
-                type="number"
-                value={fontSize}
-                onChange={(e) => setFontSize(Number(e.target.value))}
-                className="w-20"
-                min={8}
-                max={72}
-              />
-            </div>
-
-            <Button onClick={deleteSelected} size="sm" variant="outline">
-              <Trash2 className="h-4 w-4 mr-2" />
-              Remover Selecionado
-            </Button>
-
-            <Button onClick={clearAll} size="sm" variant="outline">
-              Limpar Tudo
-            </Button>
-          </div>
+          {/* Hidden file input for image upload */}
+          <input
+            type="file"
+            ref={fileInputRef}
+            onChange={handleImageUpload}
+            accept="image/*"
+            className="hidden"
+          />
 
           {/* Canvas */}
-          <div className="border rounded-lg overflow-auto bg-gray-100 p-4">
+          <div className="flex-1 border rounded-lg overflow-auto bg-muted/50 p-4">
             {loading && (
-              <div className="flex items-center justify-center h-96">
-                <div className="text-muted-foreground">Carregando PDF...</div>
+              <div className="flex flex-col items-center justify-center h-96 gap-3">
+                <Loader2 className="h-8 w-8 animate-spin text-primary" />
+                <div className="text-muted-foreground">{loadingMessage}</div>
               </div>
             )}
-            <canvas ref={canvasRef} className={loading ? "hidden" : ""} />
+            <div className={loading ? "hidden" : "flex justify-center"}>
+              <canvas ref={canvasRef} />
+            </div>
           </div>
 
-          <div className="text-xs text-muted-foreground">
-            💡 Dica: Clique no texto para editar, arraste para mover, e use as alças para
-            redimensionar
+          <div className="text-xs text-muted-foreground bg-muted/50 p-2 rounded">
+            💡 <strong>Dicas:</strong> Clique duplo no texto para editar • Arraste para
+            mover • Use as alças para redimensionar • Selecione um elemento e use a
+            toolbar para formatar
           </div>
         </div>
 
-        <DialogFooter>
+        <DialogFooter className="mt-4">
           <Button variant="outline" onClick={() => onOpenChange(false)}>
             Cancelar
           </Button>
-          <Button onClick={handleSave}>
+          <Button onClick={handleSave} disabled={loading}>
             <Save className="h-4 w-4 mr-2" />
             Salvar Alterações
           </Button>
