@@ -108,11 +108,24 @@ export const useCertificates = () => {
 
   const deleteMutation = useMutation({
     mutationFn: async (id: string) => {
+      // Debug: verificar usuário atual
+      const { data: { user } } = await supabase.auth.getUser();
+      console.log("Tentando excluir certificado:", id);
+      console.log("Usuário atual:", user?.id);
+      
+      // Debug: verificar se usuário tem role admin
+      const { data: roles, error: rolesError } = await supabase
+        .from("user_roles")
+        .select("*")
+        .eq("user_id", user?.id);
+      console.log("Roles do usuário:", roles, rolesError);
+
       const { error } = await supabase
         .from("certificates")
         .update({ is_active: false })
         .eq("id", id);
 
+      console.log("Resultado da exclusão:", error);
       if (error) throw error;
     },
     onSuccess: () => {
